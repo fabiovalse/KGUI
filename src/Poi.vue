@@ -34,7 +34,7 @@ export default {
   methods:
     select: () -> @$store.dispatch 'select', {id: @data.id}
     get_translate: () -> "translate(#{@data.position[0]}, #{@data.position[1]})"
-    get_scale: () -> "scale(#{if @transform? then 1 /@transform.k else 1})"
+    get_scale: () -> "scale(#{if @transform? then 1/@transform.k else 1})"
 
 }
 </script>

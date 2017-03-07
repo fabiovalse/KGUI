@@ -62,8 +62,8 @@ svg {
 }
 .path {
   fill: none;
-  stroke: red;
+  stroke: #00B3FD;
   stroke-width: 13px;
-  stroke-dasharray: 20,20;
+  stroke-dasharray: 25,20;
 }
 </style>
