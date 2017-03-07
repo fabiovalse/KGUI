@@ -9,6 +9,7 @@
         :d="get_d(path)"
       />
       <poi v-for="(poi,i) in pois" :data="poi"></poi>
+      <placemark></placemark>
     </g>
   </svg>
 </template>
@@ -16,6 +17,7 @@
 <script lang="coffee">
 import Floor from './Floor.vue'
 import Poi from './Poi.vue'
+import Placemark from './Placemark.vue'
 
 export default {
   props: ['config']
@@ -38,6 +40,7 @@ export default {
   components:
     floor: Floor
     poi: Poi
+    placemark: Placemark
 
   methods:
     check: (floor) -> if floor.index <= @selected_space.index then true else false
