@@ -62,10 +62,11 @@ module.exports = {
   query_info: (context, id, mutation_name) ->
     _this = @
 
-    payload = JSON.stringify({query: "OPTIONAL MATCH (target) WHERE ID(target)=#{id} OPTIONAL MATCH (target)-[]-(:Locus)-[]-(space) WHERE ID(target)=#{id} OPTIONAL MATCH (target)-[]->(out) WHERE ID(target)=#{id} AND labels(out)='Node' OPTIONAL MATCH (target)<-[]-(in) WHERE ID(target)=#{id} AND labels(in)='Node' RETURN target, collect(DISTINCT out) AS out, collect(DISTINCT in) AS in, collect(DISTINCT space) AS spaces;", params: {}})
+    payload = JSON.stringify({query: "OPTIONAL MATCH (target) WHERE ID(target)=#{id} OPTIONAL MATCH (target)-[]-(l:Locus)-[]-(space) WHERE ID(target)=#{id} OPTIONAL MATCH (target)-[]->(out) WHERE ID(target)=#{id} AND labels(out)='Node' OPTIONAL MATCH (target)<-[]-(in) WHERE ID(target)=#{id} AND labels(in)='Node' RETURN {node: target, position: [l.x, l.y]}, collect(DISTINCT out) AS out, collect(DISTINCT in) AS in, collect(DISTINCT space) AS spaces;", params: {}})
     @cypher payload, (data) =>
       result = JSON.parse(data.responseText).data[0]
-      node = result[0].data
+      node = result[0].node.data
+      node.position = result[0].position
 
       node.out = result[1].filter((d) -> d.data?).map (d) ->
         r = d.data
@@ -96,7 +97,8 @@ module.exports = {
     @handle_query_directions context, payload, from_id, to_id
 
   query_directions_dijkstra: (context, from_id, to_id) ->
-    payload = JSON.stringify({query: "MATCH (start:Node), (end:Node) WHERE ID(start)=#{from_id} AND ID(end)=#{to_id} CALL apoc.algo.dijkstra(start, end, 'related', 'weight') YIELD path, weight RETURN start, end, nodes(path), weight", params: {}})
+    payload = JSON.stringify({query: "MATCH (start:Node), (end:Node) WHERE ID(start)=#{from_id} AND ID(end)=#{to_id} CALL apoc.algo.dijkstra(start, end, 'related', 'weight') YIELD path, weight UNWIND nodes(path) AS point MATCH (point)-[:locus]-(l:Locus) RETURN start, end, collect(DISTINCT {node: point, position: [l.x, l.y], id: ID(point)}) AS path, weight", params: {}})
+    # payload = JSON.stringify({query: "MATCH (start:Node), (end:Node) WHERE ID(start)=#{from_id} AND ID(end)=#{to_id} CALL apoc.algo.dijkstra(start, end, 'related', 'weight') YIELD path, weight RETURN start, end, nodes(path), weight", params: {}})
     @handle_query_directions context, payload, from_id, to_id
 
   handle_query_directions: (context, payload, from_id, to_id) ->
@@ -117,8 +119,9 @@ module.exports = {
         to_node.id = to_id
       
       path = if path? then (path.map((d) ->
-        n = d.data
-        n.id = d.metadata.id
+        n = d.node
+        n.position = d.position
+        n.id = d.id
         return n)) else undefined
       
       context.commit '_set_directions_state', {path: path, weight: weight, from: from_node, to: to_node}

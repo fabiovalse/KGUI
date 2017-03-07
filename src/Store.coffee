@@ -115,7 +115,7 @@ export default {
         from_id = if conf.from_id? then conf.from_id else undefined
         to_id = if conf.to_id? then conf.to_id else undefined
 
-      # The shortest path between teo nodes is computed only when both IDs exist
+      # The shortest path between two nodes is computed only when both IDs exist
       if from_id? and to_id?
         db.query_directions_dijkstra context, from_id, to_id
       else
