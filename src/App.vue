@@ -101,6 +101,7 @@ html, body {
   padding: 0;
   margin: 0;
   overflow: hidden;
+  font-family: Roboto, sans-serif;
 }
 #app {
   width: 100%;

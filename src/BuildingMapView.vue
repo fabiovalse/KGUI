@@ -44,7 +44,7 @@ export default {
 
   methods:
     check: (floor) -> if floor.index <= @selected_space.index then true else false
-    get_d: (path) -> 
+    get_d: (path) ->
       str = "M#{path[0].position[0]} #{path[0].position[1]}"
 
       for i,p of path.slice(1)
