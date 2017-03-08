@@ -81,7 +81,7 @@ module.exports = {
       context.commit mutation_name, node
 
       # Change space if necessary
-      if context.state.spaces?
+      if context.state.spaces? and result[3].length > 0
         current_space = context.state.spaces.filter((s) -> s.current)[0]
         new_spaces = result[3].map (s) -> s.data.index
         
