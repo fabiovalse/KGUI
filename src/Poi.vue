@@ -1,9 +1,10 @@
 <template>
   <g
+    v-if="data.position !== undefined"
     class="poi"
     :transform="get_translate()"
     @click="select()"
-    >
+  >
     <g :transform="get_scale()">
       <circle class="background" r="60" cy="5">
         <title>{{data.label}}</title>
