@@ -73,7 +73,9 @@ export default {
 
   actions:
     init: (context, params) ->
-      db.query_starting_point context, params.default_starting_point
+      if params.default_starting_point?
+        db.query_starting_point context, params.default_starting_point
+        
       db.query_nodes context, params.default_space
       db.query_space context, params.default_space
 
