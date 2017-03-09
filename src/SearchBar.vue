@@ -2,9 +2,11 @@
   <div class="searchbar">
     <input class="search" type="text" placeholder="Cerca" @input="click_search" @keyup="change_selected_result">
 
-    <button class="right_border" @click="click_search"><i class="icon-search"></i></button>
-    <button v-if="mode === 'info'" @click="click_close"><i class="icon-x"></i></button>
-    <button v-if="searchdirectionsbox_enabled && mode === 'fullmap'" @click="click_directions"><i class="icon-compass"></i></button>
+    <div class="buttons">
+      <button @click="click_search"><i class="icon-search"></i></button>
+      <button v-if="mode === 'info'" @click="click_close"><i class="icon-x"></i></button>
+      <button v-if="searchdirectionsbox_enabled && mode === 'fullmap'" @click="click_directions"><i class="icon-compass"></i></button>
+    </div>
   </div>
 </template>
 
@@ -13,12 +15,12 @@ export default {
   props:
     searchdirectionsbox_enabled:
       type: Boolean
-  
+
   computed:
     mode: () -> @$store.state.mode
-  
+
   methods:
-    click_close: () -> 
+    click_close: () ->
       @$store.commit 'fullmap_mode'
       @$emit 'mobile_open', false
     click_directions: () -> @$store.dispatch 'request_directions', {def: true}
@@ -79,7 +81,7 @@ button {
   border: none;
   background: transparent;
 }
-button.right_border {
+.buttons > *:not(:last-child) {
   border-right: 1px solid rgb(178, 178, 178);
 }
 </style>
