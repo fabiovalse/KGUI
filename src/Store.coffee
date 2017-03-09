@@ -22,6 +22,8 @@ export default {
       layer.status = not layer.status
     _set_spaces: (state, spaces) ->
       state.spaces = spaces
+    _set_space: (state, space) ->
+      state.space = space
     _set_nodes: (state, nodes) ->
       state.nodes = nodes
     set_transform: (state, transform) ->

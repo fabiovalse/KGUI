@@ -52,6 +52,7 @@ module.exports = {
         if space.label is id
           space.current = true
           context.commit '_set_layers', if space.layers? then space.layers.map((l) -> {label: l, status: get_status l}) else []
+          context.commit '_set_space', space
 
         return space
 
@@ -98,7 +99,8 @@ module.exports = {
     @handle_query_directions context, payload, from_id, to_id
 
   query_directions_dijkstra: (context, from_id, to_id) ->
-    payload = JSON.stringify({query: "MATCH (start:Node), (end:Node) WHERE ID(start)=#{from_id} AND ID(end)=#{to_id} CALL apoc.algo.dijkstra(start, end, 'related', 'weight') YIELD path, weight UNWIND nodes(path) AS point MATCH (point)-[:body]-(a:Annotation) RETURN start, end, collect(DISTINCT {node: point, position: [a.x, a.y], id: ID(point)}) AS path, weight", params: {}})
+
+    payload = JSON.stringify({query: "MATCH (start:Node), (end:Node), (space:Space {index: #{context.state.space.index}}) WHERE ID(start)=#{from_id} AND ID(end)=#{to_id} CALL apoc.algo.dijkstra(start, end, 'related', 'weight') YIELD path, weight UNWIND nodes(path) AS point MATCH (point)-[:body]-(a:Annotation {ghost: false})-[:target]-(space) RETURN start, end, collect(DISTINCT {node: point, position: [a.x, a.y], id: ID(point)}) AS path, weight", params: {}})
     @handle_query_directions context, payload, from_id, to_id
 
   handle_query_directions: (context, payload, from_id, to_id) ->
