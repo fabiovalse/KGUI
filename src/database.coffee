@@ -15,17 +15,13 @@ module.exports = {
     @cypher payload, (data) ->
       result = JSON.parse(data.responseText)
 
-      node = result.data[0][0].data
-      node.id = result.data[0][0].metadata.id
-
-      context.commit '_set_starting_point', node
+      context.commit '_set_starting_point', result.data[0][0].data
 
   query_nodes: (context, id) ->
     payload = JSON.stringify({query: "MATCH (n:Node)-[]-(a:Annotation)-[]-(s:Space {label: '#{id}'}) RETURN n, a.x, a.y;", "params": {}})
     @cypher payload, (data) ->
       nodes = JSON.parse(data.responseText).data.map (d) ->
         r = d[0].data
-        r.id = d[0].metadata.id
         r.position = [d[1], d[2]]
         return r
 
@@ -70,24 +66,16 @@ module.exports = {
       node = result[0].node.data
       node.position = if result[0].position[0] is null then undefined else result[0].position
 
-      node.out = result[1].filter((d) -> d.data?).map (d) ->
-        r = d.data
-        r.id = d.metadata.id
-        return r
-      node.in = result[2].filter((d) -> d.data?).map (d) ->
-        r = d.data
-        r.id = d.metadata.id
-        return r
-      node.id = id
+      node.out = result[1].filter((d) -> d.data?).map (d) -> d.data
+      node.in = result[2].filter((d) -> d.data?).map (d) -> d.data
 
       context.commit mutation_name, node
 
       # Change space if necessary
       if context.state.spaces? and result[3].length > 0
-        current_space = context.state.spaces.filter((s) -> s.current)[0]
         new_spaces = result[3].map (s) -> s.data.index
         
-        if not(current_space.index?) or not(current_space.index in new_spaces)
+        if not(context.state.space.index?) or not(context.state.space.index in new_spaces)
           min_index = d3.min result[3], (d) -> d.data.index
           _this.query_space context, result[3].filter((s) -> s.data.index is min_index)[0].data.label
 
@@ -99,8 +87,7 @@ module.exports = {
     @handle_query_directions context, payload, from_id, to_id
 
   query_directions_dijkstra: (context, from_id, to_id) ->
-
-    payload = JSON.stringify({query: "MATCH (start:Node), (end:Node), (space:Space {index: #{context.state.space.index}}) WHERE ID(start)=#{from_id} AND ID(end)=#{to_id} CALL apoc.algo.dijkstra(start, end, 'related', 'weight') YIELD path, weight UNWIND nodes(path) AS point MATCH (point)-[:body]-(a:Annotation {ghost: false})-[:target]-(space) RETURN start, end, collect(DISTINCT {node: point, position: [a.x, a.y], id: ID(point)}) AS path, weight", params: {}})
+    payload = JSON.stringify({query: "MATCH (start:Node), (end:Node), (space:Space {index: #{if context.state.space? then context.state.space.index else 0}}) WHERE ID(start)=#{from_id} AND ID(end)=#{to_id} CALL apoc.algo.dijkstra(start, end, 'related', 'weight') YIELD path, weight UNWIND nodes(path) AS point MATCH (point)-[:body]-(a:Annotation {ghost: false})-[:target]-(space) RETURN start, end, collect(DISTINCT {node: point, position: [a.x, a.y], id: ID(point)}) AS path, weight", params: {}})
     @handle_query_directions context, payload, from_id, to_id
 
   handle_query_directions: (context, payload, from_id, to_id) ->
@@ -123,7 +110,6 @@ module.exports = {
       path = if path? then (path.map((d) ->
         n = d.node
         n.position = d.position
-        n.id = d.id
         return n)) else undefined
       
       context.commit '_set_directions_state', {path: path, weight: weight, from: from_node, to: to_node}
