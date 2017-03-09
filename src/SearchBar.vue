@@ -81,6 +81,10 @@ button {
   border: none;
   background: transparent;
 }
+.buttons {
+  display: flex;
+  align-items: center;
+}
 .buttons > *:not(:last-child) {
   border-right: 1px solid rgb(178, 178, 178);
 }
