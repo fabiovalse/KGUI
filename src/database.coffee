@@ -21,7 +21,7 @@ module.exports = {
       context.commit '_set_starting_point', node
 
   query_nodes: (context, id) ->
-    payload = JSON.stringify({query: "MATCH (n:Node)-[]-(l:Locus)-[]-(s:Space {label: '#{id}'}) RETURN n,l.x,l.y;", "params": {}})
+    payload = JSON.stringify({query: "MATCH (n:Node)-[]-(a:Annotation)-[]-(s:Space {label: '#{id}'}) RETURN n, a.x, a.y;", "params": {}})
     @cypher payload, (data) ->
       nodes = JSON.parse(data.responseText).data.map (d) ->
         r = d[0].data
@@ -62,7 +62,7 @@ module.exports = {
   query_info: (context, id, mutation_name) ->
     _this = @
 
-    payload = JSON.stringify({query: "OPTIONAL MATCH (target) WHERE ID(target)=#{id} OPTIONAL MATCH (target)-[]-(l:Locus)-[]-(space) WHERE ID(target)=#{id} OPTIONAL MATCH (target)-[]->(out) WHERE ID(target)=#{id} AND labels(out)='Node' OPTIONAL MATCH (target)<-[]-(in) WHERE ID(target)=#{id} AND labels(in)='Node' RETURN {node: target, position: [l.x, l.y]}, collect(DISTINCT out) AS out, collect(DISTINCT in) AS in, collect(DISTINCT space) AS spaces;", params: {}})
+    payload = JSON.stringify({query: "OPTIONAL MATCH (target) WHERE ID(target)=#{id} OPTIONAL MATCH (target)-[]-(a:Annotation)-[]-(space) WHERE ID(target)=#{id} OPTIONAL MATCH (target)-[]->(out) WHERE ID(target)=#{id} AND labels(out)='Node' OPTIONAL MATCH (target)<-[]-(in) WHERE ID(target)=#{id} AND labels(in)='Node' RETURN {node: target, position: [a.x, a.y]}, collect(DISTINCT out) AS out, collect(DISTINCT in) AS in, collect(DISTINCT space) AS spaces;", params: {}})
     @cypher payload, (data) =>
       result = JSON.parse(data.responseText).data[0]
 
@@ -98,8 +98,7 @@ module.exports = {
     @handle_query_directions context, payload, from_id, to_id
 
   query_directions_dijkstra: (context, from_id, to_id) ->
-    payload = JSON.stringify({query: "MATCH (start:Node), (end:Node) WHERE ID(start)=#{from_id} AND ID(end)=#{to_id} CALL apoc.algo.dijkstra(start, end, 'related', 'weight') YIELD path, weight UNWIND nodes(path) AS point MATCH (point)-[:locus]-(l:Locus) RETURN start, end, collect(DISTINCT {node: point, position: [l.x, l.y], id: ID(point)}) AS path, weight", params: {}})
-    # payload = JSON.stringify({query: "MATCH (start:Node), (end:Node) WHERE ID(start)=#{from_id} AND ID(end)=#{to_id} CALL apoc.algo.dijkstra(start, end, 'related', 'weight') YIELD path, weight RETURN start, end, nodes(path), weight", params: {}})
+    payload = JSON.stringify({query: "MATCH (start:Node), (end:Node) WHERE ID(start)=#{from_id} AND ID(end)=#{to_id} CALL apoc.algo.dijkstra(start, end, 'related', 'weight') YIELD path, weight UNWIND nodes(path) AS point MATCH (point)-[:body]-(a:Annotation) RETURN start, end, collect(DISTINCT {node: point, position: [a.x, a.y], id: ID(point)}) AS path, weight", params: {}})
     @handle_query_directions context, payload, from_id, to_id
 
   handle_query_directions: (context, payload, from_id, to_id) ->
