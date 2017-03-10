@@ -1,8 +1,6 @@
 <template>
   <div class="mainview" :class="{mobile_mode: mode !== 'fullmap'}">
-    <spaceswitch></spaceswitch>
     <layerbox v-if="layers !== undefined && layers.length > 0"></layerbox>
-    
     <layer v-for="(l,i) in layers" v-if="l.status"></layer>
     
     <mapview v-if="space === 'map'"></mapview>
@@ -13,7 +11,6 @@
 </template>
 
 <script lang="coffee">
-import SpaceSwitch from './SpaceSwitch.vue'
 import LayerBox from './LayerBox.vue'
 import MapView from './MapView.vue'
 import BuildingMapView from './BuildingMapView.vue'
@@ -31,7 +28,6 @@ export default {
     mapview: MapView
     buildingmapview: BuildingMapView
     textview: TextView
-    spaceswitch: SpaceSwitch
     layerbox: LayerBox
     layer: Layer
     iframeview: IframeView
@@ -61,11 +57,6 @@ export default {
 .layerbox {
   position: absolute;
   bottom: 85px;
-  left: 10px;
-}
-.spaceswitch {
-  position: absolute;
-  bottom: 10px;
   left: 10px;
 }
 
