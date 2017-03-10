@@ -1,6 +1,6 @@
 <template>
   <div class="floorselector">
-    <button v-for="s in spaces" :class="{selected: s.current}" @click="change_space(s.label)">{{s.label}}</button>
+    <button v-for="s in spaces" :class="{selected: s.current, under: s.index < space.index}" @click="change_space(s.label)">{{s.label}}</button>
   </div>
 </template>
 
@@ -8,6 +8,7 @@
 export default {
   computed:
     spaces: () -> @$store.state.spaces
+    space: () -> @$store.state.space
   
   methods:
     change_space: (id) -> @$store.dispatch 'change_space', id
@@ -52,6 +53,9 @@ button {
 .selected {
   background: #B44646;
   color: white;
+}
+.under {
+  background: #EEE;
 }
 
 @media (max-width: 480px) {
