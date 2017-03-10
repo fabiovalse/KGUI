@@ -76,9 +76,10 @@ export default {
     init: (context, params) ->
       if params.default_starting_point?
         db.query_starting_point context, params.default_starting_point
-        
-      db.query_nodes context, params.default_space
-      db.query_space context, params.default_space
+
+      if params.default_space?
+        db.query_nodes context, params.default_space
+        db.query_space context, params.default_space
 
     select: (context, params) ->
       if context.state.mode is 'fullmap'
