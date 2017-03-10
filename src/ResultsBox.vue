@@ -10,7 +10,7 @@
 import db from './database.coffee'
 
 export default {
-  
+
   props: ['result_change']
 
   data: () ->
@@ -36,20 +36,20 @@ export default {
           @selected = @results.length-1
 
   methods:
-    click_node: (d) -> 
+    click_node: (d) ->
       @$store.dispatch 'select', {id: d.id, directions_input: @directions_input}
       @results = undefined
 
     search_node: (str, directions_input) ->
       @directions_input = directions_input
-      
+
       db.query_node str, ((data) =>
         result = JSON.parse(data.responseText)
 
         @results = result.data.map (n) ->
           node = n[0].data
           node.id = n[0].metadata.id
-          node.labels = n[0].metadata.labels 
+          node.labels = n[0].metadata.labels
           return node)
 
 }
@@ -57,7 +57,7 @@ export default {
 
 <style scoped>
 .resultsbox {
-  background: #FFF; 
+  background: #FFF;
 }
 .result {
   display: flex;
@@ -66,11 +66,16 @@ export default {
   border-bottom: 1px solid rgb(230, 230, 230);
   cursor: pointer;
   margin-left: 50px;
+
+  /* long labels */
+  margin-right: 12px;
+  overflow: hidden;
+  white-space: nowrap;
 }
 .result:hover {
   background: #F2F2F2;
 }
 .selected {
-  background: #F2F2F2; 
+  background: #F2F2F2;
 }
 </style>
