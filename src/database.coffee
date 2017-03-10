@@ -54,6 +54,9 @@ module.exports = {
 
       context.commit '_set_spaces', spaces
 
+      if context.state.mode is 'directions' and context.state.from? and context.state.to?
+        @query_directions_dijkstra context, context.state.from.id, context.state.to.id
+
     @query_nodes context, id
 
   query_info: (context, id, mutation_name) ->
