@@ -35,7 +35,7 @@ export default {
       .on 'zoom', () =>
         @$store.commit 'set_transform', d3.event.transform
 
-    d3.select(@$el).d3.select('svg').call zoom
+    d3.select(@$el).select('svg').call zoom
 
   components:
     floor: Floor
