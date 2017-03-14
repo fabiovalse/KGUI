@@ -78,4 +78,11 @@ export default {
 .selected {
   background: #F2F2F2;
 }
+
+@media (max-width: 480px) {
+  .result {
+    margin-left: 0px;
+    padding-left: 10px;
+  }
+}
 </style>
