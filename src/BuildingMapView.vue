@@ -1,6 +1,6 @@
 <template>
   <div class="buildingmapview">
-    <svg :viewBox="config.buildingmapview.viewbox">
+    <svg :viewBox="space.viewbox" :style="{background: space.background_color}">
       <g :transform="transform">
         <floor v-if="check(floor)" v-for="floor in spaces" :data="floor"></floor>
         
@@ -21,7 +21,6 @@ import Placemark from './Placemark.vue'
 import Path from './Path.vue'
 
 export default {
-  props: ['config']
 
   computed:
     transform: () -> @$store.state.transform
@@ -31,7 +30,7 @@ export default {
 
   mounted: () ->
     zoom = d3.zoom()
-      .scaleExtent(@config.buildingmapview.zoom_scale_extent)
+      .scaleExtent(@space.zoom_scale_extent)
       .on 'zoom', () =>
         @$store.commit 'set_transform', d3.event.transform
 

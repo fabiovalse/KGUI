@@ -4,7 +4,7 @@
     <layer v-for="(l,i) in layers" v-if="l.status"></layer>
     
     <mapview v-if="space === 'map'"></mapview>
-    <buildingmapview v-if="space === 'T' || space === '1' || space === '2' || space === '3'" :config="config"></buildingmapview>
+    <buildingmapview v-if="space === 'T' || space === '1' || space === '2' || space === '3'"></buildingmapview>
     <textview v-if="space === 'text'"></textview>
     <iframeview v-if="space === 'iframe'"></iframeview>
   </div>
@@ -44,7 +44,6 @@ export default {
 .buildingmapview {
   width: 100%;
   height: 100%;
-  background: #CBE6A3;
   overflow: hidden;
 }
 .textview {
