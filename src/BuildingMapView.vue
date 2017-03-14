@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="buildingmapview">
     <svg :viewBox="config.buildingmapview.viewbox">
       <g :transform="transform">
         <floor v-if="check(floor)" v-for="floor in spaces" :data="floor"></floor>
@@ -52,6 +52,11 @@ export default {
 
 <style scoped>
 svg {
+  width: 100%;
+  height: 100%;
+}
+
+.buildingmapview {
   width: 100%;
   height: 100%;
 }
