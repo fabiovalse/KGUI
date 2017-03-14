@@ -3,7 +3,7 @@
     <layerbox v-if="layers !== undefined && layers.length > 0"></layerbox>
     <layer v-for="(l,i) in layers" v-if="l.status"></layer>
 
-    <buildingmapview v-if="space === 'T' || space === '1' || space === '2' || space === '3'"></buildingmapview>
+    <buildingmapview v-if="space === 'buildingmapview'"></buildingmapview>
     <textview v-if="space === 'text'"></textview>
     <iframeview v-if="space === 'iframe'"></iframeview>
   </div>
@@ -21,7 +21,7 @@ export default {
   props: ['config']
   computed:
     mode: () -> @$store.state.mode
-    space: () -> if @$store.state.space? then @$store.state.space.label else undefined
+    space: () -> @$store.state.space
     layers: () -> @$store.state.layers
   components:
     buildingmapview: BuildingMapView
