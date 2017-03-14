@@ -88,4 +88,11 @@ button {
 .buttons > *:not(:last-child) {
   border-right: 1px solid rgb(178, 178, 178);
 }
+
+@media (max-width: 480px) {
+  .mobile_open .searchbar {
+    display: none;
+  }
+}
+
 </style>

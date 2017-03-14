@@ -118,13 +118,13 @@ html, body {
   left: 10px;
   z-index: 10;
   height: 48px;
-  width: 392px;
+  width: 390px;
 }
 .resultsbox1 {
   position: absolute;
   top: 59px;
   left: 10px;
-  width: 392px;
+  width: 390px;
   z-index: 10;
   box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 -1px 0px rgba(0,0,0,0.02);
 }
@@ -153,6 +153,7 @@ html, body {
   #app {
     position: absolute;
   }
+  
   .box {
     width: 100%;
   }
@@ -162,13 +163,25 @@ html, body {
     left: 2.5%;
     width: 95%;
   }
+
+  .resultsbox1, .resultsbox2 {
+    font-size: 15px;
+  }
+
+  .resultsbox1 {
+    width: 95%;
+  }
+
+  .resultsbox2 {
+    width: 100%;
+    top: 110px;
+
+  }
+
   .infobox {
     top: 100%;
     margin-top: -100px;
   }
 
-  .mobile_open .searchbar, .mobile_open .searchdirectionsbox {
-    display: none;
-  }
 }
 </style>

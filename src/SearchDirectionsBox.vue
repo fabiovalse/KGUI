@@ -111,4 +111,25 @@ input {
   margin: 40px 0px 0px 40px;
 }
 
+@media (max-width: 480px) {
+  
+  .mobile_open .searchdirectionsbox {
+    display: none;
+  }
+
+  .close {
+    top: 10px;
+    right: 10px;
+  }
+  
+  .from_to {
+    margin: 20px 0px 0px 20px;
+  }
+
+  .searchdirectionsbox {
+    height: 110px;
+  }
+
+}
+
 </style>

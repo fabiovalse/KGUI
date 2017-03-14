@@ -1,7 +1,7 @@
 <template>
   <div class="infobox" :class="{mobile_open: mobile_open}" @click="click">
     <div v-if="target !== undefined" class="target_info">
-      <div class="expand"><span v-if="mobile_open">v</span><span v-else>^</span></div>
+      <div class="expand"><span v-if="mobile_open"><i class="icon-slide-down"></i></span><span v-else><i class="icon-slide-up"></i></span></div>
       
       <div class="profile">
         <button v-if="searchdirectionsbox_enabled && target.position !== undefined" @click.stop="click_directions"><i class="icon-compass"></i></button>
@@ -24,7 +24,7 @@
       </div>
     </div>
     <div v-if="mode === 'directions'" class="directions_info">
-      <div class="expand"><span v-if="mobile_open">v</span><span v-else>^</span></div>
+      <div class="expand"><span v-if="mobile_open"><i class="icon-slide-down"></i></span><span v-else><i class="icon-slide-up"></i></span></div>
       Direzionati!
     </div>
   </div>
@@ -44,6 +44,7 @@ export default {
     click_directions: () -> @$store.dispatch 'request_directions', {def: true}
     click_node: (d) -> @$store.dispatch 'select', {id: d.id}
     click: () -> @$emit 'mobile_open'
+    
 }
 </script>
 
@@ -108,7 +109,6 @@ button i {
     padding-top: 0px;
     z-index: 1;
   }
-
   .expand {
     display: inline;
   }

@@ -65,12 +65,19 @@ export default {
   height: 43px;
   border-bottom: 1px solid rgb(230, 230, 230);
   cursor: pointer;
-  margin-left: 50px;
+  padding-left: 30px;
 }
 .result:hover {
   background: #F2F2F2;
 }
 .selected {
   background: #F2F2F2; 
+}
+
+@media (max-width: 480px) {
+  .result {
+    margin-left: 0px;
+    padding-left: 10px;
+  }
 }
 </style>
