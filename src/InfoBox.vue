@@ -1,37 +1,13 @@
-<template>
-  <div class="infobox" :class="{mobile_open: mobile_open}" @click="click">
-    <div v-if="target !== undefined" class="target_info">
-      <div class="expand"><span v-if="mobile_open"><i class="icon-slide-down"></i></span><span v-else><i class="icon-slide-up"></i></span></div>
-      
-      <div class="profile">
-        <button v-if="searchdirectionsbox_enabled && target.position !== undefined" @click.stop="click_directions"><i class="icon-compass"></i></button>
-        <div class="img" style="background-image: url(&quot;http://www.iit.cnr.it//sites/default/files/images/people/matteo.abrate.jpg&quot;);"></div>
-        <div class="info">
-          <div class="label">{{target.label}}</div>
-          <div class="position">{{target.description}}</div>
-        </div>
-      </div>
-
-      <div v-if="target.out.length > 0">
-        <div><b>Related nodes</b></div>
-        <ul>
-          <li
-            v-for="d in target.out"
-            class="node"
-            @click.stop="click_node(d)"
-          >{{d.label}}</li>
-        </ul>
-      </div>
-    </div>
-    <div v-if="mode === 'directions'" class="directions_info">
-      <div class="expand"><span v-if="mobile_open"><i class="icon-slide-down"></i></span><span v-else><i class="icon-slide-up"></i></span></div>
-      Direzionati!
-    </div>
-  </div>
-</template>
-
 <script lang="coffee">
+import config from './config.coffee'
+import TextSection from './infobox_sections/TextSection.vue'
+import HeaderSection from './infobox_sections/HeaderSection.vue'
+import ImageSection from './infobox_sections/ImageSection.vue'
+
 export default {
+  render: (createElement) ->
+    children = @template.map (section) => createElement section.t+'section', {props:{data:@target, config:section}}
+    return createElement 'div', {class: {infobox: true, mobile_open: @mobile_open}, on: {click: @click}}, children
   props:
     searchdirectionsbox_enabled:
       type: Boolean
@@ -40,18 +16,21 @@ export default {
   computed:
     mode: () -> @$store.state.mode
     target: () -> @$store.state.target
+    template: () -> config.templates[@target.template]
   methods:
     click_directions: () -> @$store.dispatch 'request_directions', {def: true}
     click_node: (d) -> @$store.dispatch 'select', {id: d.id}
     click: () -> @$emit 'mobile_open'
-    
+  components:
+    textsection: TextSection
+    headersection: HeaderSection
+    imagesection: ImageSection
 }
 </script>
 
 <style scoped>
 .infobox {
   box-shadow: 0 0 20px rgba(0,0,0,0.3);
-  padding-top: 130px;
 }
 .profile {
   position: relative;
@@ -82,10 +61,10 @@ button {
   width: 60px;
   height: 60px;
   font-size: 20px;
-  
+
   border-radius: 50%;
   border: none;
-  
+
   cursor: pointer;
   background: #FFF;
   color: #00B3FD;
