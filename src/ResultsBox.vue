@@ -48,7 +48,6 @@ export default {
 
         @results = result.data.map (n) ->
           node = n[0].data
-          node.id = n[0].metadata.id
           node.labels = n[0].metadata.labels
           return node)
 

@@ -72,7 +72,7 @@ export default {
 
     route_changed: (route) ->
       if route.params.target?
-        @$store.dispatch 'request_info', smartInt(route.params.target)
+        @$store.dispatch 'request_info', route.params.target
       else if 'from' in Object.keys(route.params) and 'to' in Object.keys(route.params)
         @$store.dispatch 'request_directions', {
           from_id: (if route.params.from is '_' then undefined else smartInt(route.params.from)),
