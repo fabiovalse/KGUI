@@ -7,7 +7,7 @@
       v-on:mobile_open="toggle_mobile_open"
       v-if="config.layout.searchbar && mode !== 'directions'"
     ></searchbar>
-    <resultsbox 
+    <resultsbox
       class="resultsbox1"
       ref="resultsbox1"
       :result_change="result_change"
@@ -47,35 +47,38 @@ import InfoBox from './InfoBox.vue'
 import SearchDirectionsBox from './SearchDirectionsBox.vue'
 import config from './config.coffee'
 
+# FIXME this could cause strange behaviors! '0' != 0
+smartInt = (str) -> if isNaN(str) then str else parseInt(str)
+
 export default {
   data: () ->
     mobile_open: false
     result_change: undefined
-  
+
   computed:
     mode: () -> @$store.state.mode
     config: () -> config
-  
+
   mounted: () ->
     @$store.dispatch 'init', {default_starting_point: config.default_starting_point, default_space: config.default_space}
     @route_changed @$route
-  
+
   watch:
     $route: (to, from) -> @route_changed(to)
-  
+
   methods:
     toggle_mobile_open: (flag) ->
       @mobile_open = if flag? then flag else (not @mobile_open)
-    
-    route_changed: (route) ->   
+
+    route_changed: (route) ->
       if route.params.target?
-        @$store.dispatch 'request_info', parseInt(route.params.target)
+        @$store.dispatch 'request_info', smartInt(route.params.target)
       else if 'from' in Object.keys(route.params) and 'to' in Object.keys(route.params)
         @$store.dispatch 'request_directions', {
-          from_id: (if route.params.from is '_' then undefined else parseInt(route.params.from)), 
-          to_id: (if route.params.to is '_' then undefined else parseInt(route.params.to)),
+          from_id: (if route.params.from is '_' then undefined else smartInt(route.params.from)),
+          to_id: (if route.params.to is '_' then undefined else smartInt(route.params.to)),
         }
-    
+
     search: (str) ->
       if @mode is 'directions'
         @$refs.resultsbox2.search_node str, @$refs.searchdirectionsbox.current_input
@@ -84,7 +87,7 @@ export default {
 
     change_result: (value) ->
       @result_change = {value: value}
-  
+
   components:
     infobox: InfoBox
     searchdirectionsbox: SearchDirectionsBox
@@ -141,7 +144,7 @@ html, body {
 }
 .searchdirectionsbox {
   position: absolute;
-  height: 100px;  
+  height: 100px;
   background: #B44646;
 }
 .mainview {

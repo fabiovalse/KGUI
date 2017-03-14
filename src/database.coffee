@@ -39,7 +39,7 @@ module.exports = {
     @cypher payload, (data) =>
       result = JSON.parse(data.responseText).data
 
-      spaces = result.map (s) -> 
+      spaces = result.map (s) ->
         space = s[0].data
         space.order = s[1].data.order
         space.current = false
@@ -54,12 +54,15 @@ module.exports = {
 
       context.commit '_set_spaces', spaces
 
+      if context.state.mode is 'directions' and context.state.from? and context.state.to?
+        @query_directions_dijkstra context, context.state.from.id, context.state.to.id
+
     @query_nodes context, id
 
   query_info: (context, id, mutation_name) ->
     _this = @
 
-    payload = JSON.stringify({query: "OPTIONAL MATCH (target) WHERE ID(target)=#{id} OPTIONAL MATCH (target)-[]-(a:Annotation)-[]-(space) WHERE ID(target)=#{id} OPTIONAL MATCH (target)-[]->(out) WHERE ID(target)=#{id} AND labels(out)='Node' OPTIONAL MATCH (target)<-[]-(in) WHERE ID(target)=#{id} AND labels(in)='Node' RETURN {node: target, position: [a.x, a.y]}, collect(DISTINCT out) AS out, collect(DISTINCT in) AS in, collect(DISTINCT space) AS spaces;", params: {}})
+    payload = JSON.stringify({query: "OPTIONAL MATCH (target {id: {id}}) OPTIONAL MATCH (target {id: {id}})-[]-(a:Annotation)-[]-(space) OPTIONAL MATCH (target {id: {id}})-[]->(out) WHERE labels(out)='Node' OPTIONAL MATCH (target {id: {id}})<-[]-(in) WHERE labels(in)='Node' RETURN {node: target, position: [a.x, a.y]}, collect(DISTINCT out) AS out, collect(DISTINCT in) AS in, collect(DISTINCT space) AS spaces;", params: {id: id}})
     @cypher payload, (data) =>
       result = JSON.parse(data.responseText).data[0]
 
@@ -74,7 +77,7 @@ module.exports = {
       # Change space if necessary
       if context.state.spaces? and result[3].length > 0
         new_spaces = result[3].map (s) -> s.data.index
-        
+
         if not(context.state.space.index?) or not(context.state.space.index in new_spaces)
           min_index = d3.min result[3], (d) -> d.data.index
           _this.query_space context, result[3].filter((s) -> s.data.index is min_index)[0].data.label
@@ -93,25 +96,25 @@ module.exports = {
   handle_query_directions: (context, payload, from_id, to_id) ->
     @cypher payload, (data) ->
       result = JSON.parse(data.responseText)
-      
+
       if result.data.length is 0 # If a node has no position, dijkstra fails, result is undefined, then switch to fullmap_mode
         context.commit 'fullmap_mode'
         return
 
       [start, end, path, weight] = result.data[0]
-      
+
       if start isnt null
         from_node = start.data
         from_node.id = from_id
       if end isnt null
         to_node = end.data
         to_node.id = to_id
-      
+
       path = if path? then (path.map((d) ->
         n = d.node
         n.position = d.position
         return n)) else undefined
-      
+
       context.commit '_set_directions_state', {path: path, weight: weight, from: from_node, to: to_node}
 
   query_node: (str, callback) ->
@@ -119,4 +122,3 @@ module.exports = {
     @cypher payload, callback
 
 }
-
