@@ -22,9 +22,6 @@ export default {
   border-radius: 3px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 -1px 0px rgba(0,0,0,0.02);  
 }
-.mobile_mode .floorselector {
-  left: 420px;
-}
 
 button {
   border: 0;
@@ -58,10 +55,5 @@ button {
   background: #EEE;
 }
 
-@media (max-width: 480px) {
-  .mobile_mode .floorselector {
-    left: 10px;
-    bottom: 110px;
-  }
-}
+
 </style>

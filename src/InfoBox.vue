@@ -75,12 +75,12 @@ export default {
 button {
   position: absolute;
   top: -35%;
-  right: 20px;
+  right: 10px;
 
   display: flex;
   justify-content: center;
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   font-size: 20px;
   
   border-radius: 50%;

@@ -63,6 +63,14 @@ svg {
 .floorselector {
   position: absolute;
   bottom: 10px;
-  left: 10px;
+  right: 10px;
 }
+
+@media (max-width: 480px) {
+  .mobile_mode .floorselector {
+    right: 10px;
+    bottom: 120px;
+  }
+}
+
 </style>
