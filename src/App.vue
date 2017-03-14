@@ -47,9 +47,6 @@ import InfoBox from './InfoBox.vue'
 import SearchDirectionsBox from './SearchDirectionsBox.vue'
 import config from './config.coffee'
 
-# FIXME this could cause strange behaviors! '0' != 0
-smartInt = (str) -> if isNaN(str) then str else parseInt(str)
-
 export default {
   data: () ->
     mobile_open: false
@@ -75,8 +72,8 @@ export default {
         @$store.dispatch 'request_info', route.params.target
       else if 'from' in Object.keys(route.params) and 'to' in Object.keys(route.params)
         @$store.dispatch 'request_directions', {
-          from_id: (if route.params.from is '_' then undefined else smartInt(route.params.from)),
-          to_id: (if route.params.to is '_' then undefined else smartInt(route.params.to)),
+          from_id: (if route.params.from is '_' then undefined else route.params.from),
+          to_id: (if route.params.to is '_' then undefined else route.params.to),
         }
 
     search: (str) ->

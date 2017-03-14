@@ -90,7 +90,7 @@ module.exports = {
     @handle_query_directions context, payload, from_id, to_id
 
   query_directions_dijkstra: (context, from_id, to_id) ->
-    payload = JSON.stringify({query: "MATCH (start:Node), (end:Node), (space:Space {index: {index}}) WHERE ID(start)=#{from_id} AND ID(end)=#{to_id} CALL apoc.algo.dijkstra(start, end, 'related', 'weight') YIELD path, weight UNWIND nodes(path) AS point MATCH (point)-[:body]-(a:Annotation {ghost: false})-[:target]-(space) RETURN start, end, collect(DISTINCT {node: point, position: [a.x, a.y], id: ID(point)}) AS path, weight", params: {index: if context.state.space? then context.state.space.index else 0}})
+    payload = JSON.stringify({query: "MATCH (start:Node), (end:Node), (space:Space {index: {index}}) WHERE start.id={from_id} AND end.id={to_id} CALL apoc.algo.dijkstra(start, end, 'related', 'weight') YIELD path, weight UNWIND nodes(path) AS point MATCH (point)-[:body]-(a:Annotation {ghost: false})-[:target]-(space) RETURN start, end, collect(DISTINCT {node: point, position: [a.x, a.y], id: ID(point)}) AS path, weight", params: {index: (if context.state.space? then context.state.space.index else 0), from_id: from_id, to_id: to_id}})
     @handle_query_directions context, payload, from_id, to_id
 
   handle_query_directions: (context, payload, from_id, to_id) ->
