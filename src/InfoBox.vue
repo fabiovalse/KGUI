@@ -75,12 +75,12 @@ export default {
 button {
   position: absolute;
   top: -35%;
-  right: 10px;
+  right: 20px;
 
   display: flex;
   justify-content: center;
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   font-size: 20px;
   
   border-radius: 50%;
@@ -88,7 +88,7 @@ button {
   
   cursor: pointer;
   background: #FFF;
-  color: #00B3FD;
+  color: #b44646;
   box-shadow: 0 1px 6px 0 rgba(0,0,0,.3);
 }
 button i {
@@ -111,6 +111,11 @@ button i {
   }
   .expand {
     display: inline;
+  }
+  button {
+    right: 10px;
+    width: 48px;
+    height: 48px;
   }
 }
 
