@@ -80,7 +80,7 @@ module.exports = {
 
         if not(context.state.space.index?) or not(context.state.space.index in new_spaces)
           min_index = d3.min result[3], (d) -> d.data.index
-          _this.query_space context, result[3].filter((s) -> s.data.index is min_index)[0].data.label
+          _this.query_space context, result[3].filter((s) -> s.data.index is min_index)[0].data.id
 
   query_directions: (context, from_id, to_id) ->
     to_id = if to_id? then to_id else '""' # Undefined is replaced by quotes. In this way it is possible to write only a Cypher query using the OPTIONAL MATCH operator.

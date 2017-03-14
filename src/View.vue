@@ -22,7 +22,7 @@ export default {
   props: ['config']
   computed:
     mode: () -> @$store.state.mode
-    space: () -> if @$store.state.spaces? then @$store.state.spaces.filter((s) -> s.current)[0].label else undefined
+    space: () -> if @$store.state.space? then @$store.state.space.label else undefined
     layers: () -> @$store.state.layers
   components:
     mapview: MapView

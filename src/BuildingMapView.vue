@@ -27,7 +27,7 @@ export default {
     transform: () -> @$store.state.transform
     pois: () -> if @$store.state.nodes? then @$store.state.nodes else []
     spaces: () -> if @$store.state.spaces? then @$store.state.spaces.filter((d) -> d.urls?).reverse() else undefined
-    selected_space: () -> if @$store.state.spaces? then @$store.state.spaces.filter((d) -> d.urls? and d.current)[0] else undefined
+    space: () -> @$store.state.space
 
   mounted: () ->
     zoom = d3.zoom()
@@ -45,7 +45,7 @@ export default {
     directionpath: Path
 
   methods:
-    check: (floor) -> if floor.index <= @selected_space.index then true else false
+    check: (floor) -> floor.index <= @space.index
 
 }
 </script>
