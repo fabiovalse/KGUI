@@ -18,7 +18,7 @@ module.exports = {
       context.commit '_set_starting_point', result.data[0][0].data
 
   query_nodes: (context, id) ->
-    payload = JSON.stringify({query: "MATCH (n:Node)-[]-(a:Annotation)-[]-(s:Space {label: '#{id}'}) RETURN n, a.x, a.y;", "params": {}})
+    payload = JSON.stringify({query: "MATCH (n:Node)-[]-(a:Annotation)-[]-(s:Space {id: #{id}}) RETURN n, a.x, a.y;", "params": {}})
     @cypher payload, (data) ->
       nodes = JSON.parse(data.responseText).data.map (d) ->
         r = d[0].data
@@ -35,7 +35,7 @@ module.exports = {
       else
         return false
 
-    payload = JSON.stringify({query: "MATCH (s1:Space {label: '#{id}'})-[r1:in_list]->(n) WITH n MATCH (s)-[r:in_list]->(n) RETURN s, r ORDER BY r.order", params: {}})
+    payload = JSON.stringify({query: "MATCH (s1:Space {id: #{id}})-[r1:in_list]->(n) WITH n MATCH (s)-[r:in_list]->(n) RETURN s, r ORDER BY r.order", params: {}})
     @cypher payload, (data) =>
       result = JSON.parse(data.responseText).data
 
@@ -45,7 +45,7 @@ module.exports = {
         space.current = false
         space.labels = s[0].metadata.labels
 
-        if space.label is id
+        if space.id.toString() is id.toString()
           space.current = true
           context.commit '_set_layers', if space.layers? then space.layers.map((l) -> {label: l, status: get_status l}) else []
           context.commit '_set_space', space
