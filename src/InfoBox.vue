@@ -88,7 +88,7 @@ button {
   
   cursor: pointer;
   background: #FFF;
-  color: #b44646;
+  color: #00B3FD;
   box-shadow: 0 1px 6px 0 rgba(0,0,0,.3);
 }
 button i {

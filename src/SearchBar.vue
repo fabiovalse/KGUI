@@ -56,7 +56,7 @@ export default {
   cursor: pointer;
 }
 .icon-compass {
-  color: #b44646;
+  color: #00B3FD;
   cursor: pointer;
 }
 input {
