@@ -2,8 +2,7 @@
   <div class="mainview" :class="{mobile_mode: mode !== 'fullmap'}">
     <layerbox v-if="layers !== undefined && layers.length > 0"></layerbox>
     <layer v-for="(l,i) in layers" v-if="l.status"></layer>
-    
-    <mapview v-if="space === 'map'"></mapview>
+
     <buildingmapview v-if="space === 'T' || space === '1' || space === '2' || space === '3'"></buildingmapview>
     <textview v-if="space === 'text'"></textview>
     <iframeview v-if="space === 'iframe'"></iframeview>
@@ -25,7 +24,6 @@ export default {
     space: () -> if @$store.state.space? then @$store.state.space.label else undefined
     layers: () -> @$store.state.layers
   components:
-    mapview: MapView
     buildingmapview: BuildingMapView
     textview: TextView
     layerbox: LayerBox
@@ -35,12 +33,6 @@ export default {
 </script>
 
 <style scoped>
-.mapview {
-  width: 100%;
-  height: 100%;
-  background: #CBE6A3;
-  overflow: hidden;
-}
 .buildingmapview {
   width: 100%;
   height: 100%;
