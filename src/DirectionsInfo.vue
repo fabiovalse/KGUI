@@ -92,6 +92,7 @@ export default {
 }
 .info .text {
   flex-grow: 1;
+  font-size: 15px;
 }
 .info .partial_distance {
   width: 60px;
