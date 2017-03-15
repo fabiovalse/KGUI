@@ -25,10 +25,7 @@ export default {
       @$emit 'mobile_open', false
     click_directions: () -> @$store.dispatch 'request_directions', {def: true}
     click_search: () ->
-      if d3.select('.search').node().value isnt ''
-        @$emit 'search', d3.select('.search').node().value
-      #else
-      #  @$emit 'search', undefined
+      @$emit 'search', d3.select('.search').node().value
     change_selected_result: (event) ->
       if event.key is 'ArrowDown'
         @$emit 'change_result', 1

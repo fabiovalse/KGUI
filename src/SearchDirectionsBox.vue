@@ -42,14 +42,12 @@ export default {
     click_close: () -> @$store.commit 'fullmap_mode'
     
     search_from: () ->
-      if d3.select('.from').node().value isnt ''
-        @current_input = 'from'
-        @$emit 'search', d3.select('.from input').node().value
+      @current_input = 'from'
+      @$emit 'search', d3.select('.from input').node().value
     
     search_to: () ->
-      if d3.select('.to').node().value isnt ''
-        @current_input = 'to'
-        @$emit 'search', d3.select('.to input').node().value
+      @current_input = 'to'
+      @$emit 'search', d3.select('.to input').node().value
     
     set_current_input: (input) ->
       @current_input = input

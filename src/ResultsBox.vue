@@ -41,15 +41,18 @@ export default {
       @results = undefined
 
     search_node: (str, directions_input) ->
-      @directions_input = directions_input
+      if str isnt ''
+        @directions_input = directions_input
 
-      db.query_node str, ((data) =>
-        result = JSON.parse(data.responseText)
+        db.query_node str, ((data) =>
+          result = JSON.parse(data.responseText)
 
-        @results = result.data.map (n) ->
-          node = n[0].data
-          node.labels = n[0].metadata.labels
-          return node)
+          @results = result.data.map (n) ->
+            node = n[0].data
+            node.labels = n[0].metadata.labels
+            return node)
+      else
+        @results = undefined
 
 }
 </script>

@@ -2,11 +2,13 @@
   <div class="infobox" :class="{mobile_open: mobile_open}" @click="click">
     <div class="expand"><span v-if="mobile_open"><i class="icon-slide-down"></i></span><span v-else><i class="icon-slide-up"></i></span></div>
     <sections v-if="target !== undefined"></sections>
+    <directionsinfo v-if="mode === 'directions'"></directionsinfo>
   </div>
 </template>
 
 <script lang="coffee">
 import Sections from './infobox_sections/Sections.vue'
+import DirectionsInfo from './DirectionsInfo.vue'
 
 export default {
   props:
@@ -23,6 +25,7 @@ export default {
     click: () -> @$emit 'mobile_open'
   components:
     sections: Sections
+    directionsinfo: DirectionsInfo
 }
 </script>
 
