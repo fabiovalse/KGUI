@@ -4,7 +4,7 @@
       <b>{{get_minutes(path.weight*10)}} min</b> ({{path.weight*10}} m)
     </div>
     <div class="info" v-for="(node,i) in path.nodes">
-      <div class="icon"><i :class="get_info(node, i).icon"></div>
+      <div class="icon"><i :class="get_info(node, i).icon"></i></div>
       <div class="text">{{get_info(node, i).text}}</div>
       <div class="partial_distance">{{i < path.links.length-1 ? path.links[i].data.weight*10+'m' : ''}}</div>
     </div>
