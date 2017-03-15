@@ -18,7 +18,7 @@ export default {
   computed:
     mode: () -> @$store.state.mode
     target: () -> @$store.state.target
-    template: () -> config.templates[@target.template]
+    template: () -> if config.templates? and @target.template? then config.templates[@target.template] else []
   methods:
     click_directions: () -> @$store.dispatch 'request_directions', {def: true}
     click_node: (d) -> @$store.dispatch 'select', {id: d.id}
