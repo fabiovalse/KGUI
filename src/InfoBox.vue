@@ -23,14 +23,13 @@
         </ul>
       </div>
     </div>
-    <div v-if="mode === 'directions'" class="directions_info">
-      <div class="expand"><span v-if="mobile_open"><i class="icon-slide-down"></i></span><span v-else><i class="icon-slide-up"></i></span></div>
-      Direzionati!
-    </div>
+    <directionsinfo v-if="mode === 'directions'" class="directions_info" :mobile_open="mobile_open"></directionsinfo>
   </div>
 </template>
 
 <script lang="coffee">
+import DirectionsInfo from './DirectionsInfo.vue'
+
 export default {
   props:
     searchdirectionsbox_enabled:
@@ -44,7 +43,9 @@ export default {
     click_directions: () -> @$store.dispatch 'request_directions', {def: true}
     click_node: (d) -> @$store.dispatch 'select', {id: d.id}
     click: () -> @$emit 'mobile_open'
-    
+  components:
+    directionsinfo: DirectionsInfo
+
 }
 </script>
 
