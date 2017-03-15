@@ -12,7 +12,7 @@ export default {
     return createElement 'div', {class: {sections: true}}, children
   computed:
     target: () -> @$store.state.target
-    template: () -> if config.templates? and @target.template? then config.templates[@target.template] else []
+    template: () -> if config.templates? and @target.template? and config.templates[@target.template]? then config.templates[@target.template] else []
   components:
     textsection: TextSection
     headersection: HeaderSection
