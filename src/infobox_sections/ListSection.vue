@@ -1,7 +1,9 @@
 <template>
-  <table class="list_section">
-    <tr v-for="item in items"><td class="label">{{item.label}}</td><td class="value">{{item.value}}</td></tr>
-  </table>
+  <div class="list_section">
+    <table v-if="items.length > 0">
+      <tr v-for="item in items"><td class="label">{{item.label}}</td><td class="value">{{item.value}}</td></tr>
+    </table>
+  </div>
 </template>
 
 <script lang="coffee">
@@ -17,18 +19,17 @@ export default {
       required: true
   computed:
     items: () ->
-      return @config.items.map (item) =>
-        label = kgl.parse(item.label, @data)
-        value = kgl.parse(item.value, @data)
-        return {
-          label: if label? then label else ''
-          value: if value? then value else ''
+      list = @config.items.map (item) => {
+          label: kgl.parse(item.label, @data)
+          value: kgl.parse(item.value, @data)
         }
+      # keep defined pairs only
+      return list.filter (d) -> d.label? and d.value?
 }
 </script>
 
 <style scoped>
-.list_section {
+table {
   padding: 16px;
   font-size: 13px;
   font-family: sans-serif;
