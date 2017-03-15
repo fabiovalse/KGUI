@@ -101,7 +101,7 @@ module.exports = {
   query_directions_dijkstra: (context, from_id, to_id) ->
     payload = JSON.stringify({query: "MATCH (start:Node), (end:Node) WHERE start.id={from_id} AND end.id={to_id} CALL apoc.algo.dijkstra(start, end, 'related', 'weight') YIELD path, weight UNWIND nodes(path) AS point MATCH (point)-[:body]-(a:Annotation {ghost: false})-[:target]-(space) RETURN collect(DISTINCT {node: point, position: [a.x, a.y], space: space}) AS nodes, rels(path) AS rels, weight", params: {from_id: from_id, to_id: to_id}})
 
-    @cypher payload, (data) ->
+    @cypher payload, (data) =>
       result = JSON.parse(data.responseText)
 
       [nodes, links, weight] = result.data[0]
@@ -114,6 +114,8 @@ module.exports = {
 
       context.commit '_set_space', nodes[0].space.data
       context.commit '_set_directions_state', {path: {nodes: nodes, links: links, weight: weight}, from: nodes[0], to: nodes[nodes.length-1]}
+
+      @query_nodes context, nodes[0].space.data.id
 
   query_node: (str, callback) ->
     payload = JSON.stringify({query: "MATCH (n:Node) WHERE lower(n.label) CONTAINS {str} RETURN n LIMIT 5", params: {str: str.toLowerCase()}})
