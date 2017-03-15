@@ -55,7 +55,7 @@ module.exports = {
   query_info: (context, id, mutation_name) ->
     _this = @
 
-    payload = JSON.stringify({query: "OPTIONAL MATCH (target {id: {id}}) OPTIONAL MATCH (target {id: {id}})-[]-(a:Annotation)-[]-(space) OPTIONAL MATCH (target {id: {id}})-[]->(out) WHERE labels(out)='Node' OPTIONAL MATCH (target {id: {id}})<-[]-(in) WHERE labels(in)='Node' RETURN {node: target, position: [a.x, a.y]}, collect(DISTINCT out) AS out, collect(DISTINCT in) AS in, collect(DISTINCT space) AS spaces;", params: {id: id}})
+    payload = JSON.stringify({query: "OPTIONAL MATCH (target {id: {id}}) OPTIONAL MATCH (target {id: {id}})-[]-(a:Annotation {ghost: false})-[]-(space) OPTIONAL MATCH (target {id: {id}})-[]->(out) WHERE labels(out)='Node' OPTIONAL MATCH (target {id: {id}})<-[]-(in) WHERE labels(in)='Node' RETURN {node: target, position: [a.x, a.y]}, collect(DISTINCT out) AS out, collect(DISTINCT in) AS in, space;", params: {id: id}})
     @cypher payload, (data) =>
       result = JSON.parse(data.responseText).data[0]
 
@@ -68,12 +68,8 @@ module.exports = {
       context.commit mutation_name, node
 
       # Change space if necessary
-      if context.state.spaces? and result[3].length > 0
-        new_spaces = result[3].map (s) -> s.data.index
-
-        if not(context.state.space.index?) or not(context.state.space.index in new_spaces)
-          min_index = d3.min result[3], (d) -> d.data.index
-          _this.query_space context, result[3].filter((s) -> s.data.index is min_index)[0].data.id
+      if not context.state.space? or result[3].data.id isnt context.state.space.id
+        _this.query_space context, result[3].data.id
 
   query_directions: (context, from_id, to_id) ->
     to_id = if to_id? then to_id else '""' # Undefined is replaced by quotes. In this way it is possible to write only a Cypher query using the OPTIONAL MATCH operator.
