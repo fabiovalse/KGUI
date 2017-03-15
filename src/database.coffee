@@ -54,8 +54,8 @@ module.exports = {
 
       context.commit '_set_spaces', spaces
 
-      if context.state.mode is 'directions' and context.state.from? and context.state.to?
-        @query_directions_dijkstra context, context.state.from.id, context.state.to.id
+      #if context.state.mode is 'directions' and context.state.from? and context.state.to?
+      #  @query_directions_dijkstra context, context.state.from.id, context.state.to.id
 
     @query_nodes context, id
 
@@ -86,14 +86,7 @@ module.exports = {
     to_id = if to_id? then to_id else '""' # Undefined is replaced by quotes. In this way it is possible to write only a Cypher query using the OPTIONAL MATCH operator.
     from_id = if from_id? then from_id else '""'
 
-    payload = JSON.stringify({query: "OPTIONAL MATCH (start:Node) WHERE start.id={from_id} OPTIONAL MATCH (end:Node) WHERE end.id={to_id} RETURN start,end;", params: {from_id: from_id, to_id: to_id}})
-    @handle_query_directions context, payload, from_id, to_id
-
-  query_directions_dijkstra: (context, from_id, to_id) ->
-    payload = JSON.stringify({query: "MATCH (start:Node), (end:Node), (space:Space {index: {index}}) WHERE start.id={from_id} AND end.id={to_id} CALL apoc.algo.dijkstra(start, end, 'related', 'weight') YIELD path, weight UNWIND nodes(path) AS point MATCH (point)-[:body]-(a:Annotation {ghost: false})-[:target]-(space) RETURN start, end, collect(DISTINCT {node: point, position: [a.x, a.y], id: ID(point)}) AS path, weight", params: {index: (if context.state.space? then context.state.space.index else 0), from_id: from_id, to_id: to_id}})
-    @handle_query_directions context, payload, from_id, to_id
-
-  handle_query_directions: (context, payload, from_id, to_id) ->
+    payload = JSON.stringify({query: "OPTIONAL MATCH (start:Node) WHERE start.id={from_id} OPTIONAL MATCH (end:Node) WHERE end.id={to_id} RETURN start, end", params: {from_id: from_id, to_id: to_id}})
     @cypher payload, (data) ->
       result = JSON.parse(data.responseText)
 
@@ -101,7 +94,7 @@ module.exports = {
         context.commit 'fullmap_mode'
         return
 
-      [start, end, path, weight] = result.data[0]
+      [start, end] = result.data[0]
 
       if start isnt null
         from_node = start.data
@@ -110,12 +103,24 @@ module.exports = {
         to_node = end.data
         to_node.id = to_id
 
-      path = if path? then (path.map((d) ->
-        n = d.node
-        n.position = d.position
-        return n)) else undefined
+      context.commit '_set_directions_state', {path: undefined, weight: undefined, from: from_node, to: to_node}
 
-      context.commit '_set_directions_state', {path: path, weight: weight, from: from_node, to: to_node}
+  query_directions_dijkstra: (context, from_id, to_id) ->
+    payload = JSON.stringify({query: "MATCH (start:Node), (end:Node) WHERE start.id={from_id} AND end.id={to_id} CALL apoc.algo.dijkstra(start, end, 'related', 'weight') YIELD path, weight UNWIND nodes(path) AS point MATCH (point)-[:body]-(a:Annotation {ghost: false})-[:target]-(space) RETURN collect(DISTINCT {node: point, position: [a.x, a.y], space: space}) AS nodes, rels(path) AS rels, weight", params: {from_id: from_id, to_id: to_id}})
+    #payload = JSON.stringify({query: "MATCH (start:Node), (end:Node), (space:Space {index: {index}}) WHERE start.id={from_id} AND end.id={to_id} CALL apoc.algo.dijkstra(start, end, 'related', 'weight') YIELD path, weight UNWIND nodes(path) AS point MATCH (point)-[:body]-(a:Annotation {ghost: false})-[:target]-(space) RETURN start, end, collect(DISTINCT {node: point, position: [a.x, a.y], id: ID(point)}) AS path, weight", params: {index: (if context.state.space? then context.state.space.index else 0), from_id: from_id, to_id: to_id}})
+
+    @cypher payload, (data) ->
+      result = JSON.parse(data.responseText)
+
+      [nodes, links, weight] = result.data[0]
+
+      nodes = nodes.map (d) ->
+        n = d.node.data
+        n.position = d.position
+        n.space = d.space
+        return n
+
+      context.commit '_set_directions_state', {path: {nodes: nodes, links: links, weight: weight}, from: nodes[0], to: nodes[nodes.length-1]}
 
   query_node: (str, callback) ->
     payload = JSON.stringify({query: "MATCH (n:Node) WHERE lower(n.label) CONTAINS {str} RETURN n LIMIT 5", params: {str: str}})
