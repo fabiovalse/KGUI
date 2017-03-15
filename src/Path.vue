@@ -31,12 +31,15 @@ export default {
     get_d: (nodes) ->
       nodes = nodes.filter (n) => n.space.data.id is @space.id
 
-      str = "M#{nodes[0].position[0]} #{nodes[0].position[1]}"
+      if nodes.length > 0
+        str = "M#{nodes[0].position[0]} #{nodes[0].position[1]}"
 
-      for i,n of nodes.slice(1)
-        str += " L#{n.position[0]} #{n.position[1]}"
+        for i,n of nodes.slice(1)
+          str += " L#{n.position[0]} #{n.position[1]}"
 
-      return str
+        return str
+      else
+        return ''
 
 }
 </script>
