@@ -68,7 +68,7 @@ module.exports = {
       context.commit mutation_name, node
 
       # Change space if necessary
-      if not context.state.space? or result[3].data.id isnt context.state.space.id
+      if result[3]? and (not context.state.space? or result[3].data.id isnt context.state.space.id)
         _this.query_space context, result[3].data.id
 
   query_directions: (context, from_id, to_id) ->
