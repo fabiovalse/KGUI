@@ -55,7 +55,7 @@ export default {
 .waypoint {
   fill: white;
   stroke: #303030;
-  stroke-width: 15px;
+  stroke-width: 7px;
 }
 
 </style>
