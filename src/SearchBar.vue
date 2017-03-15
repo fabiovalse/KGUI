@@ -27,8 +27,8 @@ export default {
     click_search: () ->
       if d3.select('.search').node().value isnt ''
         @$emit 'search', d3.select('.search').node().value
-      else
-        @$emit 'search', undefined
+      #else
+      #  @$emit 'search', undefined
     change_selected_result: (event) ->
       if event.key is 'ArrowDown'
         @$emit 'change_result', 1
