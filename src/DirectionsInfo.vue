@@ -1,6 +1,5 @@
 <template>
-  <div class="directionsinfo">
-    <div class="expand"><span v-if="mobile_open"><i class="icon-slide-down"></i></span><span v-else><i class="icon-slide-up"></i></span></div>
+  <div v-if="path !== undefined" class="directionsinfo">
     <div class="title">
       <b>{{get_minutes(path.weight*10)}} min</b> ({{path.weight*10}} m)
     </div>
@@ -14,8 +13,6 @@
 
 <script lang="coffee">
 export default {
-
-  props: ['mobile_open']
 
   data: () ->
     human_walking_speed: 1.25
@@ -75,6 +72,7 @@ export default {
 <style scoped>
 .directionsinfo {
   padding: 15px;
+  margin-top: 125px;
 }
 
 .title {
