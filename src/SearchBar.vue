@@ -52,6 +52,7 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
+  outline: none;
 }
 .icon-search, .icon-x {
   color: rgb(178, 178, 178);

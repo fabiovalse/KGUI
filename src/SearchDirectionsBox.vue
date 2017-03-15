@@ -93,6 +93,7 @@ input {
   border: none;
   color: #FFF;
   font-size: 14px;
+  outline: none;
 }
 
 .from, .to {
