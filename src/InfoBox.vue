@@ -1,5 +1,5 @@
 <template>
-  <div class="infobox">
+  <div class="infobox" :class="{mobile_open: mobile_open}" @click="click">
     <div class="expand"><span v-if="mobile_open"><i class="icon-slide-down"></i></span><span v-else><i class="icon-slide-up"></i></span></div>
     <sections v-if="target !== undefined"></sections>
   </div>
@@ -20,6 +20,7 @@ export default {
   methods: # FIXME some methods are unused
     click_directions: () -> @$store.dispatch 'request_directions', {def: true}
     click_node: (d) -> @$store.dispatch 'select', {id: d.id}
+    click: () -> @$emit 'mobile_open'
   components:
     sections: Sections
 }
@@ -29,20 +30,14 @@ export default {
 .infobox {
   box-shadow: 0 0 20px rgba(0,0,0,0.3);
 }
-
+.mobile_open {
+  top: 0%;
+  margin-top: 0px;
+}
 .expand {
   display: none;
   text-align: center;
-}
-
-@media (max-width: 480px) {
-  .infobox {
-    padding-top: 0px;
-    z-index: 1;
-  }
-  .expand {
-    display: inline;
-  }
+  width: 100%;
 }
 
 /* Google-style scrollbar on webkit */
@@ -63,4 +58,16 @@ export default {
   background: #888;
 }
 
+@media (max-width: 480px) {
+  .infobox {
+    padding-top: 0px;
+    z-index: 1;
+  }
+  .expand {
+    display: block;
+  }
+  :not(.mobile_open) {
+    overflow-y: hidden !important;
+  }
+}
 </style>
