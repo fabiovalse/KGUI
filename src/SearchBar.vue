@@ -1,6 +1,6 @@
 <template>
   <div class="searchbar">
-    <input class="search" type="text" placeholder="Cerca" @input="click_search" @keyup="change_selected_result">
+    <input class="search" type="text" placeholder="Cerca" @input="click_search" @keyup="change_selected_result" :value="get_target()">
 
     <div class="buttons">
       <button @click="click_search"><i class="icon-search"></i></button>
@@ -12,12 +12,14 @@
 
 <script lang="coffee">
 export default {
+
   props:
     searchdirectionsbox_enabled:
       type: Boolean
 
   computed:
     mode: () -> @$store.state.mode
+    target: () -> @$store.state.target
 
   methods:
     click_close: () ->
@@ -33,6 +35,10 @@ export default {
         @$emit 'change_result', -1
       else if event.key is 'Enter'
         @$emit 'change_result', 0
+    get_target: () -> 
+      if @target isnt undefined
+        @target.label
+      else ''
 
 }
 </script>
@@ -46,6 +52,7 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
+  outline: none;
 }
 .icon-search, .icon-x {
   color: rgb(178, 178, 178);
