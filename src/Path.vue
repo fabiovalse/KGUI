@@ -49,7 +49,7 @@ export default {
   fill: none;
   stroke: #00B3FD;
   stroke-width: 13px;
-  stroke-dasharray: 25,20;
+  vector-effect: non-scaling-stroke;
 }
 
 .waypoint {
