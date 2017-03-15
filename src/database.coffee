@@ -41,21 +41,14 @@ module.exports = {
 
       spaces = result.map (s) ->
         space = s[0].data
-        space.order = s[1].data.order
-        space.current = false
-        space.labels = s[0].metadata.labels
 
         if space.id.toString() is id.toString()
-          space.current = true
           context.commit '_set_layers', if space.layers? then space.layers.map((l) -> {label: l, status: get_status l}) else []
           context.commit '_set_space', space
 
         return space
 
       context.commit '_set_spaces', spaces
-
-      #if context.state.mode is 'directions' and context.state.from? and context.state.to?
-      #  @query_directions_dijkstra context, context.state.from.id, context.state.to.id
 
     @query_nodes context, id
 
@@ -107,7 +100,6 @@ module.exports = {
 
   query_directions_dijkstra: (context, from_id, to_id) ->
     payload = JSON.stringify({query: "MATCH (start:Node), (end:Node) WHERE start.id={from_id} AND end.id={to_id} CALL apoc.algo.dijkstra(start, end, 'related', 'weight') YIELD path, weight UNWIND nodes(path) AS point MATCH (point)-[:body]-(a:Annotation {ghost: false})-[:target]-(space) RETURN collect(DISTINCT {node: point, position: [a.x, a.y], space: space}) AS nodes, rels(path) AS rels, weight", params: {from_id: from_id, to_id: to_id}})
-    #payload = JSON.stringify({query: "MATCH (start:Node), (end:Node), (space:Space {index: {index}}) WHERE start.id={from_id} AND end.id={to_id} CALL apoc.algo.dijkstra(start, end, 'related', 'weight') YIELD path, weight UNWIND nodes(path) AS point MATCH (point)-[:body]-(a:Annotation {ghost: false})-[:target]-(space) RETURN start, end, collect(DISTINCT {node: point, position: [a.x, a.y], id: ID(point)}) AS path, weight", params: {index: (if context.state.space? then context.state.space.index else 0), from_id: from_id, to_id: to_id}})
 
     @cypher payload, (data) ->
       result = JSON.parse(data.responseText)
@@ -120,6 +112,7 @@ module.exports = {
         n.space = d.space
         return n
 
+      context.commit '_set_space', nodes[0].space.data
       context.commit '_set_directions_state', {path: {nodes: nodes, links: links, weight: weight}, from: nodes[0], to: nodes[nodes.length-1]}
 
   query_node: (str, callback) ->

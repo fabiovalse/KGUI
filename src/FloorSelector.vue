@@ -1,6 +1,6 @@
 <template>
   <div class="floorselector">
-    <button v-for="s in spaces" :class="{selected: s.current, under: s.index < space.index}" @click="change_space(s.id)">{{s.label}}</button>
+    <button v-for="s in spaces" :class="{selected: s.id === space.id, under: s.index < space.index}" @click="change_space(s.id)">{{s.label}}</button>
   </div>
 </template>
 
