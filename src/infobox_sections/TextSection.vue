@@ -1,6 +1,6 @@
 <template>
   <div class="text_section">
-    <span v-if="text !== undefined">{{text}}</span>
+    <span v-if="text !== undefined" v-html="text"></span>
   </div>
 </template>
 
