@@ -83,4 +83,10 @@ export default {
   fill: #333;
 }
 
+@media (max-width: 480px) {
+  .poi .label {
+    font-size: 200px;
+  }
+}
+
 </style>
