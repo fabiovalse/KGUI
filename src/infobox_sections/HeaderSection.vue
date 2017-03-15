@@ -1,7 +1,7 @@
 <template>
   <div class="header_section">
-    <div class="title" v-if="config.title !== undefined">{{kgl_parse(config.title, data)}}</div>
-    <div class="subtitle" v-if="config.subtitle !== undefined">{{kgl_parse(config.subtitle, data)}}</div>
+    <div class="title" v-if="config.title !== undefined" v-html="kgl_parse(config.title, data)"></div>
+    <div class="subtitle" v-if="config.subtitle !== undefined" v-html="kgl_parse(config.subtitle, data)"></div>
   </div>
 </template>
 

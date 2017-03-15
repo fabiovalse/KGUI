@@ -1,7 +1,7 @@
 <template>
   <div class="list_section">
     <table v-if="items.length > 0">
-      <tr v-for="item in items"><td class="label">{{item.label}}</td><td class="value">{{item.value}}</td></tr>
+      <tr v-for="item in items"><td class="label" v-html="item.label"></td><td class="value" v-html="item.value"></td></tr>
     </table>
   </div>
 </template>
@@ -35,10 +35,6 @@ table {
   font-family: sans-serif;
   border-collapse: separate;
   border-spacing: 8px;
-}
-
-.label {
-  font-weight: bold;
 }
 
 td:not(:last-child) {
