@@ -4,13 +4,6 @@
 
 <script lang="coffee">
 export default {
-  # props:
-  #   data:
-  #     type: Object
-  #     required: true
-  #   config:
-  #     type: Object
-  #     required: true
 }
 </script>
 

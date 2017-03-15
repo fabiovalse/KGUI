@@ -1,10 +1,12 @@
 <template>
   <div class="text_section">
-    {{data[config.property]}}
+    <span v-if="text !== undefined">{{text}}</span>
   </div>
 </template>
 
 <script lang="coffee">
+import kgl from './kgl.coffee'
+
 export default {
   props:
     data:
@@ -13,6 +15,8 @@ export default {
     config:
       type: Object
       required: true
+  computed:
+    text: () -> kgl.parse(@config.text, @data)
 }
 </script>
 

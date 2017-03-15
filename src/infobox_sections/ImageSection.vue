@@ -1,11 +1,13 @@
 <template>
   <div class="image_section">
-    <img v-if="data[config.property] !== undefined" :src="data[config.property]"></img>
-    <div v-if="data[config.property] === undefined" class="placeholder"></div>
+    <img v-if="src !== undefined" :src="src"></img>
+    <div v-if="src === undefined" class="placeholder"></div>
   </div>
 </template>
 
 <script lang="coffee">
+import kgl from './kgl.coffee'
+
 export default {
   props:
     data:
@@ -14,6 +16,8 @@ export default {
     config:
       type: Object
       required: true
+  computed:
+    src: () -> kgl.parse(@config.href, @data)
 }
 </script>
 

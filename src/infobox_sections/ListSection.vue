@@ -1,10 +1,12 @@
 <template>
   <table class="list_section">
-    <tr v-for="item in config.items"><td class="label">{{item.label}}</td><td class="value">{{data[item.property]}}</td></tr>
+    <tr v-for="item in items"><td class="label">{{item.label}}</td><td class="value">{{item.value}}</td></tr>
   </table>
 </template>
 
 <script lang="coffee">
+import kgl from './kgl.coffee'
+
 export default {
   props:
     data:
@@ -13,6 +15,15 @@ export default {
     config:
       type: Object
       required: true
+  computed:
+    items: () ->
+      return @config.items.map (item) =>
+        label = kgl.parse(item.label, @data)
+        value = kgl.parse(item.value, @data)
+        return {
+          label: if label? then label else ''
+          value: if value? then value else ''
+        }
 }
 </script>
 
