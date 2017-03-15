@@ -118,7 +118,7 @@ module.exports = {
       context.commit '_set_directions_state', {path: path, weight: weight, from: from_node, to: to_node}
 
   query_node: (str, callback) ->
-    payload = JSON.stringify({query: "MATCH (n:Node) WHERE lower(n.label) CONTAINS {str} RETURN n LIMIT 5", params: {str: str}})
+    payload = JSON.stringify({query: "MATCH (n:Node) WHERE lower(n.label) CONTAINS {str} RETURN n LIMIT 5", params: {str: str.toLowerCase()}})
     @cypher payload, callback
 
 }
