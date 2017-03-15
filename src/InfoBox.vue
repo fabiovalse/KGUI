@@ -3,6 +3,8 @@ import config from './config.coffee'
 import TextSection from './infobox_sections/TextSection.vue'
 import HeaderSection from './infobox_sections/HeaderSection.vue'
 import ImageSection from './infobox_sections/ImageSection.vue'
+import ListSection from './infobox_sections/ListSection.vue'
+import SeparatorSection from './infobox_sections/SeparatorSection.vue'
 
 export default {
   render: (createElement) ->
@@ -25,6 +27,8 @@ export default {
     textsection: TextSection
     headersection: HeaderSection
     imagesection: ImageSection
+    listsection: ListSection
+    separatorsection: SeparatorSection
 }
 </script>
 
@@ -96,6 +100,24 @@ button i {
     width: 48px;
     height: 48px;
   }
+}
+
+/* Google-style scrollbar on webkit */
+.infobox {
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+.infobox:hover {
+  overflow-y: scroll;
+}
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #EEE;
+}
+::-webkit-scrollbar-thumb {
+  background: #888;
 }
 
 </style>

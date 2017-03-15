@@ -1,6 +1,7 @@
 <template>
   <div class="image_section">
     <img v-if="data[config.property] !== undefined" :src="data[config.property]"></img>
+    <div v-if="data[config.property] === undefined" class="placeholder"></div>
   </div>
 </template>
 
@@ -24,6 +25,11 @@ export default {
 img {
   width: 100%;
   display: block;
+}
+.placeholder {
+  width: 100%;
+  height: 240px;
+  background: #EEE;
 }
 
 </style>

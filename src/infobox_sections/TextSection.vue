@@ -22,7 +22,6 @@ export default {
   font-size: 13px;
   line-height: 19.5px;
   font-family: sans-serif;
-  max-height: 200px;
   overflow: hidden;
 }
 
