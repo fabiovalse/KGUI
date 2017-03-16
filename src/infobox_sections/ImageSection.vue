@@ -1,6 +1,6 @@
 <template>
   <div class="image_section">
-    <img v-if="src !== undefined" :src="src"></img>
+    <div v-if="src !== undefined" :style="{'background-image': 'url('+src+')'}" class="image"></div>
     <div v-if="src === undefined" class="placeholder"></div>
   </div>
 </template>
@@ -26,9 +26,10 @@ export default {
   width: 100%;
 }
 
-img {
-  width: 100%;
-  display: block;
+.image {
+  width: 408px;
+  height: 214px;
+  background-size: cover;
 }
 .placeholder {
   width: 100%;
