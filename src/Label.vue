@@ -1,11 +1,11 @@
 <template>
   <g
     v-if="semantic_zoom()"
-    class="room"
+    class="label"
     :transform="get_translate()"
     @click="select()"
   >
-    <text>{{data.label}}</text>
+    <text x="2.5" y="2.5">{{data.label}}</text>
   </g>
 </template>
 
@@ -18,13 +18,13 @@ export default {
 
   methods:
     select: () -> @$store.dispatch 'select', {id: @data.id}
-    get_translate: () -> "translate(#{@data.position[0]}, #{@data.position[1]})"
-    semantic_zoom: () -> @transform.k > 3
+    get_translate: () -> "translate(#{@data.position[0]}, #{@data.position[1]}) scale(#{if @transform? then 6/@transform.k else 1})"
+    semantic_zoom: () -> @transform.k > 5
 }
 </script>
 
 <style scoped>
-.room text {
+.label text {
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
