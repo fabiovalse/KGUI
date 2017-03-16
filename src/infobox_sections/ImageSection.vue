@@ -1,5 +1,5 @@
 <template>
-  <div class="image_section" :style="{'background-image': 'url('+src+')'}" >
+  <div class="image_section" :style="{'background-image': src ? 'url('+src+')' : 'none'}" >
   </div>
 </template>
 
