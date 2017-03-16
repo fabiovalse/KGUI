@@ -33,7 +33,7 @@ export default {
 }
 .placeholder {
   width: 100%;
-  height: 240px;
+  height: 214px;
   background: #EEE;
 }
 
