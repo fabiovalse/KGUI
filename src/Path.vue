@@ -48,7 +48,7 @@ export default {
 .path {
   fill: none;
   stroke: #00B3FD;
-  stroke-width: 13px;
+  stroke-width: 7px;
   vector-effect: non-scaling-stroke;
 }
 

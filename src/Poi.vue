@@ -11,12 +11,12 @@
       </circle>
       <circle class="foreground" r="60"></circle>
       <foreignObject x="-50" y="-35" width="100" height="100">
-        <!--<i class="icon"></i>-->
+        <i :class="'icon icon-' + data.icon"></i>
       </foreignObject>
-      <text class="background label hidden" text-anchor="start" dy="0.35em" x="80">
+      <text class="background label" :class="{hidden: semantic_zoom()}" text-anchor="start" dy="0.35em" x="80">
         {{data.label}}
       </text>
-      <text class="foreground label hidden" text-anchor="start" dy="0.35em" x="80">
+      <text class="foreground label" :class="{hidden: semantic_zoom()}" text-anchor="start" dy="0.35em" x="80">
         {{data.label}}
       </text>
     </g>
@@ -36,6 +36,7 @@ export default {
     select: () -> @$store.dispatch 'select', {id: @data.id}
     get_translate: () -> "translate(#{@data.position[0]}, #{@data.position[1]})"
     get_scale: () -> "scale(#{if @transform? then 1/@transform.k else 1})"
+    semantic_zoom: () -> @transform.k < 2.5
 
 }
 </script>
@@ -64,9 +65,9 @@ export default {
 .poi .icon {
   color: #7b5b5b;
   display: block;
-  width: 100;
-  height: 100;
-  font-size: 70;
+  width: 100px;
+  height: 100px;
+  font-size: 70px;
   text-align: center;
 }
 
@@ -81,6 +82,10 @@ export default {
 }
 .poi .foreground.label {
   fill: #333;
+}
+
+.poi .hidden {
+  display: none;
 }
 
 @media (max-width: 480px) {
