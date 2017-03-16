@@ -5,6 +5,7 @@
         <floor v-if="check(floor)" v-for="floor in spaces" :data="floor"></floor>
         
         <directionpath></directionpath>
+        <room v-for="(room,i) in rooms" :data="room"></room>
         <poi v-for="(poi,i) in pois" :data="poi"></poi>
         <placemark></placemark>
       </g>
@@ -17,6 +18,7 @@
 import Floor from './Floor.vue'
 import FloorSelector from './FloorSelector.vue'
 import Poi from './Poi.vue'
+import Room from './Room.vue'
 import Placemark from './Placemark.vue'
 import Path from './Path.vue'
 
@@ -24,7 +26,8 @@ export default {
 
   computed:
     transform: () -> @$store.state.transform
-    pois: () -> if @$store.state.nodes? then @$store.state.nodes else []
+    pois: () -> if @$store.state.nodes? then @$store.state.nodes.filter (n) -> n.template is 'poi' else []
+    rooms: () -> if @$store.state.nodes? then @$store.state.nodes.filter (n) -> n.template is 'room' else []
     spaces: () -> if @$store.state.spaces? then @$store.state.spaces.filter((d) -> d.urls?).reverse() else undefined
     space: () -> @$store.state.space
 
@@ -40,6 +43,7 @@ export default {
     floor: Floor
     floorselector: FloorSelector
     poi: Poi
+    room: Room
     placemark: Placemark
     directionpath: Path
 
