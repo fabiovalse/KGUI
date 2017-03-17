@@ -149,11 +149,19 @@ html, body {
   height: 100%;
 }
 
+a {
+  color: #B44646;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
 @media (max-width: 480px) {
   #app {
     position: absolute;
   }
-  
+
   .box {
     width: 100%;
   }
