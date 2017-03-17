@@ -28,7 +28,7 @@ export default {
 
 <style scoped>
   .bilingualtextview {
-    margin-left: 408px;
+    padding-left: 408px;
     height: 100%;
     overflow-y: scroll;
     background: cornsilk;
@@ -51,7 +51,8 @@ export default {
 
   @media (max-width: 480px) {
     .bilingualtextview {
-      margin-left: 0px !important;
+      padding-left: 0px !important;
+      padding-top: 48px;
     }
   }
 </style>
