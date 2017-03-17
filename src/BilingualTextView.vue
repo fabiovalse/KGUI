@@ -31,6 +31,7 @@ export default {
     margin-left: 408px;
     height: 100%;
     overflow-y: scroll;
+    background: cornsilk;
   }
 
   table {
@@ -40,7 +41,7 @@ export default {
   td {
     padding: 10px;
     text-align: justify;
-    border-bottom: 2px solid #F2F2F2;
+    border-bottom: 1px solid antiquewhite;
   }
 
   tr td:first-child {
