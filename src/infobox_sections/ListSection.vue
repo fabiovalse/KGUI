@@ -31,6 +31,7 @@ export default {
         value: kgl.parse(item.value, @data)
         icon: item.icon
       }
+
       # keep defined pairs only
       return list.filter (d) -> d.label? and d.value?
 
@@ -64,4 +65,9 @@ td:not(:last-child) {
   order: 3;
 }
 
+</style>
+<style>
+.list_section .item {
+  margin-bottom: 2px
+}
 </style>
