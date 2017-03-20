@@ -44,6 +44,11 @@ table {
   font-family: sans-serif;
   border-collapse: separate;
   border-spacing: 8px;
+  width: 100%;
+}
+
+table td {
+  word-wrap: break-word;
 }
 
 td:not(:last-child) {
@@ -53,6 +58,10 @@ td:not(:last-child) {
 .icon {
   font-size: 18px;
   color: #B44646;
+}
+
+.list_section {
+  order: 3;
 }
 
 </style>

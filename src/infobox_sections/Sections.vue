@@ -25,4 +25,18 @@ export default {
 </script>
 
 <style scoped>
+
+.sections {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 480px){
+  .sections {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden !important;
+  }
+}
+
 </style>
