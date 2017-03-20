@@ -188,7 +188,7 @@ a:hover {
 
   .infobox {
     top: 100%;
-    margin-top: -100px;
+    margin-top: -80px;
   }
 
 }

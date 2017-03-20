@@ -1,6 +1,6 @@
 <template>
-  <div class="infobox" :class="{mobile_open: mobile_open}" @click="click">
-    <div class="expand"><span v-if="mobile_open"><i class="icon-slide-down"></i></span><span v-else><i class="icon-slide-up"></i></span></div>
+  <div class="infobox" :class="{mobile_open: mobile_open}">
+    <div class="expand" @click="click"><span v-if="mobile_open"><i class="icon-slide-down"></i></span><span v-else><i class="icon-slide-up"></i></span></div>
     <sections v-if="target !== undefined"></sections>
     <directionsinfo v-if="mode === 'directions'"></directionsinfo>
   </div>
@@ -38,9 +38,13 @@ export default {
   margin-top: 0px;
 }
 .expand {
+  position: absolute;
+  top: 5px;
   display: none;
   text-align: center;
   width: 100%;
+  background: transparent;
+
 }
 
 /* Google-style scrollbar on webkit */
