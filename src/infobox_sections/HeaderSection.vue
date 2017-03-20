@@ -1,5 +1,5 @@
 <template>
-  <div class="header_section">
+  <div class="header_section" @click="click">
     <div class="title" v-if="config.title !== undefined" v-html="kgl_parse(config.title, data)"></div>
     <div class="subtitle" v-if="config.subtitle !== undefined" v-html="kgl_parse(config.subtitle, data)"></div>
   </div>
@@ -17,13 +17,15 @@ export default {
       type: Object
       required: true
   methods:
+    click: () -> @$emit 'click'
     kgl_parse: kgl.parse
+
 }
 </script>
 
 <style scoped>
 .header_section {
-  padding: 24px;
+  padding: 30px 25px 20px 25px;
   font-family: sans-serif;
   background: #B44646;
   color: white;
