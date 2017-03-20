@@ -37,14 +37,15 @@ export default {
 
   methods:
     click_node: (d) ->
-      @$store.dispatch 'select', {id: d.id, directions_input: @directions_input}
       @results = undefined
+      @$store.dispatch 'select', {id: d.id, directions_input: @directions_input}
 
     search_node: (str, directions_input) ->
       if str isnt ''
         @directions_input = directions_input
 
         db.query_node str, ((data) =>
+          
           result = JSON.parse(data.responseText)
 
           @results = result.data.map (n) ->
