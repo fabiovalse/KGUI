@@ -1,7 +1,7 @@
 <template>
   <div v-if="path !== undefined" class="directionsinfo">
     <div class="title">
-      <b>{{get_minutes(path.weight*10)}} min</b> ({{path.weight*10}} m)
+      <b>{{get_time(path.weight*10)}}</b> ({{path.weight*10}} m)
     </div>
     <div class="info" v-for="(node,i) in path.nodes">
       <div class="icon"><i :class="get_info(node, i).icon"></i></div>
@@ -21,8 +21,13 @@ export default {
     path: () -> @$store.state.path
 
   methods:
-    get_minutes: (distance) ->
-      return Math.round((distance) / @human_walking_speed / 60 * 10) / 10
+    get_time: (distance) ->
+      tot_sec = distance/@human_walking_speed
+
+      min = Math.floor tot_sec/60
+      sec = Math.round((tot_sec/60 % 1)*10) *10
+
+      return "#{min}m #{sec}s"
 
     get_info: (n,i) -> 
       # First step

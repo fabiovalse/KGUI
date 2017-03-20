@@ -7,13 +7,10 @@
         :d="get_d(path.nodes)"
       />
     </g>
-    <g>
+    <g v-for="w in waypoints" :transform="get_transform(w)">
       <circle
         class="waypoint"
-        v-for="w in waypoints"
-        r="20"
-        :cx="w.position[0]"
-        :cy="w.position[1]"
+        :r="30"
       ></circle>
     </g>
   </g>
@@ -25,6 +22,7 @@ export default {
   computed:
     path: () -> @$store.state.path
     space: () -> @$store.state.space
+    transform: () -> @$store.state.transform
     waypoints: () -> if @$store.state.path? then @$store.state.path.nodes.filter((n) -> not n.label?).filter (n) => n.space.data.id is @space.id else undefined # FIXME: instead of label a type should be used
 
   methods:
@@ -41,6 +39,8 @@ export default {
       else
         return ''
 
+    get_transform: (w) -> "translate(#{w.position[0]}, #{w.position[1]}) scale(#{if @transform? then 1/@transform.k else 1})"
+
 }
 </script>
 
@@ -48,14 +48,14 @@ export default {
 .path {
   fill: none;
   stroke: #00B3FD;
-  stroke-width: 13px;
+  stroke-width: 7px;
   vector-effect: non-scaling-stroke;
 }
 
 .waypoint {
   fill: white;
   stroke: #303030;
-  stroke-width: 10px;
+  stroke-width: 15px;
 }
 
 </style>

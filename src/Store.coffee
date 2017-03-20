@@ -1,4 +1,5 @@
 import db from './database.coffee'
+import config from './config.coffee'
 
 export default {
   state:
@@ -41,13 +42,13 @@ export default {
       state.path = undefined
     _set_target: (state, target) ->
       state.target = target
-      state.local_path = "/#{state.space.id}/target/#{target.id}"
+      state.local_path = (if config.layout.view then "/#{state.space.id}" else '') + "/target/#{target.id}"
     set_from: (state, from) ->
       state.from = from
-      state.local_path = "/#{state.space.id}/from/#{if from? then from.id else '_'}/to/#{if state.to? then state.to.id else '_'}"
+      state.local_path = (if config.layout.view then "/#{state.space.id}" else '') + "/from/#{if from? then from.id else '_'}/to/#{if state.to? then state.to.id else '_'}"
     set_to: (state, to) ->
       state.to = to
-      state.local_path = "/#{state.space.id}/from/#{if state.from? then state.from.id else '_'}/to/#{if to? then to.id else '_'}"
+      state.local_path = (if config.layout.view then "/#{state.space.id}" else '') + "/from/#{if state.from? then state.from.id else '_'}/to/#{if to? then to.id else '_'}"
     set_path: (state, path) ->
       state.path = path
     _set_info_state: (state, target) ->
@@ -56,21 +57,21 @@ export default {
       state.from = undefined
       state.to = undefined
       state.path = undefined
-      state.local_path = if state.space? then "/#{state.space.id}/target/#{target.id}" else "/#{state.space}/target/#{target.id}"
+      state.local_path = (if config.layout.view then "/#{state.space.id}" else '') + "/target/#{target.id}"
     _set_directions_state: (state, params) ->
       state.mode = 'directions'
       state.target = undefined
       state.from = params.from
       state.to = params.to
       state.path = params.path
-      state.local_path = "/#{state.space.id}/from/#{if params.from? then params.from.id else '_'}/to/#{if params.to? then params.to.id else '_'}"
+      state.local_path = (if config.layout.view then "/#{state.space.id}" else '') + "/from/#{if params.from? then params.from.id else '_'}/to/#{if params.to? then params.to.id else '_'}"
     fullmap_mode: (state) ->
       state.mode = 'fullmap'
       state.target = undefined
       state.from = undefined
       state.to = undefined
       state.path = undefined
-      state.local_path = "/#{state.space.id}/fullmap"
+      state.local_path = (if config.layout.view then "/#{state.space.id}" else '') + "/fullmap"
 
   actions:
     init: (context, params) ->

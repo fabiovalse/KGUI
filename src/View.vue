@@ -4,6 +4,7 @@
     <layer v-for="(l,i) in layers" v-if="l.status"></layer>
 
     <buildingmapview v-if="space !== undefined && space.view === 'buildingmapview'"></buildingmapview>
+    <bilingualtextview v-if="space !== undefined && space.view === 'bilingualtextview'"></bilingualtextview>
   </div>
 </template>
 
@@ -11,6 +12,7 @@
 import LayerBox from './LayerBox.vue'
 import MapView from './MapView.vue'
 import BuildingMapView from './BuildingMapView.vue'
+import BilingualTextView from './BilingualTextView.vue'
 import TextView from './TextView.vue'
 import IframeView from './IframeView.vue'
 import Layer from './Layer.vue'
@@ -23,6 +25,7 @@ export default {
     layers: () -> @$store.state.layers
   components:
     buildingmapview: BuildingMapView
+    bilingualtextview: BilingualTextView
     layerbox: LayerBox
     layer: Layer
 }
