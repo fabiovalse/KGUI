@@ -2,9 +2,10 @@
   <div class="list_section">
     <table v-if="items.length > 0">
       <tr v-for="item in items">
-        <td>
+        <td v-if="item.icon != undefined">
           <i :class="'icon icon-' + item.icon"></i>
         </td>
+        <td v-else class="value" v-html="item.label"></td>
         <td class="value" v-html="item.value"></td>
       </tr>
     </table>
