@@ -1,7 +1,13 @@
 <template>
   <div class="list_section">
     <table v-if="items.length > 0">
-      <tr v-for="item in items"><td class="label" v-html="item.label"></td><td class="value" v-html="item.value"></td></tr>
+      <tr v-for="item in items">
+        <td v-if="item.icon != undefined">
+          <i :class="'icon icon-' + item.icon"></i>
+        </td>
+        <td v-else class="value" v-html="item.label"></td>
+        <td class="value" v-html="item.value"></td>
+      </tr>
     </table>
   </div>
 </template>
@@ -17,14 +23,17 @@ export default {
     config:
       type: Object
       required: true
+  
   computed:
     items: () ->
       list = @config.items.map (item) => {
-          label: kgl.parse(item.label, @data)
-          value: kgl.parse(item.value, @data)
-        }
+        label: kgl.parse(item.label, @data)
+        value: kgl.parse(item.value, @data)
+        icon: item.icon
+      }
       # keep defined pairs only
       return list.filter (d) -> d.label? and d.value?
+
 }
 </script>
 
@@ -50,6 +59,11 @@ td:not(:last-child) {
 
 .list_section {
   order: 3;
+}
+
+.icon {
+  font-size: 18px;
+  color: #B44646;
 }
 
 </style>
