@@ -44,10 +44,21 @@ table {
   font-family: sans-serif;
   border-collapse: separate;
   border-spacing: 8px;
+  table-layout:fixed;
+  width: 100%;
+}
+
+table td {
+  word-wrap: break-word;
 }
 
 td:not(:last-child) {
   padding-right: 8px;
+  width: 30%;
+}
+
+.list_section {
+  order: 3;
 }
 
 .icon {

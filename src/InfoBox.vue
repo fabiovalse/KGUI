@@ -48,8 +48,8 @@ export default {
   overflow-x: hidden;
   overflow-y: hidden;
 }
-.infobox:hover {
-  overflow-y: scroll;
+.infobox.mobile_open:hover {
+  overflow-y: auto;
 }
 ::-webkit-scrollbar {
   width: 6px;

@@ -27,4 +27,11 @@ export default {
   background-color: #EEE;
 }
 
+@media (max-width: 480px){
+  .image_section {
+    overflow: hidden;
+    order: 2;
+  }
+}
+
 </style>
