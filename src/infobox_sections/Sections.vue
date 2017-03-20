@@ -6,6 +6,7 @@ import ImageSection from './ImageSection.vue'
 import ListSection from './ListSection.vue'
 import SeparatorSection from './SeparatorSection.vue'
 import ChineseTextSection from './ChineseTextSection.vue'
+import RelatedSection from './RelatedSection.vue'
 
 export default {
   render: (createElement) ->
@@ -21,6 +22,7 @@ export default {
     listsection: ListSection
     separatorsection: SeparatorSection
     chinesetextsection: ChineseTextSection
+    relatedsection: RelatedSection
 }
 </script>
 
