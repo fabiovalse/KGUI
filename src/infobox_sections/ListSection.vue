@@ -44,7 +44,6 @@ table {
   font-family: sans-serif;
   border-collapse: separate;
   border-spacing: 8px;
-  table-layout:fixed;
   width: 100%;
 }
 
@@ -54,16 +53,15 @@ table td {
 
 td:not(:last-child) {
   padding-right: 8px;
-  width: 30%;
-}
-
-.list_section {
-  order: 3;
 }
 
 .icon {
   font-size: 18px;
   color: #B44646;
+}
+
+.list_section {
+  order: 3;
 }
 
 </style>
