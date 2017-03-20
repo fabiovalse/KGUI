@@ -52,7 +52,7 @@ export default {
   overflow-x: hidden;
   overflow-y: hidden;
 }
-.infobox.mobile_open:hover {
+.infobox:hover {
   overflow-y: auto;
 }
 ::-webkit-scrollbar {
