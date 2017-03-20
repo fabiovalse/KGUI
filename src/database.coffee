@@ -11,14 +11,14 @@ module.exports = {
       .post payload, callback
 
   query_starting_point: (context, starting_point) ->
-    payload = JSON.stringify({query: "MATCH (n:Node) WHERE n.id={starting_point} RETURN n;", params: {starting_point: starting_point}})
+    payload = JSON.stringify({query: "MATCH (n:Info) WHERE n.id={starting_point} RETURN n;", params: {starting_point: starting_point}})
     @cypher payload, (data) ->
       result = JSON.parse(data.responseText)
 
       context.commit '_set_starting_point', result.data[0][0].data
 
   query_nodes: (context, id) ->
-    payload = JSON.stringify({query: "MATCH (n:Node)-[]-(a:Annotation)-[]-(s:Space {id: {id}}) RETURN n, a.x, a.y;", params: {id: id}})
+    payload = JSON.stringify({query: "MATCH (n:Info)-[]-(a:Annotation)-[]-(s:Space {id: {id}}) RETURN n, a.x, a.y;", params: {id: id}})
     @cypher payload, (data) ->
       nodes = JSON.parse(data.responseText).data.map (d) ->
         r = d[0].data
@@ -55,7 +55,7 @@ module.exports = {
   query_info: (context, id, mutation_name) ->
     _this = @
 
-    payload = JSON.stringify({query: "OPTIONAL MATCH (target {id: {id}}) OPTIONAL MATCH (target {id: {id}})-[]-(a:Annotation {ghost: false})-[]-(space) OPTIONAL MATCH (target {id: {id}})-[]->(out) WHERE labels(out)='Node' OPTIONAL MATCH (target {id: {id}})<-[]-(in) WHERE labels(in)='Node' RETURN {node: target, position: [a.x, a.y]}, collect(DISTINCT out) AS out, collect(DISTINCT in) AS in, space;", params: {id: id}})
+    payload = JSON.stringify({query: "OPTIONAL MATCH (target {id: {id}}) OPTIONAL MATCH (target {id: {id}})-[]-(a:Annotation {ghost: false})-[]-(space) OPTIONAL MATCH (target {id: {id}})-[]->(out) WHERE labels(out)='Info' OPTIONAL MATCH (target {id: {id}})<-[]-(in) WHERE labels(in)='Info' RETURN {node: target, position: [a.x, a.y]}, collect(DISTINCT out) AS out, collect(DISTINCT in) AS in, space;", params: {id: id}})
     @cypher payload, (data) =>
       result = JSON.parse(data.responseText).data[0]
       node = result[0].node.data
@@ -74,7 +74,7 @@ module.exports = {
     to_id = if to_id? then to_id else '""' # Undefined is replaced by quotes. In this way it is possible to write only a Cypher query using the OPTIONAL MATCH operator.
     from_id = if from_id? then from_id else '""'
 
-    payload = JSON.stringify({query: "OPTIONAL MATCH (start:Node) WHERE start.id={from_id} OPTIONAL MATCH (end:Node) WHERE end.id={to_id} RETURN start, end", params: {from_id: from_id, to_id: to_id}})
+    payload = JSON.stringify({query: "OPTIONAL MATCH (start:Info) WHERE start.id={from_id} OPTIONAL MATCH (end:Info) WHERE end.id={to_id} RETURN start, end", params: {from_id: from_id, to_id: to_id}})
     @cypher payload, (data) ->
       result = JSON.parse(data.responseText)
 
@@ -94,7 +94,7 @@ module.exports = {
       context.commit '_set_directions_state', {path: undefined, weight: undefined, from: from_node, to: to_node}
 
   query_directions_dijkstra: (context, from_id, to_id) ->
-    payload = JSON.stringify({query: "MATCH (start:Node), (end:Node) WHERE start.id={from_id} AND end.id={to_id} CALL apoc.algo.dijkstra(start, end, 'related', 'weight') YIELD path, weight UNWIND nodes(path) AS point MATCH (point)-[:body]-(a:Annotation {ghost: false})-[:target]-(space) RETURN collect(DISTINCT {node: point, position: [a.x, a.y], space: space}) AS nodes, rels(path) AS rels, weight", params: {from_id: from_id, to_id: to_id}})
+    payload = JSON.stringify({query: "MATCH (start:Info), (end:Info) WHERE start.id={from_id} AND end.id={to_id} CALL apoc.algo.dijkstra(start, end, 'related', 'weight') YIELD path, weight UNWIND nodes(path) AS point MATCH (point)-[:body]-(a:Annotation {ghost: false})-[:target]-(space) RETURN collect(DISTINCT {node: point, position: [a.x, a.y], space: space}) AS nodes, rels(path) AS rels, weight", params: {from_id: from_id, to_id: to_id}})
 
     @cypher payload, (data) =>
       result = JSON.parse(data.responseText)
@@ -113,7 +113,7 @@ module.exports = {
       @query_nodes context, nodes[0].space.data.id
 
   query_node: (str, callback) ->
-    payload = JSON.stringify({query: "MATCH (n:Node) WHERE lower(n.label) CONTAINS {str} RETURN n LIMIT 5", params: {str: str.toLowerCase()}})
+    payload = JSON.stringify({query: "MATCH (n:Info) WHERE lower(n.label) CONTAINS {str} RETURN n LIMIT 5", params: {str: str.toLowerCase()}})
     @cypher payload, callback
 
 }
