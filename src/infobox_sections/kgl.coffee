@@ -15,6 +15,8 @@ export default {
         value = data[property]
         if not value?
           throw 'undef'
+        else if property is 'url'
+          return "<a target='blank' href='#{value}'>#{value}</a>"
         else
           return value
 
