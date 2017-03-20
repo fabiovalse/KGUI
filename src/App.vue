@@ -67,7 +67,7 @@ export default {
     toggle_mobile_open: (flag) ->
       @mobile_open = if flag? then flag else (not @mobile_open)
 
-    route_changed: (route) ->
+    route_changed: (route) ->      
       if route.params.target?
         @$store.dispatch 'request_info', route.params.target
       else if 'from' in Object.keys(route.params) and 'to' in Object.keys(route.params)
@@ -149,11 +149,19 @@ html, body {
   height: 100%;
 }
 
+a {
+  color: #B44646;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
 @media (max-width: 480px) {
   #app {
     position: absolute;
   }
-  
+
   .box {
     width: 100%;
   }

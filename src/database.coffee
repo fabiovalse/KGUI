@@ -58,7 +58,6 @@ module.exports = {
     payload = JSON.stringify({query: "OPTIONAL MATCH (target {id: {id}}) OPTIONAL MATCH (target {id: {id}})-[]-(a:Annotation {ghost: false})-[]-(space) OPTIONAL MATCH (target {id: {id}})-[]->(out) WHERE labels(out)='Node' OPTIONAL MATCH (target {id: {id}})<-[]-(in) WHERE labels(in)='Node' RETURN {node: target, position: [a.x, a.y]}, collect(DISTINCT out) AS out, collect(DISTINCT in) AS in, space;", params: {id: id}})
     @cypher payload, (data) =>
       result = JSON.parse(data.responseText).data[0]
-
       node = result[0].node.data
       node.position = if result[0].position[0] is null then undefined else result[0].position
 
