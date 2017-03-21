@@ -61,10 +61,6 @@ td:not(:last-child) {
   color: #B44646;
 }
 
-.list_section {
-  order: 3;
-}
-
 </style>
 <style>
 .list_section .item {
