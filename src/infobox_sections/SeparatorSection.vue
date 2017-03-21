@@ -11,6 +11,7 @@ export default {
 .separator_section {
   width: 100%;
   border-bottom: 1px solid #DDD;
+  margin-bottom: 10px;
 }
 
 </style>

@@ -22,7 +22,7 @@ export default {
 
 <style scoped>
 .text_section {
-  padding: 24px;
+  padding: 10px 24px 10px 24px;
   font-size: 13px;
   line-height: 19.5px;
   font-family: sans-serif;
