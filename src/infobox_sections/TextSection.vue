@@ -30,4 +30,9 @@ export default {
   overflow: hidden;
 }
 
+sup {
+  vertical-align: top;
+  font-size: 0.7em;
+}
+
 </style>
