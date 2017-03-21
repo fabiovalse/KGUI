@@ -1,6 +1,6 @@
 <template>
   <div class="related_section">
-    <span class="link" v-for="n in nodes"><a :href="'#/target/'+n.id">{{n.label}}</a></span>
+    <span class="link" v-for="n in nodes"><a :href="get_link(n.id)">{{n.label}}</a></span>
   </div>
 </template>
 
@@ -20,6 +20,8 @@ export default {
     nodes: []
   mounted: () ->
     @refresh()
+  computed:
+    space: () -> @$store.state.space
   watch:
     data: () ->
       @refresh()
@@ -28,6 +30,7 @@ export default {
       db.execute {query: @config.query, params: {current: @data.id}}, (data) =>
         result = JSON.parse(data.responseText)
         @nodes = result.data.map (d) -> d[0].data
+    get_link: (id) -> if @space? then "#/#{@space.id}/target/#{id}" else "#/target/#{id}"
 }
 </script>
 
