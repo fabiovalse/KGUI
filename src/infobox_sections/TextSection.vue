@@ -1,11 +1,13 @@
 <template>
   <div class="text_section">
+    <titlesubsection v-if="text !== undefined && config.title !== undefined" :text="config.title"></titlesubsection>
     <span v-if="text !== undefined" v-html="text"></span>
   </div>
 </template>
 
 <script lang="coffee">
 import kgl from './kgl.coffee'
+import TitleSubSection from './TitleSubSection.vue'
 
 export default {
   props:
@@ -15,8 +17,12 @@ export default {
     config:
       type: Object
       required: true
+  
   computed:
     text: () -> kgl.parse(@config.text, @data)
+
+  components:
+    titlesubsection: TitleSubSection
 }
 </script>
 
