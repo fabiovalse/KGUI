@@ -27,4 +27,14 @@ export default {
   background-color: #EEE;
 }
 
+@media (max-width: 480px){
+  .image_section {
+    overflow: hidden;
+    order: 2;
+  }
+  .mobile_open .image_section {
+    margin-top: -1px;
+  }
+}
+
 </style>

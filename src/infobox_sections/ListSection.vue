@@ -1,13 +1,21 @@
 <template>
   <div class="list_section">
+    <titlesubsection v-if="items.length > 0 && config.title !== undefined" :text="config.title"></titlesubsection>
     <table v-if="items.length > 0">
-      <tr v-for="item in items"><td class="label" v-html="item.label"></td><td class="value" v-html="item.value"></td></tr>
+      <tr v-for="item in items">
+        <td v-if="item.icon != undefined">
+          <i :class="'icon icon-' + item.icon"></i>
+        </td>
+        <td v-else class="value" v-html="item.label"></td>
+        <td class="value" v-html="item.value"></td>
+      </tr>
     </table>
   </div>
 </template>
 
 <script lang="coffee">
 import kgl from './kgl.coffee'
+import TitleSubSection from './TitleSubSection.vue'
 
 export default {
   props:
@@ -17,14 +25,20 @@ export default {
     config:
       type: Object
       required: true
+  
   computed:
     items: () ->
       list = @config.items.map (item) => {
-          label: kgl.parse(item.label, @data)
-          value: kgl.parse(item.value, @data)
-        }
+        label: kgl.parse(item.label, @data)
+        value: kgl.parse(item.value, @data)
+        icon: item.icon
+      }
+
       # keep defined pairs only
       return list.filter (d) -> d.label? and d.value?
+
+  components:
+    titlesubsection: TitleSubSection
 }
 </script>
 
@@ -35,10 +49,25 @@ table {
   font-family: sans-serif;
   border-collapse: separate;
   border-spacing: 8px;
+  width: 100%;
+}
+
+table td {
+  word-wrap: break-word;
 }
 
 td:not(:last-child) {
   padding-right: 8px;
 }
 
+.icon {
+  font-size: 18px;
+  color: #B44646;
+}
+
+</style>
+<style>
+.list_section .item {
+  margin-bottom: 2px
+}
 </style>
