@@ -1,7 +1,7 @@
 <template>
-  <div class="text_section" :class="{collapsed: collapsed}">
-    <titlesubsection v-if="text !== undefined && config.title !== undefined" :text="config.title"></titlesubsection>
-    <span v-if="text !== undefined" v-html="text"></span>
+  <div v-if="text !== undefined" class="text_section" :class="{collapsed: collapsed}">
+    <titlesubsection v-if="config.title !== undefined" :text="config.title"></titlesubsection>
+    <span v-html="text"></span>
     <morebutton v-if="visible" v-on:expand_collapse="expand_collapse"></morebutton>
   </div>
 </template>
