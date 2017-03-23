@@ -1,16 +1,18 @@
 <template>
   <svg v-if="start_date !== undefined && end_date !== undefined" class="time_section">
-    <g>
-      <rect class="bar" :x="scale_value(start_date)" y="40" :width="scale_value(end_date)-scale_value(start_date)"></rect>
-      <text :x="scale_value(start_date)" y="32">{{start_date}}</text>
-      <text :x="scale_value(end_date)" y="32">{{end_date}}</text>
+    <g :transform="get_translate()">
+      <rect class="bar" :x="scale_value(start_date)" y="35" :width="scale_value(end_date)-scale_value(start_date)"></rect>
+      <text :x="scale_value(start_date)" y="30">{{start_date}}</text>
+      <text :x="scale_value(end_date)" y="30">{{end_date}}</text>
+      <text class="years" :x="scale_value(start_date)+(scale_value(end_date)-scale_value(start_date))/2" y="46">{{end_date-start_date}}</text>
     </g>
     
-    <g>
-      <rect class="bar reference" :x="scale_value(1538)" y="55" :width="scale_value(1612)-scale_value(1538)"></rect>
-      <text :x="scale_value(1538)" y="85">1538</text>
-      <text :x="scale_value(1612)" y="85">1612</text>
-      <text :x="scale_value(1538)+(scale_value(1612)-scale_value(1538))/2" y="85">Clavius</text>
+    <g class="reference" v-if="data.id !== config.ref.id">
+      <rect class="bar" :x="scale_value(ref.start_date)" y="57" :width="scale_value(ref.end_date)-scale_value(ref.start_date)"></rect>
+      <text :x="scale_value(ref.start_date)" y="84">{{ref.start_date}}</text>
+      <text :x="scale_value(ref.end_date)" y="84">{{ref.end_date}}</text>
+      <text :x="scale_value(ref.start_date)+(scale_value(ref.end_date)-scale_value(ref.start_date))/2" y="84">Clavius</text>
+      <text class="years" :x="scale_value(ref.start_date)+(scale_value(ref.end_date)-scale_value(ref.start_date))/2" y="67">{{ref.end_date-ref.start_date}}</text>
     </g>
   </svg>
 </template>
@@ -29,19 +31,17 @@ export default {
       required: true
 
   data: () ->
-    scale: d3.scaleLinear().domain([1500, 1650]).range([0, 408])
-    axis: d3.axisBottom().scale(@scale)
-
-  mounted: () ->
-    d3.select(@$el).append('g')#.call(@axis)
+    scale: d3.scaleLinear().domain(@config.domain).range(@config.range)
 
   computed:
     start_date: () -> kgl.parse(@config.start_date, @data)
     end_date: () -> kgl.parse(@config.end_date, @data)
+    ref: () -> @config.ref
     height: () -> if @height? then @height else undefined
 
   methods:
     scale_value: (value) -> @scale(value)
+    get_translate: () -> if @data.id isnt @config.ref.id then '' else 'translate(0,15)'
 
   components:
     titlesubsection: TitleSubSection
@@ -55,17 +55,25 @@ export default {
 }
 
 .bar {
-  height: 12px;
+  height: 14px;
   fill: #B44646;
 }
-
-.reference {
+.reference .bar {
   fill: steelblue;
+  opacity: 0.6;
 }
 
 text {
   font-size: 12px;
   text-anchor: middle;
+}
+.reference text {
+  font-size: 11px;
+}
+
+.years {
+  fill: white;
+  font-weight: bold
 }
 
 </style>
