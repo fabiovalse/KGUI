@@ -45,7 +45,17 @@ export default {
   font-size: 15px;
 }
 
-<<<<<<< HEAD
+.hlinks {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+.hlinks img {
+  width: 20px;
+  padding: 5px 3px 5px 3px;
+}
+
+
 @media (max-width: 480px){
   .header_section {
     padding-top: 33px;
@@ -58,15 +68,5 @@ export default {
   }
 }
 
-=======
-.hlinks {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-}
-.hlinks img {
-  width: 20px;
-  padding: 5px 3px 5px 3px;
-}
->>>>>>> 8b38eeeb0cbee9f1ada9208fc4246816c70b4116
+
 </style>
