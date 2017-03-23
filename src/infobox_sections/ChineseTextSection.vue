@@ -11,6 +11,10 @@
         <div>{{target.zhuyin_fuhao}}</div>
         <div class="field_description">zhuyin fuhao</div>
       </div>
+      <div v-if="target.simplified !== undefined && target.simplified !== ''">
+        <div>{{target.simplified}}</div>
+        <div class="field_description">forma semplificata</div>
+      </div>
       <div v-if="target.pinyin !== undefined">
         <div>{{target.pinyin}}</div>
         <div class="field_description">pinyin</div>
@@ -41,6 +45,7 @@ export default {
 .label {
   margin-right: 10px;
   font-size: 80px;
+  font-family: chinese;
 }
 .secondary_label {
   font-size: 40px;  
