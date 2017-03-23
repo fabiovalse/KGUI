@@ -3,8 +3,8 @@
     <div class="title" v-if="config.title !== undefined" v-html="kgl_parse(config.title, data)"></div>
     <div class="subtitle" v-if="config.subtitle !== undefined" v-html="kgl_parse(config.subtitle, data)"></div>
     <div class="hlinks">
-      <a v-for="img in config.hlinks" :href="img.url" target="blank">
-        <img :src="img.icon" :title="img.label">
+      <a v-for="img in config.hlinks" :href="kgl_parse(img.url)" target="blank">
+        <img :src="kgl_parse(img.icon)" :title="kgl_parse(img.label)">
       </a>
     </div>
   </div>
@@ -47,8 +47,8 @@ export default {
 
 .hlinks {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 12px;
+  right: 12px;
 }
 .hlinks img {
   width: 20px;
