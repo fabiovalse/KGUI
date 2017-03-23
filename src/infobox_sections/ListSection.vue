@@ -70,4 +70,7 @@ td:not(:last-child) {
 .list_section .item {
   margin-bottom: 2px
 }
+
+
+
 </style>

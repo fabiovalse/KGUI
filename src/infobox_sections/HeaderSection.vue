@@ -1,5 +1,5 @@
 <template>
-  <div class="header_section" @click="click">
+  <div class="header_section">
     <div class="title" v-if="config.title !== undefined" v-html="kgl_parse(config.title, data)"></div>
     <div class="subtitle" v-if="config.subtitle !== undefined" v-html="kgl_parse(config.subtitle, data)"></div>
     <div class="hlinks">
@@ -11,6 +11,7 @@
 </template>
 
 <script lang="coffee">
+
 import kgl from './kgl.coffee'
 
 export default {
@@ -22,7 +23,6 @@ export default {
       type: Object
       required: true
   methods:
-    click: () -> @$emit 'click'
     kgl_parse: kgl.parse
 
 }
@@ -45,6 +45,20 @@ export default {
   font-size: 15px;
 }
 
+<<<<<<< HEAD
+@media (max-width: 480px){
+  .header_section {
+    padding-top: 33px;
+    height: 30px;
+    order:1;
+  }
+  .mobile_open .header_section {
+    position: fixed;
+    width: 100%;
+  }
+}
+
+=======
 .hlinks {
   position: absolute;
   top: 12px;
@@ -54,4 +68,5 @@ export default {
   width: 20px;
   padding: 5px 3px 5px 3px;
 }
+>>>>>>> 8b38eeeb0cbee9f1ada9208fc4246816c70b4116
 </style>
