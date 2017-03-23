@@ -33,7 +33,7 @@ export default {
     order: 2;
   }
   .mobile_open .image_section {
-    margin-top: -1px;
+    margin-top: 80px;
   }
 }
 

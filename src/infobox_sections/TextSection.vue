@@ -37,6 +37,13 @@ export default {
   font-family: sans-serif;
 }
 
+@media (max-width: 480px) {
+  .text_section {
+    text-align: left;
+  }
+  
+}
+
 </style>
 <style>
 .text_section sup {

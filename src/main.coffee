@@ -9,6 +9,11 @@ Vue.use(Vuex)
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
+import VueTouch from 'vue-touch'
+Vue.use(VueTouch)
+
+
+
 router = new VueRouter(Router)
 store = new Vuex.Store(Store)
 

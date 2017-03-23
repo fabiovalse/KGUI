@@ -157,6 +157,13 @@ a:hover {
   text-decoration: underline;
 }
 
+sup {
+  font-size: 8px;
+  position: absolute;
+  margin-top: -5px;
+  margin-left: -2px;
+}
+
 @media (max-width: 480px) {
   #app {
     position: absolute;
