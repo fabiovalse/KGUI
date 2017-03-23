@@ -30,4 +30,11 @@ export default {
   overflow: hidden;
 }
 
+@media (max-width: 480px) {
+  .text_section {
+    text-align: left;
+  }
+  
+}
+
 </style>

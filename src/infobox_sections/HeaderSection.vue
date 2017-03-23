@@ -1,11 +1,13 @@
 <template>
-  <div class="header_section" @click="click">
+
+  <div class="header_section">
     <div class="title" v-if="config.title !== undefined" v-html="kgl_parse(config.title, data)"></div>
     <div class="subtitle" v-if="config.subtitle !== undefined" v-html="kgl_parse(config.subtitle, data)"></div>
   </div>
 </template>
 
 <script lang="coffee">
+
 import kgl from './kgl.coffee'
 
 export default {
@@ -17,7 +19,6 @@ export default {
       type: Object
       required: true
   methods:
-    click: () -> @$emit 'click'
     kgl_parse: kgl.parse
 
 }
@@ -37,6 +38,18 @@ export default {
 .subtitle {
   margin-top: 6px;
   font-size: 15px;
+}
+
+@media (max-width: 480px){
+  .header_section {
+    padding-top: 33px;
+    height: 30px;
+    order:1;
+  }
+  .mobile_open .header_section {
+    position: fixed;
+    width: 100%;
+  }
 }
 
 </style>

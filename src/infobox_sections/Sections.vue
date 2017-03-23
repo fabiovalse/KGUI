@@ -41,6 +41,11 @@ export default {
     flex-direction: column;
     overflow: hidden !important;
   }
+
+  .sections > div:not(.image_section):not(.header_section) {
+    order:3;
+  }
+
 }
 
 </style>

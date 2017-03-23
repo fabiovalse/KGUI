@@ -1,12 +1,16 @@
 <template>
   <div class="infobox" :class="{mobile_open: mobile_open}">
-    <div class="expand" @click="click"><span v-if="mobile_open"><i class="icon-slide-down"></i></span><span v-else><i class="icon-slide-up"></i></span></div>
+    <v-touch tag="div" class="expand" v-on:swipe="click"><span @click="click" v-if="mobile_open"><i class="icon-slide-down"></i></span><span @click="click" v-else><i class="icon-slide-up"></i></span>
+    </v-touch>
+
     <sections v-if="target !== undefined"></sections>
     <directionsinfo v-if="mode === 'directions'"></directionsinfo>
   </div>
+  
 </template>
 
 <script lang="coffee">
+
 import Sections from './infobox_sections/Sections.vue'
 import DirectionsInfo from './DirectionsInfo.vue'
 
@@ -22,10 +26,13 @@ export default {
   methods: # FIXME some methods are unused
     click_directions: () -> @$store.dispatch 'request_directions', {def: true}
     click_node: (d) -> @$store.dispatch 'select', {id: d.id}
-    click: () -> @$emit 'mobile_open'
+    click: (e) ->
+      d3.select(@$el)._groups[0][0].scrollTop = 0
+      @$emit 'mobile_open'
   components:
     sections: Sections
     directionsinfo: DirectionsInfo
+
 }
 </script>
 
@@ -39,12 +46,11 @@ export default {
 }
 .expand {
   position: absolute;
-  top: 5px;
+  margin-top: 10px;
   display: none;
   text-align: center;
   width: 100%;
   background: transparent;
-
 }
 
 /* Google-style scrollbar on webkit */
@@ -69,12 +75,20 @@ export default {
   .infobox {
     padding-top: 0px;
     z-index: 1;
+    transition: top 1s;
+    -webkit-transition: top 1s;
+    -moz-transition: top 1s;
   }
   .expand {
     display: block;
+    height: 80px;
   }
   :not(.mobile_open) {
     overflow-y: hidden !important;
+  }
+  .mobile_open .expand {
+    position: fixed;
+    z-index: 10;
   }
 }
 </style>
