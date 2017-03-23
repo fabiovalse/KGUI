@@ -1,5 +1,6 @@
 <template>
   <div class="list_section">
+    <titlesubsection v-if="items.length > 0 && config.title !== undefined" :text="config.title"></titlesubsection>
     <table v-if="items.length > 0">
       <tr v-for="item in items">
         <td v-if="item.icon != undefined">
@@ -14,6 +15,7 @@
 
 <script lang="coffee">
 import kgl from './kgl.coffee'
+import TitleSubSection from './TitleSubSection.vue'
 
 export default {
   props:
@@ -35,6 +37,8 @@ export default {
       # keep defined pairs only
       return list.filter (d) -> d.label? and d.value?
 
+  components:
+    titlesubsection: TitleSubSection
 }
 </script>
 

@@ -7,11 +7,17 @@ import ListSection from './ListSection.vue'
 import SeparatorSection from './SeparatorSection.vue'
 import ChineseTextSection from './ChineseTextSection.vue'
 import RelatedSection from './RelatedSection.vue'
-import TitleSection from './TitleSection.vue'
+import TimeSection from './TimeSection.vue'
+import CollapsibleBox from '../CollapsibleBox.vue'
 
 export default {
   render: (createElement) ->
-    children = @template.map (section) => createElement section.t+'section', {props:{data:@target, config:section}}
+    children = @template.map (section) => 
+      if section.collapsible
+        createElement 'collapsiblebox', {}, [createElement section.t+'section', {props:{data:@target, config:section}}]
+      else
+        createElement section.t+'section', {props:{data:@target, config:section}}
+      
     return createElement 'div', {class: {sections: true}}, children
   computed:
     target: () -> @$store.state.target
@@ -24,7 +30,9 @@ export default {
     separatorsection: SeparatorSection
     chinesetextsection: ChineseTextSection
     relatedsection: RelatedSection
-    titlesection: TitleSection
+    timesection: TimeSection
+    collapsiblebox: CollapsibleBox
+
 }
 </script>
 
