@@ -11,9 +11,10 @@
   "dependencies": {
     "showdown": "^1.6.0",
     "vue": "^2.1.0",
-    "vue-touch": "^1.1.0",
+    "vue-touch": "2.0.0-beta.4",
     "vue-router": "^2.3.0",
-    "vuex": "^2.1.2"
+    "vuex": "^2.1.2",
+    "openseadragon": "^2.2.1"
   },
   "devDependencies": {
     "babel-core": "^6.0.0",
