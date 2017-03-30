@@ -138,6 +138,7 @@ html, body {
   position: absolute;
   height: 100%;
   background: #FFF;
+  z-index: 2;
 }
 .searchdirectionsbox {
   position: absolute;
