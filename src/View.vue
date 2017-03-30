@@ -5,6 +5,7 @@
 
     <buildingmapview v-if="space !== undefined && space.view === 'buildingmapview'"></buildingmapview>
     <bilingualtextview v-if="space !== undefined && space.view === 'bilingualtextview'"></bilingualtextview>
+    <zoomableimageview v-if="space !== undefined && space.view === 'zoomableimageview'" :config="config.openseadragon"></zoomableimageview>
   </div>
 </template>
 
@@ -16,6 +17,7 @@ import BilingualTextView from './BilingualTextView.vue'
 import TextView from './TextView.vue'
 import IframeView from './IframeView.vue'
 import Layer from './Layer.vue'
+import ZoomableImageView from './ZoomableImageView.vue'
 
 export default {
   props: ['config']
@@ -28,6 +30,7 @@ export default {
     bilingualtextview: BilingualTextView
     layerbox: LayerBox
     layer: Layer
+    zoomableimageview: ZoomableImageView
 }
 </script>
 
