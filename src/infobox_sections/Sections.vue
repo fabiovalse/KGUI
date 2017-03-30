@@ -8,6 +8,7 @@ import SeparatorSection from './SeparatorSection.vue'
 import ChineseTextSection from './ChineseTextSection.vue'
 import RelatedSection from './RelatedSection.vue'
 import TimeSection from './TimeSection.vue'
+import ActionSection from './ActionSection.vue'
 import CollapsibleBox from '../CollapsibleBox.vue'
 
 export default {
@@ -31,6 +32,7 @@ export default {
     chinesetextsection: ChineseTextSection
     relatedsection: RelatedSection
     timesection: TimeSection
+    actionsection: ActionSection
     collapsiblebox: CollapsibleBox
 
 }
