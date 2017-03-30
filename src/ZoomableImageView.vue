@@ -1,7 +1,6 @@
-<template>
-  <div id="zoomableimageview">
-  </div>
-</template>
+<!--<template>
+  <div id="zoomableimageview"></div>
+</template>-->
 
 <script lang="coffee">
 import OpenSeadragon from 'openseadragon'
@@ -10,35 +9,108 @@ import ZoomableImageOverlay from './ZoomableImageOverlay.vue'
 import Vue from 'vue'
 
 export default {
+  render: (createElement) -> createElement 'div', {attrs: {id: 'zoomableimageview'}}
+
   props:
     config:
       type: Object
       required: true
-    overlay:
-      type: Object
+
+  data: () ->
+    overlay: [
+      {
+        selector: 'rect',
+        x1: 42972.12,
+        y1: 108.74,
+        x2: 45134.573418426706,
+        y2: 1551.8663143384158
+      },
+      {
+        selector: 'rect',
+        x1: 42972.12,
+        y1: 1551.8663143384158,
+        x2: 45134.573418426706,
+        y2: 20324.736324745765
+      },
+      {
+        selector: 'path',
+        points: [
+          {x: 5621.1834304051945, y: 5361.071445139335},
+          {x: 9016.467857233447, y: 4446.956407147114},
+          {x: 12231.416664321738, y: 3794.017094295527},
+          {x: 12306.038300076207, y: 4216.873030237506},
+          {x: 8966.720100063803, y: 4882.2492823815055},
+          {x: 5677.149657221045, y: 5678.213397095822}
+        ]
+      },
+      {
+        selector: 'circle',
+        cx: 2363.461610242892,
+        cy: 2585.3094454532816,
+        rx: 4648.408785629651
+      }
+    ]
 
   mounted: () ->
     ### OpenSeadragon viewer creation
     ###
     @viewer = OpenSeadragon @config
 
-    ### SVG overlay creation
-    ###
-    svg_overlay = @viewer.svgOverlay()
+    @viewer.addHandler 'open', (event) =>
+      @viewer.controls[0].destroy()
 
-    OverlayComponent = Vue.extend(ZoomableImageOverlay)
-    overlay_component = new OverlayComponent({propsData: {data: @overlay.data}})
-    overlay_component.$mount()
+      if @overlay?
+        ### Image to viewport coordinates conversion
+        ###
+        @overlay.map (d) => 
+          if d.x1? and d.y1?
+            p = @viewer.viewport.imageToViewportCoordinates d.x1, d.y1
+            d.x1 = p.x
+            d.y1 = p.y
+          if d.x2? and d.y2?
+            p = @viewer.viewport.imageToViewportCoordinates d.x2, d.y2
+            d.x2 = p.x
+            d.y2 = p.y
+          if d.cx? and d.cy?
+            p = @viewer.viewport.imageToViewportCoordinates d.cx, d.cy
+            d.cx = p.x
+            d.cy = p.y
 
-    @$el.querySelector('svg g').appendChild(overlay_component.$el)
+            d.rx = @viewer.viewport.imageToViewportCoordinates(d.rx).x
+          if d.points?
+            d.points = d.points.map (p) => @viewer.viewport.imageToViewportCoordinates p.x, p.y
 
-    ### Click event registration
-    ###
-    @$el.querySelectorAll(@overlay.selector).forEach (d) =>
-      svg_overlay.onClick(d, () =>
-        @overlay.data[0].width = 0.1
-        console.log('click', arguments)
-      )
+        ### SVG overlay creation
+        ###
+        svg_overlay = @viewer.svgOverlay()
+        OverlayComponent = Vue.extend(ZoomableImageOverlay)
+        
+        overlay_component = new OverlayComponent({propsData: {data: @overlay}})
+        overlay_component.$mount()
+        @$el.querySelector('svg g').appendChild(overlay_component.$el)
+
+#      ### Click event registration
+#      ###
+#      @overlay.forEach (d,i) =>
+#        @$el.querySelectorAll(d.selector).forEach (d,j) =>
+#          svg_overlay.onClick(d, () =>
+#            #console.log('click', arguments)
+#          )
+#
+#    @viewer.addHandler 'canvas-click', (event) =>
+#      # The canvas-click event gives us a position in web coordinates.
+#      webPoint = event.position;
+#
+#      # Convert that to viewport coordinates, the lingua franca of OpenSeadragon coordinates.
+#      viewportPoint = @viewer.viewport.pointFromPixel(webPoint);
+#
+#      # Convert from viewport coordinates to image coordinates.
+#      imagePoint = @viewer.viewport.viewportToImageCoordinates(viewportPoint);
+#
+#      # Show the results.
+#      #console.log(webPoint.toString(), viewportPoint.toString(), imagePoint.toString());
+
+
 }
 </script>
 
@@ -47,5 +119,9 @@ export default {
     width: 100%;
     height: 100%;
     background: #000;
+  }
+
+  #zoomableimageview * {
+    outline: none !important;
   }
 </style>
