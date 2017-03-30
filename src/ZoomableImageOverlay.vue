@@ -1,9 +1,9 @@
 <template>
   <g>
-    <g v-for="obj in data" :class="obj.selector">
-      <rect v-if="obj.selector === 'rect'" :x="obj.x1" :y="obj.y1" :width="obj.x2-obj.x1" :height="obj.y2-obj.y1"></rect>
-      <circle v-if="obj.selector === 'circle'" :cx="obj.cx" :cy="obj.cy" :r="obj.rx-obj.cx"></circle>
-      <path v-if="obj.selector === 'path'" :d="to_path_description(obj.points)"></path>
+    <g v-for="obj in data" :class="obj.data.selector" @click="select(obj.id)">
+      <rect v-if="obj.data.selector === 'rect'" :x="obj.data.x1" :y="obj.data.y1" :width="obj.data.x2-obj.data.x1" :height="obj.data.y2-obj.data.y1"></rect>
+      <circle v-if="obj.data.selector === 'circle'" :cx="obj.data.cx" :cy="obj.data.cy" :r="obj.data.rx-obj.data.cx"></circle>
+      <path v-if="obj.data.selector === 'path'" :d="to_path_description(obj.data.points)"></path>
     </g>
   </g>
 </template>
@@ -14,7 +14,10 @@ export default {
     data:
       type: Array
       required: true
+    store:
+      type: Object
   methods:
+    select: (id) -> @store.dispatch 'select', {id: id}
     to_path_description: (points) ->
       points = points.concat([points[0]])
       return (points.map (p,i) -> return if i is 0 then "M#{points[i].x} #{points[i].y}" else "L #{points[i].x} #{points[i].y} ").join('')
@@ -28,5 +31,6 @@ rect, circle, path {
   stroke: steelblue;
   stroke-width: 3px;
   vector-effect: non-scaling-stroke;
+  cursor: pointer;
 }
 </style>
