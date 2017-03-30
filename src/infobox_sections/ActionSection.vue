@@ -1,7 +1,7 @@
 <template>
   <div class="action_section">
     <div v-for="action in actions" class="action">
-      <a :href="'#/'+action.id+'/fullmap'">
+      <a :href="get_link(action.id)">
         <div><i :class="'icon-'+action.icon"></i></div>
         <div>{{action.label}}</div>
       </a>
@@ -28,6 +28,10 @@ export default {
         icon: action.icon
         label: kgl.parse(action.label, @data)
       }
+    local_path: () -> @$store.state.local_path
+
+  methods:
+    get_link: (id) -> "#/#{id}/#{@local_path.split('/').slice(2).join('/')}" #FIXME: create a class for handling the local path
 
 }
 </script>

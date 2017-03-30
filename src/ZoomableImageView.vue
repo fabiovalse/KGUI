@@ -16,6 +16,9 @@ export default {
       type: Object
       required: true
 
+  computed:
+    cartouches: () -> @$store.state.nodes
+
   data: () ->
     overlay: [
       {
@@ -62,30 +65,47 @@ export default {
       if @overlay?
         ### Image to viewport coordinates conversion
         ###
-        @overlay.map (d) => 
-          if d.x1? and d.y1?
-            p = @viewer.viewport.imageToViewportCoordinates d.x1, d.y1
-            d.x1 = p.x
-            d.y1 = p.y
-          if d.x2? and d.y2?
-            p = @viewer.viewport.imageToViewportCoordinates d.x2, d.y2
-            d.x2 = p.x
-            d.y2 = p.y
-          if d.cx? and d.cy?
-            p = @viewer.viewport.imageToViewportCoordinates d.cx, d.cy
-            d.cx = p.x
-            d.cy = p.y
+#        @overlay.map (d) => 
+#          if d.x1? and d.y1?
+#            p = @viewer.viewport.imageToViewportCoordinates d.x1, d.y1
+#            d.x1 = p.x
+#            d.y1 = p.y
+#          if d.x2? and d.y2?
+#            p = @viewer.viewport.imageToViewportCoordinates d.x2, d.y2
+#            d.x2 = p.x
+#            d.y2 = p.y
+#          if d.cx? and d.cy?
+#            p = @viewer.viewport.imageToViewportCoordinates d.cx, d.cy
+#            d.cx = p.x
+#            d.cy = p.y
+#
+#            d.rx = @viewer.viewport.imageToViewportCoordinates(d.rx).x
+#          if d.points?
+#            d.points = d.points.map (p) => @viewer.viewport.imageToViewportCoordinates p.x, p.y
 
-            d.rx = @viewer.viewport.imageToViewportCoordinates(d.rx).x
-          if d.points?
-            d.points = d.points.map (p) => @viewer.viewport.imageToViewportCoordinates p.x, p.y
+        @cartouches = @cartouches.map (d) => 
+          if d.data.x1? and d.data.y1?
+            p = @viewer.viewport.imageToViewportCoordinates d.data.x1, d.data.y1
+            d.data.x1 = p.x
+            d.data.y1 = p.y
+          if d.data.x2? and d.data.y2?
+            p = @viewer.viewport.imageToViewportCoordinates d.data.x2, d.data.y2
+            d.data.x2 = p.x
+            d.data.y2 = p.y
+          if d.data.cx? and d.data.cy?
+            p = @viewer.viewport.imageToViewportCoordinates d.data.cx, d.data.cy
+            d.data.cx = p.x
+            d.data.cy = p.y
+            d.data.rx = @viewer.viewport.imageToViewportCoordinates(d.data.rx).x
+          if d.data.points?
+            d.data.points = d.points.map (p) => @viewer.viewport.imageToViewportCoordinates p.x, p.y
 
         ### SVG overlay creation
         ###
         svg_overlay = @viewer.svgOverlay()
         OverlayComponent = Vue.extend(ZoomableImageOverlay)
         
-        overlay_component = new OverlayComponent({propsData: {data: @overlay}})
+        overlay_component = new OverlayComponent({propsData: {data: @cartouches, store: @$store}})
         overlay_component.$mount()
         @$el.querySelector('svg g').appendChild(overlay_component.$el)
 
@@ -109,6 +129,7 @@ export default {
 #
 #      # Show the results.
 #      #console.log(webPoint.toString(), viewportPoint.toString(), imagePoint.toString());
+#      console.log imagePoint
 
 
 }
