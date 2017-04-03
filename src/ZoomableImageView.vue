@@ -22,13 +22,14 @@ export default {
     target: () -> @$store.state.target
 
   watch:
-    target: (newTarget) -> 
-      if newTarget is undefined 
-        @viewer.viewport.setMargins({left: 20, right: 20, top: 0, bottom: 0})
-      else
-        @viewer.viewport.setMargins({left: 428, right: 20, top: 0, bottom: 0})
+    target: (newTarget) -> @resize(newTarget)
 
-      @svg_overlay.resize()
+  methods:
+    resize: (newTarget) ->
+      @viewer.viewport.setMargins({left: (if newTarget is undefined then 20 else 428), right: 20, top: 0, bottom: 0})
+      
+      if @svg_overlay?
+        @svg_overlay.resize()
 
   mounted: () ->
     ### OpenSeadragon viewer creation
@@ -37,6 +38,7 @@ export default {
 
     @viewer.addHandler 'open', (event) =>
       @viewer.controls[0].destroy()
+      @viewer.viewport.setMargins({left: 20, right: 20, top: 0, bottom: 0})
 
       if @nodes?
         ### Image to viewport coordinates conversion
@@ -61,11 +63,14 @@ export default {
         ### SVG overlay creation
         ###
         @svg_overlay = @viewer.svgOverlay()
+        @resize(@target)
         OverlayComponent = Vue.extend(ZoomableImageOverlay)
         
-        overlay_component = new OverlayComponent({propsData: {data: @nodes, store: @$store}})
+        overlay_component = new OverlayComponent({propsData: {data: @nodes, store: @$store, viewer: @viewer}})
         overlay_component.$mount()
         @$el.querySelector('svg g').appendChild(overlay_component.$el)
+
+        @$el.querySelector('svg').style['mix-blend-mode'] = 'multiply'
 
 #      ### Click event registration
 #      ###
