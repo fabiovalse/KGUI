@@ -1,6 +1,6 @@
 <template>
   <g>
-    <g v-for="obj in data" :class="obj.data.selector" @click="select(obj.id)">
+    <g v-for="obj in data" :class="{selected: selected.id === obj.id}" @click="select(obj.id)">
       <rect v-if="obj.data.selector === 'rect'" :x="obj.data.x1" :y="obj.data.y1" :width="obj.data.x2-obj.data.x1" :height="obj.data.y2-obj.data.y1"></rect>
       <circle v-if="obj.data.selector === 'circle'" :cx="obj.data.cx" :cy="obj.data.cy" :r="obj.data.rx-obj.data.cx"></circle>
       <path v-if="obj.data.selector === 'path'" :d="to_path_description(obj.data.points)"></path>
@@ -16,6 +16,10 @@ export default {
       required: true
     store:
       type: Object
+
+  computed:
+    selected: () -> @store.state.target
+
   methods:
     select: (id) -> @store.dispatch 'select', {id: id}
     to_path_description: (points) ->
@@ -32,5 +36,10 @@ rect, circle, path {
   stroke-width: 3px;
   vector-effect: non-scaling-stroke;
   cursor: pointer;
+}
+
+.selected rect, .selected circle, .selected path {
+  fill: rgba(180, 70, 70, 0.5);
+  stroke: #B44646;
 }
 </style>
