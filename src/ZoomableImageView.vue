@@ -5,6 +5,7 @@
 <script lang="coffee">
 import OpenSeadragon from 'openseadragon'
 import SVGOverlay from '../lib/openseadragon-svg-overlay.js'
+import ZoomifyTileSource from '../lib/zoomifytilesource.js'
 import ZoomableImageOverlay from './ZoomableImageOverlay.vue'
 import Vue from 'vue'
 
@@ -17,42 +18,17 @@ export default {
       required: true
 
   computed:
-    cartouches: () -> @$store.state.nodes
+    nodes: () -> @$store.state.nodes
+    target: () -> @$store.state.target
 
-  data: () ->
-    overlay: [
-      {
-        selector: 'rect',
-        x1: 42972.12,
-        y1: 108.74,
-        x2: 45134.573418426706,
-        y2: 1551.8663143384158
-      },
-      {
-        selector: 'rect',
-        x1: 42972.12,
-        y1: 1551.8663143384158,
-        x2: 45134.573418426706,
-        y2: 20324.736324745765
-      },
-      {
-        selector: 'path',
-        points: [
-          {x: 5621.1834304051945, y: 5361.071445139335},
-          {x: 9016.467857233447, y: 4446.956407147114},
-          {x: 12231.416664321738, y: 3794.017094295527},
-          {x: 12306.038300076207, y: 4216.873030237506},
-          {x: 8966.720100063803, y: 4882.2492823815055},
-          {x: 5677.149657221045, y: 5678.213397095822}
-        ]
-      },
-      {
-        selector: 'circle',
-        cx: 2363.461610242892,
-        cy: 2585.3094454532816,
-        rx: 4648.408785629651
-      }
-    ]
+  watch:
+    target: (newTarget) -> 
+      if newTarget is undefined 
+        @viewer.viewport.setMargins({left: 20, right: 20, top: 0, bottom: 0})
+      else
+        @viewer.viewport.setMargins({left: 428, right: 20, top: 0, bottom: 0})
+
+      @svg_overlay.resize()
 
   mounted: () ->
     ### OpenSeadragon viewer creation
@@ -62,28 +38,10 @@ export default {
     @viewer.addHandler 'open', (event) =>
       @viewer.controls[0].destroy()
 
-      if @overlay?
+      if @nodes?
         ### Image to viewport coordinates conversion
         ###
-#        @overlay.map (d) => 
-#          if d.x1? and d.y1?
-#            p = @viewer.viewport.imageToViewportCoordinates d.x1, d.y1
-#            d.x1 = p.x
-#            d.y1 = p.y
-#          if d.x2? and d.y2?
-#            p = @viewer.viewport.imageToViewportCoordinates d.x2, d.y2
-#            d.x2 = p.x
-#            d.y2 = p.y
-#          if d.cx? and d.cy?
-#            p = @viewer.viewport.imageToViewportCoordinates d.cx, d.cy
-#            d.cx = p.x
-#            d.cy = p.y
-#
-#            d.rx = @viewer.viewport.imageToViewportCoordinates(d.rx).x
-#          if d.points?
-#            d.points = d.points.map (p) => @viewer.viewport.imageToViewportCoordinates p.x, p.y
-
-        @cartouches = @cartouches.map (d) => 
+        @nodes = @nodes.map (d) => 
           if d.data.x1? and d.data.y1?
             p = @viewer.viewport.imageToViewportCoordinates d.data.x1, d.data.y1
             d.data.x1 = p.x
@@ -98,14 +56,14 @@ export default {
             d.data.cy = p.y
             d.data.rx = @viewer.viewport.imageToViewportCoordinates(d.data.rx).x
           if d.data.points?
-            d.data.points = d.points.map (p) => @viewer.viewport.imageToViewportCoordinates p.x, p.y
+            d.data.points = JSON.parse(d.data.points).map (p) => @viewer.viewport.imageToViewportCoordinates p.x, p.y
 
         ### SVG overlay creation
         ###
-        svg_overlay = @viewer.svgOverlay()
+        @svg_overlay = @viewer.svgOverlay()
         OverlayComponent = Vue.extend(ZoomableImageOverlay)
         
-        overlay_component = new OverlayComponent({propsData: {data: @cartouches, store: @$store}})
+        overlay_component = new OverlayComponent({propsData: {data: @nodes, store: @$store}})
         overlay_component.$mount()
         @$el.querySelector('svg g').appendChild(overlay_component.$el)
 
