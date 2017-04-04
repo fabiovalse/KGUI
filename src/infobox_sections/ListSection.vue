@@ -30,12 +30,20 @@ export default {
     items: () ->
       list = @config.items.map (item) => {
         label: kgl.parse(item.label, @data)
-        value: kgl.parse(item.value, @data)
+        value: @to_html(kgl.parse(item.value, @data))
         icon: item.icon
       }
 
       # keep defined pairs only
       return list.filter (d) -> d.label? and d.value?
+
+  methods:
+    to_html: (value) ->
+      #console.log value
+      if typeof value is 'object'
+        return value.map((v) -> "<div class='item'>#{v}</div>").join('')
+      else
+        return value
 
   components:
     titlesubsection: TitleSubSection
