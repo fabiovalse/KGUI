@@ -1,6 +1,7 @@
 <script lang="coffee">
 import config from '../config.coffee'
 import TextSection from './TextSection.vue'
+import BilingualTextSection from './BilingualTextSection.vue'
 import HeaderSection from './HeaderSection.vue'
 import ImageSection from './ImageSection.vue'
 import ListSection from './ListSection.vue'
@@ -25,6 +26,7 @@ export default {
     template: () -> if config.templates? and @target.template? and config.templates[@target.template]? then config.templates[@target.template] else []
   components:
     textsection: TextSection
+    bilingualtextsection: BilingualTextSection
     headersection: HeaderSection
     imagesection: ImageSection
     listsection: ListSection
