@@ -38,7 +38,7 @@ module.exports = {
       else
         return false
 
-    payload = {query: "MATCH (s1:Space {id: {id}})-[r1:in_list]->(n) WITH n MATCH (s)-[r:in_list]->(n) RETURN s, r ORDER BY r.order", params: {id: id}}
+    payload = {query: "MATCH (s1:Space {id: {id}}) WITH COLLECT(s1) AS space OPTIONAL MATCH (s1)-[r1:in_list]->(n) WITH space,n OPTIONAL MATCH (s)-[r:in_list]->(n) WITH space+COLLECT(s) AS spaces, r UNWIND spaces AS s RETURN DISTINCT s ORDER BY s.index DESC", params: {id: id}}
     @execute payload, (data) =>
       result = JSON.parse(data.responseText).data
 
