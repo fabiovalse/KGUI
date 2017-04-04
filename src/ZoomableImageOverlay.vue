@@ -45,7 +45,7 @@ export default {
 
 <style scoped>
 rect, circle, path {
-  fill: #ffd26d;
+  fill: rgb(181, 255, 254); /*#ffd26d;*/
   vector-effect: non-scaling-stroke;
   cursor: pointer;
 }
