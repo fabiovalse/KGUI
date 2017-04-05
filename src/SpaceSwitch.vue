@@ -1,7 +1,7 @@
 <template>
   <div class="spaceswitch">
     <div v-for="s in spaces">
-      <input type="radio" name="spaces" :checked="s.current" @click="change_space(s.label)"> {{s.label}}
+      <input type="radio" name="spaces" :checked="s.id === space.id" @click="change_space(s.id)"> {{s.id}}
     </div>
   </div>
 </template>
@@ -10,6 +10,7 @@
 export default {
   computed:
     spaces: () -> @$store.state.spaces
+    space: () -> @$store.state.space
   
   methods:
     change_space: (id) -> @$store.dispatch 'change_space', id
@@ -19,19 +20,14 @@ export default {
 <style scoped>
 .spaceswitch {
   cursor: pointer;
-  width: 75px;
+  width: 300px;
   height: 80px;
   background: white;
   border: 1px solid #BBB;
-}
-.mobile_mode .spaceswitch {
-  left: 420px;
-}
 
-@media (max-width: 480px) {
-  .mobile_mode .spaceswitch {
-    left: 10px;
-    bottom: 110px;
-  }
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  z-index: 2;
 }
 </style>

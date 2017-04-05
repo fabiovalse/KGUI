@@ -26,14 +26,16 @@ export default {
     select: (id) -> 
       @store.dispatch 'select', {id: id}
 
-      if @selected.id is id
-        bbox = @$el.querySelector(".obj#{id}").getBBox()
-        @viewer.viewport.fitBounds new OpenSeadragon.Rect(bbox.x, bbox.y, bbox.width, bbox.height)
+      if @selected? and @selected.id is id
+        @focus id
+    focus: (id) ->
+      bbox = @$el.querySelector(".obj_#{id.replace('|','_')}").getBBox()
+      @viewer.viewport.fitBounds new OpenSeadragon.Rect(bbox.x, bbox.y, bbox.width, bbox.height)
     get_classes: (obj) ->
       classes = {
         selected: @selected? and @selected.id is obj.id
       }
-      classes["obj#{obj.id}"] = true
+      classes["obj_#{obj.id.replace('|','_')}"] = true
       return classes
 
     to_path_description: (points) ->
