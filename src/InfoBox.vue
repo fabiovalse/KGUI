@@ -6,7 +6,7 @@
     <sections v-if="target !== undefined"></sections>
     <directionsinfo v-if="mode === 'directions'"></directionsinfo>
   </div>
-  
+
 </template>
 
 <script lang="coffee">
@@ -60,10 +60,7 @@ export default {
 /* Google-style scrollbar on webkit */
 .infobox {
   overflow-x: hidden;
-  overflow-y: hidden;
-}
-.infobox:hover {
-  overflow-y: auto;
+  overflow-y: scroll;
 }
 ::-webkit-scrollbar {
   width: 6px;
