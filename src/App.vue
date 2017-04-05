@@ -76,7 +76,7 @@ export default {
           to_id: (if route.params.to is '_' then undefined else route.params.to),
         }
       
-      if route.params.space?
+      if (route.params.space? and not @$store.state.space?) or (route.params.space? and @$store.state.space? and route.params.space isnt @$store.state.space.id)
         @$store.dispatch 'change_space', route.params.space
 
     search: (str) ->
