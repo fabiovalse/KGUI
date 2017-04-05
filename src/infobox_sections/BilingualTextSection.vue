@@ -27,11 +27,12 @@ export default {
 .bilingualtext_section {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 24px;
 }
 
 .bilingualtext_section > * {
-  width: 50%;
+  width: 45%;
 }
 
 .large {
