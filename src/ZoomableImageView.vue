@@ -38,6 +38,8 @@ export default {
     # set margins according to infobox
     @viewer.viewport.setMargins({left: 428, right: 20, top: 0, bottom: 0})
 
+    @load_map()
+
   methods:
     load_map: () ->
       if @viewer.isOpen()
