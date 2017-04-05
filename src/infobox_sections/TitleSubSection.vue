@@ -16,7 +16,8 @@ export default {
 <style scoped>
 .title_section {
   font-size: 18px;
-  padding-bottom: 15px;
+  margin-bottom: 8px;
+  margin-top: 6px;
   color: rgba(0,0,0,0.54);
 }
 
