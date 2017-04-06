@@ -15,7 +15,7 @@ export default {
       type: Object
       required: true
   computed:
-    src: () -> kgl.parse(@config.href, @data)
+    src: () -> kgl.parse(@config.href, @data, false)
 }
 </script>
 
