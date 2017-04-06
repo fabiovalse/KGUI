@@ -14,7 +14,9 @@ transform = (value, property) ->
     return value
 
 export default {
-  parse: (kgl, data) ->
+  parse: (kgl, data, markdown_enabled) ->
+    markdown_enabled = if markdown_enabled? then markdown_enabled else true
+    
     try
       regex = /{{(.+?)}}/g
       result = regex.exec kgl
@@ -29,7 +31,8 @@ export default {
           transform value, property
 
         # MarkDown syntax
-        kgl = converter.makeHtml(kgl)[3...-4] # WARNING this hack removes surrounding <p> tags
+        if markdown_enabled
+          kgl = converter.makeHtml(kgl)[3...-4] # WARNING this hack removes surrounding <p> tags
 
       return kgl
     catch error

@@ -11,7 +11,7 @@
       <rect class="bar" :x="scale_value(ref.start_date)" y="57" :width="scale_value(ref.end_date)-scale_value(ref.start_date)"></rect>
       <text :x="scale_value(ref.start_date)" y="84">{{ref.start_date}}</text>
       <text :x="scale_value(ref.end_date)" y="84">{{ref.end_date}}</text>
-      <text :x="scale_value(ref.start_date)+(scale_value(ref.end_date)-scale_value(ref.start_date))/2" y="84">Clavius</text>
+      <text :x="scale_value(ref.start_date)+(scale_value(ref.end_date)-scale_value(ref.start_date))/2" y="84">{{ref.label}}</text>
       <text class="years" :x="scale_value(ref.start_date)+(scale_value(ref.end_date)-scale_value(ref.start_date))/2" y="67">{{ref.end_date-ref.start_date}}</text>
     </g>
   </svg>
