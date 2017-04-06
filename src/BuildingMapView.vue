@@ -52,7 +52,7 @@ export default {
     directionpath: Path
 
   methods:
-    check: (floor) -> floor.index <= @space.index
+    check: (floor) -> floor.order >= @space.order
 
 }
 </script>
