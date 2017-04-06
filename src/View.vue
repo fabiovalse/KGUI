@@ -7,6 +7,7 @@
     <bilingualtextview v-if="space !== undefined && space.view === 'bilingualtextview'"></bilingualtextview>
     <zoomableimageview v-if="space !== undefined && space.view === 'zoomableimageview'" :config="config.openseadragon"></zoomableimageview>
     <foldersview v-if="space !== undefined && space.view === 'foldersview'"></foldersview>
+    <iframeview v-if="space !== undefined && space.view === 'iframeview'" :url="space.url"></iframeview>
   </div>
 </template>
 
@@ -17,9 +18,9 @@ import BuildingMapView from './BuildingMapView.vue'
 import BilingualTextView from './BilingualTextView.vue'
 import FoldersView from './FoldersView.vue'
 import TextView from './TextView.vue'
-import IframeView from './IframeView.vue'
 import Layer from './Layer.vue'
 import ZoomableImageView from './ZoomableImageView.vue'
+import IframeView from './IframeView.vue'
 
 export default {
   props: ['config']
@@ -34,6 +35,7 @@ export default {
     layerbox: LayerBox
     layer: Layer
     zoomableimageview: ZoomableImageView
+    iframeview: IframeView
 }
 </script>
 
