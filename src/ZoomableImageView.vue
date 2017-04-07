@@ -1,6 +1,10 @@
 <template>
   <div id="zoomableimageview">
     <spaceswitch></spaceswitch>
+    <div class="zoom_control">
+      <div><button id="openseadragon_zoom_in_control" class="in"><i class="icon-plus"></i></button></div>
+      <div><button id="openseadragon_zoom_out_control" class="out"><i class="icon-minus"></i></button></div>
+    </div>
   </div>
 </template>
 
@@ -13,7 +17,11 @@ import SpaceSwitch from './SpaceSwitch.vue'
 import Vue from 'vue'
 
 export default {
-  #render: (createElement) -> createElement 'div', {attrs: {id: 'zoomableimageview'}}
+#  render: (createElement) -> createElement 'div', {attrs: {id: 'zoomableimageview'}}
+
+#  data: () ->
+#    initial_pan: undefined
+#    initial_zoom: undefined
 
   props:
     config:
@@ -33,7 +41,8 @@ export default {
     @viewer = OpenSeadragon @config
 
     # remove default zoom controls
-    @viewer.controls[0].destroy()
+    if not (@config.zoomInButton? and @config.zoomOutButton?)
+      @viewer.controls[0].destroy()
 
     # set margins according to infobox
     @viewer.viewport.setMargins({left: 428, right: 20, top: 0, bottom: 0})
@@ -45,11 +54,22 @@ export default {
       if @viewer.isOpen()
         @viewer.open(@space.tile_source)
 
+#      @viewer.addHandler 'pan', (event) =>
+#        @initial_pan = event.center
+#
+#      @viewer.addHandler 'zoom', (event) =>
+#        @initial_zoom = event.zoom
+
       @viewer.addHandler 'open', (event) =>
-        
+        if @initial_pan?
+          @viewer.viewport.panTo(@initial_pan, true).applyConstraints()
+
+        if @initial_zoom?
+          @viewer.viewport.zoomTo(@initial_zoom, true).applyConstraints()
+
         ### Image to viewport coordinates conversion
         ###
-        if not @converted_nodes?
+        if not @converted_nodes? or @converted_nodes.length is 0
           @converted_nodes = @nodes.map (d) => 
             if d.data.x1? and d.data.y1?
               p = @viewer.viewport.imageToViewportCoordinates d.data.x1, d.data.y1
@@ -72,7 +92,7 @@ export default {
         ###
         @svg_overlay = @viewer.svgOverlay()
         OverlayComponent = Vue.extend(ZoomableImageOverlay)
-        
+
         overlay_component = new OverlayComponent({propsData: {data: @converted_nodes, store: @$store, viewer: @viewer}})
         overlay_component.$mount()
         @$el.querySelector('svg g').appendChild(overlay_component.$el)
@@ -113,8 +133,35 @@ export default {
     height: 100%;
     background: #000;
   }
-
   #zoomableimageview * {
     outline: none !important;
+  }
+
+  .zoom_control {
+    position: absolute;
+    bottom: 100px;
+    right: 20px;
+    z-index: 2;
+  }
+  .zoom_control .in, .zoom_control .out {
+    width: 30px;
+    height: 30px;
+    background: #FFF;
+    border: none;
+    border-bottom: 1px solid #F2F2F2;
+    box-shadow: 0px 1px 4px rgba(0,0,0,0.3);
+    color: rgb(178, 178, 178);
+    cursor: pointer;
+  }
+  .zoom_control .in:hover, .zoom_control .out:hover {
+    color: rgb(100, 100, 100);
+  }
+  .zoom_control .in {
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+  }
+  .zoom_control .out {
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
   }
 </style>
