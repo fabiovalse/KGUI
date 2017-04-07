@@ -1,9 +1,6 @@
 <template>
   <div class="spaceswitch">
-    <!--<div v-for="s in spaces">
-      <input type="radio" name="spaces" :checked="s.id === space.id" @click="change_space(s.id)"> {{s.id}}
-    </div>-->
-    <div class="space" :class="{selected: s.id === space.id}" :style="get_style(s.thumbnail)" v-for="s in spaces" @click="change_space(s.id)">
+    <div v-if="s.id !== space.id" class="space" :style="get_style(s.thumbnail)" v-for="s in spaces" @click="change_space(s.id)">
       <div>{{s.label}}</div> 
     </div>
   </div>
@@ -17,7 +14,7 @@ export default {
   
   methods:
     change_space: (id) -> @$store.dispatch 'change_space', id
-    get_style: (url) -> "background-image: url(#{url}); background-size: 40px;"
+    get_style: (url) -> "background-image: url(#{url});"
 }
 </script>
 
@@ -31,17 +28,14 @@ export default {
 }
 
 .space {
-  width: 40px;
-  height: 40px;
+  width: 60px;
+  height: 60px;
   background: #FFF;
-  margin-left: 10px;
   border-radius: 3px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 -1px 0px rgba(0,0,0,0.02);
   cursor: pointer; 
-  opacity: 0.5;
-}
-.space:hover {
-  opacity: 1;
+  background-repeat: no-repeat;
+  background-size: 60px 60px;
 }
 .space div {
   line-height: 60px;
@@ -49,8 +43,6 @@ export default {
   text-align: center;
   color: #303030;
   font-weight: bold;
-}
-.selected {
-  opacity: 1;
+  text-shadow: -1px -1px 0 #FFF, 1px -1px 0 #FFF, -1px 1px 0 #FFF, 1px 1px 0 #FFF
 }
 </style>
