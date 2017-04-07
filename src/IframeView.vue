@@ -1,6 +1,7 @@
 <template>
   <div class="iframeview">
-    <iframe src="http://wafi.iit.cnr.it/webvis/lab/public/b755da34ae8f5a65c7c8/"></iframe>
+    <div class="padding"></div>
+    <iframe :src="url"></iframe>
   </div>
 </template>
 
@@ -13,12 +14,19 @@ export default {
 </script>
 
 <style scoped>
-  .iframeview {
-    width: 100%;
-    height: 100%;
-  }
-  iframe {
-        width: 100%;
-    height: 100%;
-  }
+.iframeview {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: row;
+}
+.padding {
+  width: 408px;
+  background: gray;
+}
+iframe {
+  flex-grow: 1;
+  border: 0;
+}
 </style>
