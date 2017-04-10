@@ -5,6 +5,9 @@
       <div><button id="openseadragon_zoom_in_control" class="in"><i class="icon-plus"></i></button></div>
       <div><button id="openseadragon_zoom_out_control" class="out"><i class="icon-minus"></i></button></div>
     </div>
+    <div class="annotation_control">
+      <button @click="show_hide()"><i :class="'icon-'+get_icon()"></i></button>
+    </div>
   </div>
 </template>
 
@@ -28,6 +31,9 @@ export default {
       type: Object
       required: true
 
+  data: () ->
+    annotation_visible: true
+
   computed:
     nodes: () -> @$store.state.nodes
     space: () -> @$store.state.space
@@ -50,6 +56,12 @@ export default {
     @load_map()
 
   methods:
+    get_icon: () -> if @annotation_visible then 'hide' else 'show'
+
+    show_hide: () -> 
+      @annotation_visible = not @annotation_visible
+      @$el.querySelector('svg').style['display'] = if @annotation_visible then 'inline' else 'none'
+
     load_map: () ->
       if @viewer.isOpen()
         @viewer.open(@space.tile_source)
@@ -163,5 +175,26 @@ export default {
   .zoom_control .out {
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
+  }
+
+  .annotation_control {
+    position: absolute;
+    bottom: 165px;
+    right: 20px;
+    z-index: 2;
+  }
+  .annotation_control button {
+    width: 30px;
+    height: 30px;
+    background: #FFF;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0px 1px 4px rgba(0,0,0,0.3);
+    color: rgb(178, 178, 178);
+    cursor: pointer;
+    font-size: 14px;
+  }
+  .annotation_control button:hover {
+    color: rgb(100, 100, 100);
   }
 </style>
