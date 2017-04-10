@@ -56,7 +56,7 @@ export default {
 }
 
 
-@media (max-width: 480px){
+@media (max-width: 480px) {
   .header_section {
     padding-top: 33px;
     height: 30px;
@@ -67,24 +67,4 @@ export default {
     width: 100%;
   }
 }
-
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-.hlinks {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-}
-.hlinks img {
-  width: 20px;
-  padding: 5px 3px 5px 3px;
-}
->>>>>>> ff7fb35c24ab3e8b027c1e69b730c08d7e844c7c
-=======
-
->>>>>>> 6713ce2... fixed bugs on expand
-=======
-
->>>>>>> 0d680e9c242f7054d0e55d42e6c07f44be16a158
 </style>
