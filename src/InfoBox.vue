@@ -51,6 +51,10 @@ export default {
   text-align: center;
   width: 100%;
   background: transparent;
+  z-index: 10;
+}
+.expand i {
+  color: #fff;
 }
 
 /* Google-style scrollbar on webkit */
@@ -87,7 +91,6 @@ export default {
     overflow-y: hidden !important;
   }
   .mobile_open .expand {
-    position: fixed;
     z-index: 10;
   }
 }

@@ -46,7 +46,17 @@ export default {
   font-size: 15px;
 }
 
-<<<<<<< HEAD
+.hlinks {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+.hlinks img {
+  width: 20px;
+  padding: 5px 3px 5px 3px;
+}
+
+
 @media (max-width: 480px){
   .header_section {
     padding-top: 33px;
@@ -59,6 +69,7 @@ export default {
   }
 }
 
+<<<<<<< HEAD
 =======
 .hlinks {
   position: absolute;
@@ -70,4 +81,7 @@ export default {
   padding: 5px 3px 5px 3px;
 }
 >>>>>>> ff7fb35c24ab3e8b027c1e69b730c08d7e844c7c
+=======
+
+>>>>>>> 6713ce2... fixed bugs on expand
 </style>
