@@ -1,5 +1,4 @@
 <template>
-
   <div class="header_section">
     <div class="title" v-if="config.title !== undefined" v-html="kgl_parse(config.title, data)"></div>
     <div class="subtitle" v-if="config.subtitle !== undefined" v-html="kgl_parse(config.subtitle, data)"></div>
@@ -70,6 +69,7 @@ export default {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 .hlinks {
   position: absolute;
@@ -84,4 +84,7 @@ export default {
 =======
 
 >>>>>>> 6713ce2... fixed bugs on expand
+=======
+
+>>>>>>> 0d680e9c242f7054d0e55d42e6c07f44be16a158
 </style>

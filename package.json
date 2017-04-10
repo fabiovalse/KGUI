@@ -11,22 +11,7 @@
   "dependencies": {
     "showdown": "^1.6.0",
     "vue": "^2.1.0",
-<<<<<<< HEAD
-<<<<<<< HEAD
-    "vue-awesome-swiper": "^2.3.8",
-=======
-    "vue-touch": "2.0.0-beta.4",
->>>>>>> dfc99f6... Added OpenSeadragon
-=======
-<<<<<<< HEAD
-    "vue-awesome-swiper": "^2.3.8",
-=======
     "vue-touch@next": "2.0.0-beta.4",
->>>>>>> 1cb7c22... commit package with vue-touch@next
-=======
-    "vue-touch": "2.0.0-beta.4",
->>>>>>> f428fb3... changes on package json
->>>>>>> 7da40bed821d8f32764bfba500681b178f9f5785
     "vue-router": "^2.3.0",
     "vuex": "^2.1.2",
     "openseadragon": "^2.2.1"
