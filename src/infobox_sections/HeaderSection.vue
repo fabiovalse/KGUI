@@ -56,7 +56,7 @@ export default {
 }
 
 
-@media (max-width: 480px){
+@media (max-width: 480px) {
   .header_section {
     padding-top: 33px;
     height: 30px;
@@ -67,6 +67,4 @@ export default {
     width: 100%;
   }
 }
-
-
 </style>
