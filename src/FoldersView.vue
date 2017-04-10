@@ -4,7 +4,7 @@
     <div class="folders">
       <div v-for="folder in folders"
            class="folder_container">
-           <div class="folder"><div class="label">{{folder.label}}</div></div>
+           <div class="folder" @click="open(folder)"><div class="label">{{folder.label}}</div></div>
       </div>
     </div>
   </div>
@@ -13,20 +13,9 @@
 <script lang="coffee">
 export default {
   computed:
-    folders: () -> [
-      {label: 'Lorem'}
-      {label: 'Ipsum'}
-      {label: 'Dolor'}
-      {label: 'Sit'}
-      {label: 'Amet'}
-      {label: 'Lorem'}
-      {label: 'Ipsum'}
-      {label: 'Dolor'}
-      {label: 'Sit'}
-      {label: 'Amet'}
-      {label: 'Lorem'}
-      {label: 'Ipsum'}
-    ]
+    folders: () -> @$store.state.space.subspaces
+  methods:
+    open: (folder) -> @$store.dispatch 'change_space', folder.id
 }
 </script>
 

@@ -26,6 +26,8 @@ export default {
       state.spaces = spaces
     _set_space: (state, space) ->
       state.space = space
+      # FIXME this is a ugly hack
+      state.local_path = '/'+([state.space.id].concat(state.local_path.split('/').slice(2))).join('/')
     _set_nodes: (state, nodes) ->
       state.nodes = nodes
     set_transform: (state, transform) ->

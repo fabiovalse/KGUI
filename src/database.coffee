@@ -38,20 +38,18 @@ module.exports = {
       else
         return false
 
-    payload = {query: "MATCH (s1:Space {id: {id}}) OPTIONAL MATCH (s1)-[r1 {type: 'in_list'}]->(n) OPTIONAL MATCH (s)-[r {type: 'in_list'}]->(n) WITH COLLECT(s1)+COLLECT(s) AS spaces UNWIND spaces AS s RETURN DISTINCT s ORDER BY s.order", params: {id: id}}
-    @execute payload, (data) =>
-      result = JSON.parse(data.responseText).data
-
-      spaces = result.map (s) ->
-        space = s[0].data
-
-        if space.id.toString() is id.toString()
-          context.commit '_set_layers', if space.layers? then space.layers.map((l) -> {label: l, status: get_status l}) else []
-          context.commit '_set_space', space
-
-        return space
-
-      context.commit '_set_spaces', spaces
+    @execute {query: "MATCH (the_space:Space {id: {id}}) RETURN the_space", params: {id: id}}, (data) =>
+      space = JSON.parse(data.responseText).data[0][0].data
+      @execute {query: "MATCH (the_space:Space {id: {id}})-[{type: 'in_list'}]->(list) MATCH (list)<-[{type: 'in_list'}]-(s) RETURN s ORDER BY s.order", params: {id: id}}, (data) =>
+        space.list = JSON.parse(data.responseText).data.map (d) -> d[0].data
+        @execute {query: "MATCH (the_space:Space {id: {id}})-[{type: 'subspace'}]->(s) RETURN s", params: {id: id}}, (data) =>
+          space.subspaces = JSON.parse(data.responseText).data.map (d) -> d[0].data
+          @execute {query: "MATCH (the_space:Space {id: {id}}) OPTIONAL MATCH path=(:Space)-[* {type: 'subspace'}]->(the_space:Space {id: {id}}) RETURN nodes(path)", params: {id: id}}, (data) =>
+            path = JSON.parse(data.responseText).data[0][0]
+            space.vfs_path = if path? then (path.map (d) -> d.data) else [space]
+            context.commit '_set_layers', if space.layers? then space.layers.map((l) -> {label: l, status: get_status l}) else []
+            context.commit '_set_space', space
+            context.commit '_set_spaces', space.list
 
     @query_nodes context, id
 
