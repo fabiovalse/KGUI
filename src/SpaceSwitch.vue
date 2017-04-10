@@ -22,8 +22,8 @@ export default {
 .spaceswitch {
   display: flex;
   position: absolute;
-  bottom: 20px;
-  right: 20px;
+  bottom: 15px;
+  right: 60px;
   z-index: 2;
 }
 

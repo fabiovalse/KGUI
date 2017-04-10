@@ -151,7 +151,7 @@ export default {
 
   .zoom_control {
     position: absolute;
-    bottom: 100px;
+    bottom: 15px;
     right: 20px;
     z-index: 2;
   }
@@ -179,7 +179,7 @@ export default {
 
   .annotation_control {
     position: absolute;
-    bottom: 165px;
+    bottom: 80px;
     right: 20px;
     z-index: 2;
   }
