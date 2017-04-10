@@ -23,8 +23,11 @@ export default {
   display: flex;
   position: absolute;
   bottom: 15px;
-  right: 60px;
+  left: 10px;
   z-index: 2;
+}
+.mobile_mode .spaceswitch {    
+  left: 420px;    
 }
 
 .space {
