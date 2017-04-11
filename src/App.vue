@@ -36,6 +36,10 @@
       :config="config"
       v-if="config.layout.view"
     ></mainview>
+    <breadcrumb
+      :path="space.vfs_path"
+      v-if="space.vfs_enabled"
+    ></breadcrumb>
   </div>
 </template>
 
@@ -45,6 +49,7 @@ import SearchBar from './SearchBar.vue'
 import ResultsBox from './ResultsBox.vue'
 import InfoBox from './InfoBox.vue'
 import SearchDirectionsBox from './SearchDirectionsBox.vue'
+import Breadcrumb from './Breadcrumb.vue'
 import config from './config.coffee'
 
 export default {
@@ -55,6 +60,7 @@ export default {
   computed:
     mode: () -> @$store.state.mode
     config: () -> config
+    space: () -> @$store.state.space
 
   mounted: () ->
     @$store.dispatch 'init', {default_starting_point: config.default_starting_point, default_space: config.default_space}
@@ -67,7 +73,7 @@ export default {
     toggle_mobile_open: (flag) ->
       @mobile_open = if flag? then flag else (not @mobile_open)
 
-    route_changed: (route) -> 
+    route_changed: (route) ->
       if route.params.target?
         @$store.dispatch 'request_info', route.params.target
       else if 'from' in Object.keys(route.params) and 'to' in Object.keys(route.params)
@@ -75,7 +81,7 @@ export default {
           from_id: (if route.params.from is '_' then undefined else route.params.from),
           to_id: (if route.params.to is '_' then undefined else route.params.to),
         }
-      
+
       if (route.params.space? and not @$store.state.space?) or (route.params.space? and @$store.state.space? and route.params.space isnt @$store.state.space.id)
         @$store.dispatch 'change_space', route.params.space
 
@@ -94,6 +100,7 @@ export default {
     searchbar: SearchBar
     mainview: View
     resultsbox: ResultsBox
+    breadcrumb: Breadcrumb
 }
 </script>
 
@@ -151,6 +158,13 @@ html, body {
 .mainview {
   width: 100%;
   height: 100%;
+}
+.breadcrumb {
+  position: absolute;
+  top: 10px;
+  left: 418px;
+  z-index: 10;
+  height: 48px;
 }
 
 a {

@@ -44,12 +44,14 @@ module.exports = {
         space.list = JSON.parse(data.responseText).data.map (d) -> d[0].data
         @execute {query: "MATCH (the_space:Space {id: {id}})-[{type: 'subspace'}]->(s) RETURN s", params: {id: id}}, (data) =>
           space.subspaces = JSON.parse(data.responseText).data.map (d) -> d[0].data
-          @execute {query: "MATCH (the_space:Space {id: {id}}) OPTIONAL MATCH path=(:Space)-[* {type: 'subspace'}]->(the_space:Space {id: {id}}) RETURN nodes(path)", params: {id: id}}, (data) =>
-            path = JSON.parse(data.responseText).data[0][0]
-            space.vfs_path = if path? then (path.map (d) -> d.data) else [space]
-            context.commit '_set_layers', if space.layers? then space.layers.map((l) -> {label: l, status: get_status l}) else []
-            context.commit '_set_space', space
-            context.commit '_set_spaces', space.list
+          @execute {query: "MATCH (:Space {id: {id}})-[r {type: 'subspace'}]-() RETURN COUNT(r)", params: {id: id}}, (data) =>
+            space.vfs_enabled = JSON.parse(data.responseText).data[0][0] > 0
+            @execute {query: "MATCH path=(:Space)-[*0.. {type: 'subspace'}]->({id: {id}}) WITH nodes(path) AS path ORDER BY length(path) RETURN path[0]", params: {id: id}}, (data) =>
+              space.vfs_path = JSON.parse(data.responseText).data.map (d) -> d[0].data
+              space.vfs_path.reverse()
+              context.commit '_set_layers', if space.layers? then space.layers.map((l) -> {label: l, status: get_status l}) else []
+              context.commit '_set_space', space
+              context.commit '_set_spaces', space.list
 
     @query_nodes context, id
 

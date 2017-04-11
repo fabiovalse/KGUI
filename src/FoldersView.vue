@@ -15,7 +15,7 @@ export default {
   computed:
     folders: () -> @$store.state.space.subspaces
   methods:
-    open: (folder) -> @$store.dispatch 'change_space', folder.id
+    open: (item) -> @$store.dispatch 'change_space', item.id
 }
 </script>
 
@@ -25,6 +25,7 @@ export default {
   overflow-y: scroll;
   background: #7b5b5b;
   display: flex;
+  padding-top: 60px; /* FIXME this is because of the breadcrumb, but we need a more intelligent way to do this */
   padding-left: 420px; /* 12px more, needed for folders margin */
 }
 .folders {
