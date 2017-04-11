@@ -27,6 +27,7 @@ export default {
   display: flex;
   padding-top: 60px; /* FIXME this is because of the breadcrumb, but we need a more intelligent way to do this */
   padding-left: 420px; /* 12px more, needed for folders margin */
+  box-sizing: border-box;
 }
 .folders {
   flex-grow: 1;
