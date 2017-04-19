@@ -38,7 +38,7 @@
     ></mainview>
     <breadcrumb
       :path="space.vfs_path"
-      v-if="space.vfs_enabled"
+      v-if="space !== undefined && space.vfs_enabled"
     ></breadcrumb>
   </div>
 </template>
