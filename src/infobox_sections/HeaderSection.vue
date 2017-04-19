@@ -32,7 +32,6 @@ export default {
 .header_section {
   position: relative;
   padding: 30px 25px 20px 25px;
-  font-family: sans-serif;
   background: #B44646;
   color: white;
 }
