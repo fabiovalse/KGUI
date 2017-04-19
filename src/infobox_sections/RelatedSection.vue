@@ -1,5 +1,5 @@
 <template>
-  <div class="related_section">
+  <div v-if="nodes.length > 0" class="related_section">
     <titlesubsection v-if="config.title !== undefined" :text="config.title"></titlesubsection>
     <span class="link" v-for="n in nodes"><a :href="get_link(n.data.id)">{{get_label(n)}}</a></span>
   </div>
