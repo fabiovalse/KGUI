@@ -24,6 +24,10 @@ export default {
       # Handling arrays
       if result isnt null and typeof data[result[1]] is 'object'
         kgl = data[result[1]].map (d) => transform d, result[1]
+
+        if markdown_enabled
+          kgl = kgl.map (d) -> converter.makeHtml(d)[3...-4]
+
       else
         # {{property}} syntax
         kgl = kgl.replace /{{(.+?)}}/g, (_, property) =>
