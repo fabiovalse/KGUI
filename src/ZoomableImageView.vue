@@ -22,17 +22,15 @@ import Vue from 'vue'
 export default {
 #  render: (createElement) -> createElement 'div', {attrs: {id: 'zoomableimageview'}}
 
-#  data: () ->
-#    initial_pan: undefined
-#    initial_zoom: undefined
+  data: () ->
+    initial_pan: undefined
+    initial_zoom: undefined
+    annotation_visible: true
 
   props:
     config:
       type: Object
       required: true
-
-  data: () ->
-    annotation_visible: true
 
   computed:
     nodes: () -> @$store.state.nodes
@@ -63,21 +61,27 @@ export default {
       @$el.querySelector('svg').style['display'] = if @annotation_visible then 'inline' else 'none'
 
     load_map: () ->
+      new_zoom = @initial_zoom
+      new_pan = @initial_pan
+
       if @viewer.isOpen()
         @viewer.open(@space.tile_source)
 
-#      @viewer.addHandler 'pan', (event) =>
-#        @initial_pan = event.center
-#
-#      @viewer.addHandler 'zoom', (event) =>
-#        @initial_zoom = event.zoom
+      ### Store every zoom & pan change
+      ###
+      @viewer.addHandler 'pan', (event) =>
+        @initial_pan = event.center
+      @viewer.addHandler 'zoom', (event) =>
+        @initial_zoom = event.zoom
 
       @viewer.addHandler 'open', (event) =>
-        if @initial_pan?
-          @viewer.viewport.panTo(@initial_pan, true).applyConstraints()
 
-        if @initial_zoom?
-          @viewer.viewport.zoomTo(@initial_zoom, true).applyConstraints()
+        ### Restore the zoom & pan of the previous space
+        ###
+        if new_pan?
+          @viewer.viewport.panTo(new_pan, true)
+        if new_zoom?
+          @viewer.viewport.zoomTo(new_zoom, true)
 
         ### Image to viewport coordinates conversion
         ###
@@ -109,16 +113,10 @@ export default {
         overlay_component.$mount()
         @$el.querySelector('svg g').appendChild(overlay_component.$el)
 
+        ### Add CSS mix blend mode style
+        ###
         @$el.querySelector('svg').style['mix-blend-mode'] = 'multiply'
 
-  #      ### Click event registration
-  #      ###
-  #      @overlay.forEach (d,i) =>
-  #        @$el.querySelectorAll(d.selector).forEach (d,j) =>
-  #          svg_overlay.onClick(d, () =>
-  #            #console.log('click', arguments)
-  #          )
-  #
   #    @viewer.addHandler 'canvas-click', (event) =>
   #      # The canvas-click event gives us a position in web coordinates.
   #      webPoint = event.position;
