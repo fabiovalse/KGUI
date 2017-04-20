@@ -176,9 +176,8 @@ a:hover {
 }
 
 sup {
-  font-size: 8px;
-  position: absolute;
-  margin-top: -5px;
+  font-size: 12px;
+  color: #B44646;
   margin-left: -2px;
 }
 
