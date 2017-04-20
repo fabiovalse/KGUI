@@ -9,7 +9,7 @@
       <div class="language" v-html="text_description[1]"></div>
       <div v-html="text[1]"></div>
       
-      <div class="notes">
+      <div v-if="notes.length > 0" class="notes">
         <div v-for="(note,i) in notes" class="note">
           <sup>{{note_ids[i]}}</sup> <span>{{note}}</span>
         </div>  
