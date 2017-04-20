@@ -20,7 +20,7 @@ module.exports = {
       context.commit '_set_starting_point', result.data[0][0].data
 
   query_nodes: (context, id) ->
-    payload = {query: "MATCH (n:Info)-[]-(a:Annotation)-[]-(s:Space {id: {id}}) RETURN n, a.x, a.y, a;", params: {id: id}} #FIXME: only should be returned
+    payload = {query: "MATCH (n:Info)-[]-(a:Annotation)-[]-(s:Space {id: {id}}) RETURN n, a.x, a.y, a;", params: {id: id}} #FIXME: only a should be returned
     @execute payload, (data) ->
       nodes = JSON.parse(data.responseText).data.map (d) ->
         r = d[0].data
