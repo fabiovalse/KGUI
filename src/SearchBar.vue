@@ -64,7 +64,7 @@ export default {
 }
 .icon-directions {
   color: #00B3FD;
-  font-size: 16px;
+  font-size: 19px;
   cursor: pointer;
 }
 input {
