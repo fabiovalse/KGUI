@@ -36,7 +36,9 @@ export default {
 
         # MarkDown syntax
         if markdown_enabled
-          kgl = converter.makeHtml(kgl)[3...-4] # WARNING this hack removes surrounding <p> tags
+          kgl = converter.makeHtml(kgl)
+          if kgl[0...3] is '<p>'
+            kgl = kgl[3...-4] # WARNING this hack removes surrounding <p> tags
 
       return kgl
     catch error
