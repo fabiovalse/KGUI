@@ -2,11 +2,10 @@
   <div class="searchbar">
     <input class="search" type="text" placeholder="Cerca" @input="click_search" @keyup="change_selected_result" :value="get_target()">
 
-    <div class="buttons">
-      <button @click="click_search"><i class="icon-search"></i></button>
-      <button v-if="mode === 'info'" @click="click_close"><i class="icon-x"></i></button>
-      <button v-if="searchdirectionsbox_enabled && mode === 'fullmap'" @click="click_directions"><i class="icon-compass"></i></button>
-    </div>
+    <button @click="click_search"><i class="icon-search"></i></button>
+    <div class="separator"></div>
+    <button v-if="mode === 'info'" @click="click_close"><i class="icon-x"></i></button>
+    <button v-if="searchdirectionsbox_enabled && mode === 'fullmap'" @click="click_directions"><i class="icon-directions"></i></button>
   </div>
 </template>
 
@@ -46,7 +45,6 @@ export default {
 <style scoped>
 .searchbar {
   background: #FFF;
-  border-bottom: 1px solid lightgrey;
   border-radius: 3px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 -1px 0px rgba(0,0,0,0.02);
   display: flex;
@@ -56,11 +54,17 @@ export default {
 }
 .icon-search, .icon-x {
   color: rgb(178, 178, 178);
-  font-size: 16px;
   cursor: pointer;
 }
-.icon-compass {
+.icon-search {
+  font-size: 18px;
+}
+.icon-x {
+  font-size: 15px;
+}
+.icon-directions {
   color: #00B3FD;
+  font-size: 16px;
   cursor: pointer;
 }
 input {
@@ -79,17 +83,13 @@ input:active {
 }
 
 button {
-  width: 50px;
-  height: 25px;
-  font-size: 20px;
+  width: 52px;
+  height: 50%;
   border: none;
   background: transparent;
 }
-.buttons {
-  display: flex;
-  align-items: center;
-}
-.buttons > *:not(:last-child) {
+.separator {
+  height: 60%;
   border-right: 1px solid rgb(178, 178, 178);
 }
 

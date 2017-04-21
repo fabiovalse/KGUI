@@ -124,8 +124,8 @@ html, body {
 
 .searchbar {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 8px;
+  left: 8px;
   z-index: 10;
   height: 48px;
   width: 390px;
