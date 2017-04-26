@@ -1,23 +1,24 @@
 <template>
   <div class="chinesetext_section">
     
-    <div class="main_info">
-      <span class="label">{{target.label}}</span>
-      <span class="secondary_label">{{target.radical}}</span>
+    <div class="label">{{target.label}}</div>
+    <div v-if="target.radical !== undefined">
+      <div class="field_description">radical</div>
+      <div class="secondary_label">{{target.radical}}</div>
     </div>
     
     <div class="other_info">
       <div v-if="target.zhuyin_fuhao !== undefined">
-        <div>{{target.zhuyin_fuhao}}</div>
         <div class="field_description">zhuyin fuhao</div>
+        <div>{{target.zhuyin_fuhao}}</div>
       </div>
       <div v-if="target.simplified !== undefined && target.simplified !== ''">
+        <div class="field_description">simplified form</div>
         <div>{{target.simplified}}</div>
-        <div class="field_description">forma semplificata</div>
       </div>
       <div v-if="target.pinyin !== undefined">
-        <div>{{target.pinyin}}</div>
         <div class="field_description">pinyin</div>
+        <div>{{target.pinyin}}</div>
       </div>
     </div>
   </div>
@@ -34,27 +35,20 @@ export default {
 
 <style scoped>
 .chinesetext_section {
-  padding: 16px;
   display: flex;
+  flex-direction: row;
   align-items: center;
-}
-.main_info {
-  margin-right: 40px;
+  padding: 16px;
 }
 
 .label {
-  margin-right: 10px;
+  margin-right: 20px;
   font-size: 80px;
-  font-family: chinese;
+  /*font-family: chinese;*/
 }
 .secondary_label {
-  font-size: 40px;  
-}
-
-.other_info {
-  display: flex;
-  flex-direction: column;
-  font-size: 20px;
+  font-size: 40px;
+  margin-right: 40px;
 }
 
 .field_description {
