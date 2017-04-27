@@ -31,7 +31,7 @@ export default {
 
   computed:
     target: () -> @$store.state.target
-    pinyin: () -> PinyinConverter.convert("#{@target.pinyin}#{@target.tone}")
+    pinyin: () -> if @target.pinyin and @target.tone then PinyinConverter.convert("#{@target.pinyin}#{@target.tone}") else @target.pinyin
 
 }
 </script>
