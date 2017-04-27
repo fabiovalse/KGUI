@@ -3,7 +3,7 @@
     <input class="search" type="text" placeholder="Cerca" @input="click_search" @keyup="change_selected_result" :value="get_target()">
 
     <button @click="click_search"><i class="icon-search"></i></button>
-    <div class="separator"></div>
+    <div v-if="mode === 'info' || (searchdirectionsbox_enabled && mode === 'fullmap')" class="separator"></div>
     <button v-if="mode === 'info'" @click="click_close"><i class="icon-x"></i></button>
     <button v-if="searchdirectionsbox_enabled && mode === 'fullmap'" @click="click_directions"><i class="icon-directions"></i></button>
   </div>
