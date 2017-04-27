@@ -39,7 +39,7 @@ export default {
     padding-left: 408px;
     height: 100%;
     overflow-y: scroll;
-    background: cornsilk;
+    background: rgb(255, 244, 230);
   }
 
   table {
