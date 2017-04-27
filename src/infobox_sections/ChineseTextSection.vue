@@ -47,7 +47,6 @@ export default {
 .label {
   margin-right: 20px;
   font-size: 80px;
-  /*font-family: chinese;*/
 }
 .secondary_label {
   font-size: 40px;
