@@ -11,6 +11,7 @@ import RelatedSection from './RelatedSection.vue'
 import TimeSection from './TimeSection.vue'
 import ActionSection from './ActionSection.vue'
 import CollapsibleBox from '../CollapsibleBox.vue'
+import SourceSection from './SourceSection.vue'
 
 export default {
   render: (createElement) ->
@@ -36,6 +37,7 @@ export default {
     timesection: TimeSection
     actionsection: ActionSection
     collapsiblebox: CollapsibleBox
+    sourcesection: SourceSection
 
 }
 </script>
