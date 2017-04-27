@@ -18,17 +18,20 @@
       </div>
       <div v-if="target.pinyin !== undefined">
         <div class="field_description">pinyin</div>
-        <div>{{target.pinyin}}</div>
+        <div>{{pinyin}}</div>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="coffee">
+import PinyinConverter from '../../lib/pinyin_converter.js'
+
 export default {
 
   computed:
     target: () -> @$store.state.target
+    pinyin: () -> PinyinConverter.convert("#{@target.pinyin}#{@target.tone}")
 
 }
 </script>
