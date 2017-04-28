@@ -4,7 +4,10 @@
     <div class="folders">
       <div v-for="folder in folders"
            class="folder_container">
-           <div class="folder" @click="open(folder)"><div class="label">{{folder.label}}</div></div>
+        <div class="folder" @click="open(folder)">
+          <div class="icon"><i class="icon-folder"></i></div>
+          <div class="label">{{folder.label}}</div>
+        </div>
       </div>
     </div>
   </div>
@@ -42,15 +45,24 @@ export default {
   margin: 12px;
   margin-left: 0;
   box-shadow: 4px 4px 6px rgba(0,0,0,0.4);
-  background: cornsilk;
+  border-radius: 3px;
+  background: rgb(253,233,153);
   position: relative;
   cursor: pointer;
 }
 .label {
   position: absolute;
   bottom: 12px;
-  left: 12px;
+  left: 40px;
   pointer-events: none;
+  font-size: 13px;
+}
+.icon {
+  position: absolute;
+  bottom: 5px;
+  left: 12px;
+  font-size: 20px;
+  color: rgb(230, 194, 60);
 }
 @media (max-width: 480px) {
   .foldersview {
