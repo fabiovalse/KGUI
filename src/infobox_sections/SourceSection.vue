@@ -37,6 +37,6 @@ export default {
 }
 
 .reference {
-  margin-bottom: 3px;
+  margin-bottom: 10px;
 }
 </style>
