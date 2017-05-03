@@ -1,7 +1,7 @@
 <template>
   <div class="spaceswitch">
     <div v-if="s.id !== space.id" class="space" :style="get_style(s.thumbnail)" v-for="s in spaces" @click="change_space(s.id)">
-      <div>{{s.label}}</div> 
+      <div>{{s.short_label}}</div> 
     </div>
   </div>
 </template>
