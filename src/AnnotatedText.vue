@@ -26,16 +26,24 @@ export default {
 <style>
 /* FIXME WARNING style section with global scope needed  for styling anchors */
 
-.annotated_text a {
+.annotated_text a:not(.note) {
   color: inherit;
   padding: 3px;
   border-radius: 3px;
   border: 1px solid rgb(255, 183, 0);
   background-color: rgba(255, 77, 0, 0.08);
 }
-.annotated_text a:hover {
+.annotated_text a:not(.note):hover {
   text-decoration: none;
   background-color: rgba(255, 206, 0, 0.26);
+}
+
+.addition {
+  color: rgba(0,0,0,0.45);
+}
+.note:hover {
+  text-decoration: none;
+  cursor: pointer;
 }
 
 </style>

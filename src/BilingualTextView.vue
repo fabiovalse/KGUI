@@ -10,8 +10,8 @@
       </tr>
     </table>
 
-    <div class="notes">
-      <div v-for="(note,i) in notes" class="note">
+    <div class="footer_notes">
+      <div v-for="(note,i) in notes" class="footer_note">
         <sup>{{note_ids[i]}}</sup> <span>{{note}}</span>
       </div>  
     </div>
@@ -55,12 +55,12 @@ export default {
     letter-spacing: 2px;
   }
 
-  .notes {
+  .footer_notes {
     padding: 20px;
     font-size: 12px;
     color: rgba(0,0,0,0.54);
   }
-  .note {
+  .footer_note {
     padding-bottom: 10px;
   }
 

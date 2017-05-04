@@ -9,8 +9,8 @@
       <div class="language" v-html="text_description[1]"></div>
       <div v-html="text[1]"></div>
       
-      <div v-if="notes !== undefined && notes.length > 0" class="notes">
-        <div v-for="(note,i) in notes" class="note">
+      <div v-if="notes !== undefined && notes.length > 0" class="footer_notes">
+        <div v-for="(note,i) in notes" class="footer_note">
           <sup>{{note_ids[i]}}</sup> <span>{{note}}</span>
         </div>  
       </div>
@@ -50,16 +50,16 @@ export default {
   font-size: 30px;
 }
 
-.language, .notes {
+.language, .footer_notes {
   font-size: 12px;
   color: rgba(0,0,0,0.54);
 }
-.notes {
+.footer_notes {
   margin-top: 15px;
   padding-top: 15px;
   border-top: 1px solid #BBB;
 }
-.note {
+.footer_note {
   padding-bottom: 10px;
 }
 </style>
