@@ -33,8 +33,6 @@ export default {
   padding: 10px 24px 10px 24px;
   font-size: 13px;
   line-height: 19.5px;
-  text-align: justify;
-  font-family: sans-serif;
 }
 
 @media (max-width: 480px) {

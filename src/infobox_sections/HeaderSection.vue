@@ -31,17 +31,18 @@ export default {
 <style scoped>
 .header_section {
   position: relative;
-  padding: 30px 25px 20px 25px;
+  height: 68px;
+  padding: 16px 24px 20px 24px;
   background: #B44646;
   color: white;
 }
 
 .title {
-  font-size: 21px;
+  font-size: 18px;
 }
 .subtitle {
-  margin-top: 6px;
-  font-size: 15px;
+  margin-top: 11px;
+  font-size: 13px;
 }
 
 .hlinks {

@@ -54,7 +54,6 @@ export default {
 table {
   padding: 16px;
   font-size: 13px;
-  font-family: sans-serif;
   border-collapse: separate;
   border-spacing: 8px;
   width: 100%;

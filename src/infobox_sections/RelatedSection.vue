@@ -51,7 +51,6 @@ export default {
   padding: 10px 24px 10px 24px;
   font-size: 13px;
   line-height: 19.5px;
-  font-family: sans-serif;
 }
 
 .link:not(:first-of-type)::before {

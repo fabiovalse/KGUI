@@ -74,7 +74,6 @@ input {
   margin-left: 30px;
   border: none;
   font-size: 15px;
-  color: silver;
   border: none;
   outline: none;
 }
