@@ -1,5 +1,5 @@
 <template>
-  <svg v-if="start_date !== undefined && end_date !== undefined" class="time_section">
+  <svg v-if="start_date !== '' && end_date !== ''" class="time_section">
     <g :transform="get_translate()">
       <rect class="bar" :x="scale_value(start_date)" y="35" :width="scale_value(end_date)-scale_value(start_date)"></rect>
       <text :x="scale_value(start_date)-5" y="30">{{start_date}}</text>
