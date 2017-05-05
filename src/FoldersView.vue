@@ -111,6 +111,9 @@ export default {
   padding: 12px;
   cursor: pointer;
 }
+.button:hover {
+  box-shadow: 0 6px 12px rgba(0,0,0,.3);
+}
 
 @media (max-width: 480px) {
   .foldersview {

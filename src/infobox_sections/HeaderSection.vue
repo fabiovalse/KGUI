@@ -7,6 +7,11 @@
         <img :src="kgl_parse(img.icon)" :title="kgl_parse(img.label)">
       </a>
     </div>
+    <button v-if="data.view !== undefined" class="button" @click="open(folder)">
+      <div>
+        <i class="icon-open_with"></i>
+      </div>
+    </button>
   </div>
 </template>
 
@@ -55,6 +60,24 @@ export default {
   padding: 5px 3px 5px 3px;
 }
 
+.button {
+  position: absolute;
+  right: 10px;
+  top: -25px;
+  border: none;
+  border-radius: 50%;
+  background: #FFF;
+  box-shadow: 0 1px 6px 0 rgba(0,0,0,.3);
+  transition: box-shadow 150ms cubic-bezier(.4,0,1,1);
+  font-size: 20px;
+  color: #80131f;
+  line-height: 0px;
+  padding: 15px;
+  cursor: pointer;
+}
+.button:hover {
+  box-shadow: 0 6px 12px rgba(0,0,0,.3);
+}
 
 @media (max-width: 480px) {
   .header_section {
