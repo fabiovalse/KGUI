@@ -36,10 +36,11 @@ export default {
 
 <style scoped>
   .bilingualtextview {
+    padding-top: 80px;
     padding-left: 408px;
     height: 100%;
     overflow-y: scroll;
-    background: rgb(255, 244, 230);
+    background: rgb(253, 236, 215);
   }
 
   table {
@@ -48,7 +49,7 @@ export default {
   td {
     padding: 10px;
     text-align: justify;
-    border-bottom: 1px solid antiquewhite;
+    border-bottom: 1px solid #e6daca;
   }
   tr td:first-child {
     font-size: 20px;
