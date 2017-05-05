@@ -5,13 +5,11 @@
       <div v-for="folder in folders"
            class="folder_container"
            :style="{width: folder.width !== undefined ? 25*folder.width + '%' : '25%'}">
-        <div class="folder" 
-             :class="{vfs_img: folder.vfs_img !== undefined}"
-             @click="click(folder)"
-             :style="{height: folder.height !== undefined ? 124*folder.width + 'px' : '124px', background: 'url('+folder.vfs_img+') #9c3535'}">
+        <div class="folder" @click="click(folder)" :class="{vfs_img: folder.vfs_img !== undefined}" :style="{height: folder.height !== undefined ? 124*folder.width + 'px' : '124px'}">
           <div v-if="folder.icon !== undefined" class="icon">
             <i :class="'icon-' + folder.icon"></i>
           </div>
+          <div v-if="folder.icon == undefined" class="img" :style="{background: 'url('+folder.vfs_img+') #9c3535', 'background-position-x': 'center !important', 'background-position-y': 'top !important', 'background-size': '100% !important', 'background-repeat': 'no-repeat !important'}"></div>
           <div class="label">{{folder.label}}</div>
         </div>
       </div>
@@ -49,53 +47,48 @@ export default {
 .foldersview {
   height: 100%;
   overflow-y: scroll;
-  background: rgb(230,224,207);
-  display: flex;
+  background: #555;
   padding-top: 60px; /* FIXME this is because of the breadcrumb, but we need a more intelligent way to do this */
   padding-left: 420px; /* 12px more, needed for folders margin */
   box-sizing: border-box;
 }
 .folders {
-  flex-grow: 1;
-  height: 100%;
-}
-.folder_container {
-  /*width: 25%;*/
-  display: inline-block;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
 }
 .folder {
-  position: relative;
-  margin: 12px;
+  display: flex;
+  flex-direction: column;
+  margin: 35px 12px;
   margin-left: 0;
+  background: #9c3535;
   box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 -1px 0px rgba(0,0,0,0.02);
   cursor: pointer;
-  background-position-x: center !important;
-  background-position-y: top !important;
-  background-size: 100% !important;
-  background-repeat: no-repeat !important;
 }
 
 .icon {
-  display: table;
+  flex-grow: 1;
   width: 100%;
-  height: 100%;
+  padding-top: 15px;
   text-align: center;
   font-size: 65px;
+  background: #DDD;
   color: #FAFAFA;
 }
-.icon i {
-  display: table-cell;
-  vertical-align: middle;
+
+.img {
+  flex-grow: 1;
+  width: 100%;
 }
 
 .label {
-  position: absolute;
-  bottom: 5px;
-  left: 10px;
-  pointer-events: none;
+  height: 20px;
+  padding: 5px 0px 0px 10px;
   font-size: 13px;
   color: #FAFAFA;
   text-shadow: 0px 0px 2px rgba(0, 0, 0, 1);
+  pointer-events: none;
 }
 
 @media (max-width: 480px) {

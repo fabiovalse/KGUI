@@ -29,7 +29,7 @@ export default {
   width: 408px;
   height: 214px;
   background-size: cover;
-  background-color: #EEE;
+  background-color: #DDD;
 }
 
 .fake_image {
