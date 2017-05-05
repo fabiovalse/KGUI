@@ -1,7 +1,10 @@
 <template>
   <div class="image_section" :style="{'background-image': src ? 'url('+src+')' : 'none'}" >
-    <div v-if="label !== undefined" class="fake_image" :style="{'font-family': font_family}">
+    <div v-if="label !== undefined" class="fake_image ancient_background" :style="{'font-family': font_family}">
       <div class="text">{{label}}</div>
+    </div>
+    <div v-if="icon !== undefined" class="fake_image">
+      <div class="icon"><i :class="'icon-'+icon"></i></div>
     </div>
   </div>
 </template>
@@ -17,9 +20,11 @@ export default {
     config:
       type: Object
       required: true
+
   computed:
     src: () -> kgl.parse(@config.href, @data, false)
     label: () -> kgl.parse(@config.label, @data, false)
+    icon: () -> kgl.parse(@config.icon, @data, false)
     font_family: () -> @config.font
 }
 </script>
@@ -36,14 +41,24 @@ export default {
   width: 100%;
   height: 100%;
   text-align: center;
-  font-size: 200px;
-  background: url(../../data/img/grapheme_background.png);
 }
+
 .text {
+  font-size: 200px;
   line-height: 350px;
   color: #353535;
   text-shadow: 0px 0px 30px rgba(150, 150, 150, 0.9);
   pointer-events: none;
+}
+
+.icon {
+  font-size: 170px;
+  line-height: 400px;
+  color: #FFF;
+}
+
+.ancient_background {
+  background: url(../../data/img/grapheme_background.png);
 }
 
 @media (max-width: 480px){
