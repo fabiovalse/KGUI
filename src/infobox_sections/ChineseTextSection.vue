@@ -1,25 +1,28 @@
 <template>
   <div class="chinesetext_section">
     
-    <div class="label">{{target.label}}</div>
-    <div v-if="target.radical !== undefined">
-      <div class="field_description">radical</div>
-      <div class="secondary_label">{{target.radical}}</div>
+    <div class="chinese_text">
+      <div>
+        <div class="label">{{target.label}}</div>
+        <div class="field_description">Chinese</div>
+      </div>  
+      <div v-if="target.radical !== undefined">
+        <div class="secondary_label">{{target.radical}}</div>
+        <div class="field_description">radical</div>
+      </div>
     </div>
     
-    <div class="other_info">
-      <div v-if="target.zhuyin_fuhao !== undefined">
-        <div class="field_description">zhuyin fuhao</div>
-        <div>{{target.zhuyin_fuhao}}</div>
-      </div>
-      <div v-if="target.simplified !== undefined && target.simplified !== ''">
-        <div class="field_description">simplified form</div>
-        <div>{{target.simplified}}</div>
-      </div>
-      <div v-if="target.pinyin !== undefined">
-        <div class="field_description">pinyin</div>
-        <div>{{pinyin}}</div>
-      </div>
+    <div v-if="target.pinyin !== undefined">
+      <div>{{pinyin}}</div>
+      <div class="field_description">pinyin</div>
+    </div>
+    <div v-if="target.zhuyin_fuhao !== undefined">
+      <div>{{target.zhuyin_fuhao}}</div>
+      <div class="field_description">zhuyin fuhao</div>
+    </div>
+    <div v-if="target.simplified !== undefined && target.simplified !== ''">
+      <div>{{target.simplified}}</div>
+      <div class="field_description">simplified form</div>
     </div>
   </div>
 </template>
@@ -39,18 +42,27 @@ export default {
 <style scoped>
 .chinesetext_section {
   display: flex;
+  flex-direction: column;
+  padding: 16px 24px 20px 24px;
+}
+.chinesetext_section > * {
+  padding-bottom: 10px;
+}
+
+.chinese_text {
+  display: flex;
   flex-direction: row;
-  align-items: center;
-  padding: 16px;
+  align-items: flex-end;
+}
+.chinese_text > * {
+  margin-right: 20px;
 }
 
 .label {
-  margin-right: 20px;
   font-size: 80px;
 }
 .secondary_label {
   font-size: 40px;
-  margin-right: 40px;
 }
 
 .field_description {

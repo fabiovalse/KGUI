@@ -1,19 +1,14 @@
 <template>
   <div v-if="text !== undefined" class="bilingualtext_section">
-    <div>
-      <div class="language">{{text_description[0]}}</div>
-      <div class="large">{{text[0]}}</div>
+    <div v-for="(t, i) in text" class="field">
+      <div class="language" v-html="t.label"></div>
+      <div v-html="t.text" :class="{large: isLarge(i)}"></div>
     </div>
-    <br>
-    <div>
-      <div class="language" v-html="text_description[1]"></div>
-      <div v-html="text[1]"></div>
-      
-      <div v-if="notes !== undefined && notes.length > 0" class="footer_notes">
-        <div v-for="(note,i) in notes" class="footer_note">
-          <sup>{{note_ids[i]}}</sup> <span>{{note}}</span>
-        </div>  
-      </div>
+    
+    <div v-if="notes !== undefined && notes.length > 0" class="footer_notes">
+      <div v-for="note in notes" class="footer_note">
+        <sup>{{note.label}}</sup> <span>{{note.text}}</span>
+      </div>  
     </div>
   </div>
 </template>
@@ -30,11 +25,12 @@ export default {
       type: Object
       required: true
 
+  methods:
+    isLarge: (i) -> i is 0
+
   computed:
-    text: () -> kgl.parse(@config.text, @data, true)
-    text_description: () -> kgl.parse(@config.text_description, @data, true)
-    notes: () -> kgl.parse(@config.notes, @data)
-    note_ids: () -> kgl.parse(@config.note_ids, @data)
+    text: () -> JSON.parse(kgl.parse(@config.text, @data, true))
+    notes: () -> if @config.notes? then JSON.parse(kgl.parse(@config.notes, @data)) else undefined
 
 }
 </script>
@@ -47,7 +43,11 @@ export default {
 }
 
 .large {
-  font-size: 30px;
+  font-size: 30px !important;
+}
+
+.field {
+  margin-bottom: 15px;
 }
 
 .language, .footer_notes {
@@ -55,7 +55,6 @@ export default {
   color: rgba(0,0,0,0.54);
 }
 .footer_notes {
-  margin-top: 15px;
   padding-top: 15px;
   border-top: 1px solid #BBB;
 }
