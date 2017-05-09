@@ -6,6 +6,8 @@
       <div class="character">{{node.label}}</div>
       <div class="pinyin" title="Pinyin transliteration">{{node.pinyin}}</div>
       <div class="translation" title="English translation">{{node.translation_en}}</div>
+      <div v-if="node.variants !== undefined && node.variants !== ''" class="variants" title="Has variants">v</div>
+      <div v-if="node.simplified !== undefined && node.simplified !== ''" class="simplified" title="Has simplified form">s</div>
     </div>
   </div>
 </template>
@@ -75,5 +77,27 @@ export default {
     font-size: 12px;
     color: #505050;
     padding: 2px 0px 2px 0px;
+  }
+  .variants {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: #fe7d5b;
+    color: #303030;
+  }
+  .simplified {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: #FEB75B;
+    color: #303030;
+  }
+  .variants, .simplified {
+    width: 15px;
+    height: 15px;
+    text-align: center;
+    font-size: 11px;
+    line-height: 15px;
+    font-weight: bold;
   }
 </style>
