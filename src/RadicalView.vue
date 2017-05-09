@@ -1,6 +1,6 @@
 <template>
   <div class="radicalview">
-    <div v-for="node in nodes" class="radical" @click="select(node)" :style="{background: node.strokecount%2 === 0 ? '#E0C5AA' : '#CCB49C'}">
+    <div v-for="node in nodes" class="radical" @click="select(node)" :style="{background: node.strokecount%2 === 0 ? '#ECD9C8' : '#CCB49C'}">
       <div class="number" title="Radical identification number">{{node.number}}</div>
       <div class="strokecount" title="Stroke count">{{node.strokecount}}</div>
       <div class="character">{{node.label}}</div>
@@ -31,7 +31,7 @@ export default {
     overflow-y: scroll;
     padding-top: 60px;
     padding-left: 430px;
-    background: #ECD9C8;
+    background: #303030;
     box-sizing: border-box;
   }
 
