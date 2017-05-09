@@ -46,7 +46,7 @@ export default {
 .text {
   font-size: 200px;
   line-height: 350px;
-  color: #353535;
+  color: #40271e;
   text-shadow: 0px 0px 30px rgba(150, 150, 150, 0.9);
   pointer-events: none;
 }

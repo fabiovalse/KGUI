@@ -41,6 +41,7 @@ export default {
     height: 100%;
     overflow-y: scroll;
     background: rgb(253, 236, 215);
+    box-sizing: border-box;
   }
 
   table {
