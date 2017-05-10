@@ -18,6 +18,9 @@ export default {
 </script>
 
 <style scoped>
+.breadcrumb {
+  mix-blend-mode: difference;
+}
 .item {
   display: inline-block;
   padding: 10px;
@@ -26,11 +29,5 @@ export default {
   color: white;
   cursor: pointer;
   text-decoration: none;
-}
-.breadcrumb > * {
-  opacity: 0.5;
-}
-.item:last-child {
-  opacity: 1;
 }
 </style>
