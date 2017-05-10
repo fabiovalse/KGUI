@@ -7,11 +7,6 @@
         <img :src="kgl_parse(img.icon)" :title="kgl_parse(img.label)">
       </a>
     </div>
-    <button v-if="data.view !== undefined" class="button" @click="open(data)">
-      <div>
-        <i class="icon-zoom_in"></i>
-      </div>
-    </button>
   </div>
 </template>
 
@@ -30,8 +25,6 @@ export default {
   methods:
     kgl_parse: kgl.parse
 
-    open: (item) ->
-      @$store.dispatch 'change_space', item.id
 }
 </script>
 
