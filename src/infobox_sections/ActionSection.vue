@@ -2,8 +2,8 @@
   <div class="action_section">
     <div v-for="action in actions" class="action">
       <a :href="get_link(action.id)">
-        <div><i :class="'icon-'+action.icon"></i></div>
-        <div>{{action.label}}</div>
+        <div class="icon"><i :class="'icon-'+action.icon"></i></div>
+        <div class="label">{{action.label.toUpperCase()}}</div>
       </a>
     </div>
   </div>
@@ -48,5 +48,18 @@ export default {
   width: 100px;
   text-align: center;
   padding: 5px;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+.icon {
+  font-size: 18px;
+}
+.label {
+  font-size: 12px;
+  font-weight: bold;
+  margin-top: 5px;
 }
 </style>
