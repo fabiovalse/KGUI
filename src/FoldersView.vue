@@ -4,12 +4,12 @@
     <div class="folders">
       <div v-for="folder in folders"
            class="folder_container"
-           :style="{width: folder.width !== undefined ? 25*folder.width + '%' : '25%', 'max-width': folder.width !== undefined ? folder.width*200+'px' : '200px'}">
+           :style="{width: folder.width !== undefined ? 25*folder.width + '%' : '25%', 'max-width': folder.width !== undefined ? folder.width*204+'px' : '204px'}">
         
         <div class="folder"
              @click="select(folder)"
              :class="{vfs_img: folder.vfs_img !== undefined}"
-             :style="{height: folder.height !== undefined ? 124*folder.width + 'px' : '124px'}">
+             :style="{height: folder.height !== undefined ? 204*folder.width + 'px' : '204px'}">
 
           <div v-if="folder.icon !== undefined" class="icon">
             <i :class="'icon-' + folder.icon"></i>
@@ -17,13 +17,17 @@
 
           <div v-if="folder.icon == undefined"
                class="img"
-               :style="{background: 'url('+folder.vfs_img+') #B44646', 'background-position-x': 'center !important', 'background-position-y': 'top !important', 'background-size': '100% !important', 'background-repeat': 'no-repeat !important'}"></div>
+               :style="{background: 'url('+folder.vfs_img+') #B44646', 'background-position-x': 'center !important', 'background-size': 'cover'}"></div>
           
-          <div class="label">{{folder.label}}</div>
+          <div class="title">
+            <div class="main">{{folder.label.toUpperCase()}}</div>
+            <div class="sub">{{folder.sub_title}}</div>
+          </div>
+
           
           <button v-if="folder.view !== undefined" class="button" @click="open(folder)">
             <div>
-              <i class="icon-open_with"></i>
+              <i class="icon-zoom_in"></i>
             </div>
           </button>
         </div>
@@ -63,7 +67,7 @@ export default {
 .foldersview {
   height: 100%;
   overflow-y: scroll;
-  background: #999;
+  background: #b6b6b6;
   padding-top: 60px; /* FIXME this is because of the breadcrumb, but we need a more intelligent way to do this */
   padding-left: 430px; /* 12px more, needed for folders margin */
   box-sizing: border-box;
@@ -77,19 +81,20 @@ export default {
   display: flex;
   flex-direction: column;
   position: relative;
-  margin: 10px 16px 10px 0px;
+  margin: 3px 6px 3px 0px;
   margin-left: 0;
   background: #B44646;
   box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 -1px 0px rgba(0,0,0,0.02);
   cursor: pointer;
+  border-radius: 2px;
 }
 
 .icon {
   flex-grow: 1;
   width: 100%;
-  padding-top: 15px;
+  padding-top: 60px;
   text-align: center;
-  font-size: 65px;
+  font-size: 52px;
   background: #DDD;
   color: #FAFAFA;
 }
@@ -99,31 +104,36 @@ export default {
   width: 100%;
 }
 
-.label {
-  height: 20px;
-  padding: 5px 0px 0px 10px;
-  font-size: 13px;
-  color: #FAFAFA;
+.title {
+  height: 40px;
   pointer-events: none;
+  background: #FFF;
+}
+.title .main {
+  font-size: 12px;
+  font-weight: bold;
+  padding: 5px 0px 0px 10px;
+  color: #212121;
+}
+.title .sub {
+  font-size: 13px;
+  padding: 0px 0px 0px 10px;
+  color: rgba(0,0,0,0.54);
 }
 
 .button {
   position: absolute;
-  right: 10px;
-  bottom: 10px;
+  right: 7px;
+  bottom: 45px;
   border: none;
   border-radius: 50%;
-  background: #FFF;
-  box-shadow: 0 1px 6px 0 rgba(0,0,0,.3);
-  transition: box-shadow 150ms cubic-bezier(.4,0,1,1);
-  font-size: 15px;
-  color: #80131f;
+  background: transparent;
+  font-size: 17px;
+  text-shadow: 0px 0px 4px rgba(0,0,0,0.5);
+  color: #FFF;
   line-height: 0px;
   padding: 5px;
   cursor: pointer;
-}
-.button:hover {
-  box-shadow: 0 6px 12px rgba(0,0,0,.3);
 }
 
 @media (max-width: 480px) {
