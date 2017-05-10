@@ -13,12 +13,8 @@
         <div v-if="folder.icon !== undefined" class="icon">
           <i :class="'icon-' + folder.icon"></i>
         </div>
-        <div v-if="folder.icon == undefined"
-              class="img"
-              :style="{
-                background: 'url('+folder.vfs_img+') #DDD',
-                'background-position-x': 'center !important',
-                'background-size': 'cover'}"></div>
+        <div v-if="folder.icon == undefined" class="img"
+              :style="{background: 'url('+folder.vfs_img+') #DDD'}"></div>
         
         <div class="title">
           <div class="main">{{folder.label.toUpperCase()}}</div>
@@ -37,18 +33,14 @@
 <script lang="coffee">
 export default {
   computed:
-    folders: () ->
-      @$store.state.space.subspaces.sort (a,b) -> 
+    folders: () -> @$store.state.space.subspaces.sort (a,b) -> 
         if not a.width?
           a.width = 1
         if not b.width?
           b.width = 1
 
         if b.width is a.width
-          if b.view?
-            return 1
-          else
-            return -1
+          return b.label < a.label
         else
           return b.width - a.width
   methods:
@@ -88,11 +80,12 @@ export default {
 }
 
 .icon {
+  display: flex;
   flex-grow: 1;
   width: 100%;
-  padding-top: 35px;
-  text-align: center;
-  font-size: 52px;
+  justify-content: center;
+  align-items: center;
+  font-size: 60px;
   background: #DDD;
   color: #FAFAFA;
 }
@@ -102,6 +95,9 @@ export default {
   width: 100%;
   border-top-right-radius: 2px;
   border-top-left-radius: 2px;
+  background-position-x: center !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
 }
 
 .title {
