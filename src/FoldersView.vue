@@ -22,7 +22,7 @@
         
         <div class="title">
           <div class="main">{{folder.label.toUpperCase()}}</div>
-          <div class="sub">{{folder.sub_title}}</div>
+          <div class="sub">{{folder.subtitle}}</div>
         </div>
 
         <div v-if="folder.view !== undefined" class="type">
@@ -105,7 +105,7 @@ export default {
 }
 
 .title {
-  height: 75px;
+  height: 55px;
   pointer-events: none;
   background: #FFF;
   padding: 24px 48px 24px 16px;
@@ -118,20 +118,21 @@ export default {
   color: #212121;
 }
 .title .sub {
-  font-size: 15px;
+  font-size: 16px;
+  font-weight: 300;
   color: rgba(0,0,0,0.54);
-  padding-top: 3px;
+  margin-top: 4px;
 }
 
 .type {
   position: absolute;
   right: 11px;
-  bottom: 45px;
+  bottom: 60px;
   border: none;
   border-radius: 50%;
   background: transparent;
   font-size: 18px;
-  color: #757575;
+  color: #858585;
   line-height: 0px;
   padding: 5px;
   cursor: pointer;
