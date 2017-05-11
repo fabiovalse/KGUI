@@ -34,6 +34,9 @@
 export default {
   computed:
     folders: () -> @$store.state.space.subspaces.sort (a,b) -> 
+      if a.order? and b.order?
+        return a.order - b.order
+      else
         if not a.width?
           a.width = 1
         if not b.width?

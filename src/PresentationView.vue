@@ -17,7 +17,7 @@
           <button @click="open(c)">EXPLORE COLLECTION</button>
         </div>
         <div class="preview">
-          a
+          {{c}}
         </div>
       </div>
     </div>
@@ -45,15 +45,18 @@ export default {
     space: () -> @$store.state.space
     footer_sections: () -> JSON.parse(@$store.state.space.sections)
     collections: () -> @$store.state.space.subspaces.sort (a,b) -> 
-      if not a.width?
-        a.width = 1
-      if not b.width?
-        b.width = 1
-
-      if b.width is a.width
-        return b.label < a.label
+      if a.order? and b.order?
+        return a.order - b.order
       else
-        return b.width - a.width
+        if not a.width?
+          a.width = 1
+        if not b.width?
+          b.width = 1
+
+        if b.width is a.width
+          return b.label < a.label
+        else
+          return b.width - a.width
 
   methods:
     open: (item) -> 
@@ -92,7 +95,7 @@ header .description {
   font-weight: 300;
   line-height: 1.7em;
   text-align: left;
-  margin: 50px 24px 30px 0px;
+  margin: 50px 24px 50px 0px;
 }
 
 footer .section {
