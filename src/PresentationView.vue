@@ -137,6 +137,7 @@ footer .items {
   padding: 50px;
   background: #FFF;
   margin-bottom: 25px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 -1px 0px rgba(0,0,0,0.02);
 }
 .collection .signature {
   width: 250px;
