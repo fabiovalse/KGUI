@@ -89,6 +89,7 @@ export default {
   background: #f5f5f5;
   padding-top: 60px; /* FIXME this is because of the breadcrumb, but we need a more intelligent way to do this */
   padding-left: 430px; /* 12px more, needed for folders margin */
+  padding-right: 30px;
   box-sizing: border-box;
 }
 
@@ -190,8 +191,7 @@ footer .items {
   left: 10px;
   font-size: 11px;
   font-weight: 300;
-  width: 200px;
-  border-top: 1px solid rgba(0,0,0,0.4);
+  width: 408px;
   padding-top: 10px;
 }
 </style>
