@@ -1,5 +1,6 @@
 import db from './database.coffee'
 import config from './config.coffee'
+import Vue from 'vue'
 
 export default {
   state:
@@ -8,6 +9,7 @@ export default {
     space: undefined
     layers: undefined
     nodes: undefined
+    previews: undefined
 
     transform: d3.zoomTransform(1)
 
@@ -30,6 +32,13 @@ export default {
       state.local_path = '/'+([state.space.id].concat(state.local_path.split('/').slice(2))).join('/')
     _set_nodes: (state, nodes) ->
       state.nodes = nodes
+    _set_previews: (state, preview) ->
+      if not state.previews?
+        state.previews = {}
+
+      Vue.set(state.previews, preview.id, preview)
+      #state.previews[preview.id] = preview
+      console.log state.previews
     set_transform: (state, transform) ->
       state.transform = transform
     _set_layers: (state, layers) ->
@@ -112,6 +121,9 @@ export default {
 
     change_space: (context, id) ->
       db.query_space context, id
+
+    request_previews: (context, id) ->
+      db.query_previews context, id
 
     request_info: (context, id) ->
       db.query_info context, id, '_set_info_state'

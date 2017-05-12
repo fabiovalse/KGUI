@@ -3,7 +3,7 @@
     <div class="margin"></div>
     
     <header>
-      <div class="title">{{space.title}}</div>
+      <div class="title">{{space.title.toUpperCase()}}</div>
       <div class="subtitle">{{space.subtitle}}</div>
 
       <div class="description">{{space.description}}</div>
@@ -16,8 +16,15 @@
           <div class="subtitle">{{c.subtitle}}</div>
           <button @click="open(c)">EXPLORE COLLECTION</button>
         </div>
-        <div class="preview">
-          {{c}}
+        <div class="previews">
+          <div v-if="c.id in previews" class="inner_previews">
+            <div v-if="p.vfs_img !== undefined" class="preview" v-for="p in previews[c.id].subspaces" :style="{
+              width: '250px',
+              height: '250px'}">
+              <div v-if="p.vfs_img !== undefined" class="img"
+              :style="{background: 'url('+p.vfs_img+')'}"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -41,9 +48,11 @@
 
 <script lang="coffee">
 export default {
+  mounted: () ->
+    @collections.forEach (c) => @$store.dispatch 'request_previews', c.id
+
   computed:
     space: () -> @$store.state.space
-    footer_sections: () -> JSON.parse(@$store.state.space.sections)
     collections: () -> @$store.state.space.subspaces.sort (a,b) -> 
       if a.order? and b.order?
         return a.order - b.order
@@ -57,6 +66,11 @@ export default {
           return b.label < a.label
         else
           return b.width - a.width
+    previews: () -> if @$store.state.previews? then @$store.state.previews else {}
+    footer_sections: () -> JSON.parse(@$store.state.space.sections)
+
+  watch:
+    previews: (newPreviews) -> @previews = newPreviews
 
   methods:
     open: (item) -> 
@@ -79,16 +93,16 @@ export default {
 }
 
 header {
-  margin-top: 30px;
-  color: rgba(0,0,0,0.87);
+  padding: 30px 0px 1px 30px;
 }
 header .title {
-  font-size: 35px;
-  font-weight: 100;
+  font-size: 40px;
+  font-weight: 300;
 }
 header .subtitle {
   margin-top: 20px;
-  font-size: 14px;
+  font-size: 20px;
+  font-weight: 300;
 }
 header .description {
   font-size: 15px;
@@ -98,6 +112,9 @@ header .description {
   margin: 50px 24px 50px 0px;
 }
 
+footer {
+  padding-left: 30px;
+}
 footer .section {
   margin: 40px 0px 40px 0px;
 }
@@ -116,18 +133,17 @@ footer .items {
 }
 .collection {
   display: flex;
-  padding: 30px;
-}
-.collection:nth-child(odd) {
+  padding: 50px;
   background: #FFF;
+  margin-bottom: 25px;
 }
 .collection .signature {
-  width: 270px;
+  width: 250px;
   margin: 0px 50px 20px 0px;
 }
 .collection .title {
   font-size: 28px;
-  font-weight: 100;
+  font-weight: 300;
   line-height: 1.2em;
   margin-bottom: 20px;
 }
@@ -137,9 +153,24 @@ footer .items {
   font-weight: 300;
   margin-bottom: 50px;
 }
-.collection .preview {
-  flex-grow: 1;
+.collection .previews {
+  width: calc(100% - 250px)
 }
+.collection .preview {
+  margin: 5px;
+}
+.collection .preview .img {
+  height: 100%;
+  background-position-x: center !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+}
+.collection .inner_previews {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
 .collection .signature button {
   background-color: transparent;
   border: 2px solid #e0e0e0;
