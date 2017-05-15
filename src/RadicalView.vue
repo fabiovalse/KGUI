@@ -31,7 +31,7 @@ export default {
     overflow-y: scroll;
     padding-top: 60px;
     padding-left: 430px;
-    background: #303030;
+    background: rgb(255, 247, 240);
     box-sizing: border-box;
   }
 
