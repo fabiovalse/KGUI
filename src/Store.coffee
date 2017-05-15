@@ -37,8 +37,6 @@ export default {
         state.previews = {}
 
       Vue.set(state.previews, preview.id, preview)
-      #state.previews[preview.id] = preview
-      console.log state.previews
     set_transform: (state, transform) ->
       state.transform = transform
     _set_layers: (state, layers) ->
