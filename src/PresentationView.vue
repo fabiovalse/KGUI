@@ -18,11 +18,10 @@
         </div>
         <div class="previews">
           <div v-if="c.id in previews" class="inner_previews">
-            <div v-if="p.vfs_img !== undefined" class="preview" v-for="p in previews[c.id].subspaces" :style="{
-              'max-width': '250px',
-              'max-height': '250px'}">
+            <div v-if="p.vfs_img !== undefined" class="preview" v-for="p in previews[c.id].subspaces" :style="{'max-width': '250px','max-height': '250px'}" @click="open(p)">
+              <div class="title">{{p.label}}</div>
               <div v-if="p.vfs_img !== undefined" class="img"
-              :style="{background: 'url('+p.vfs_img+')'}"></div>
+                   :style="{background: 'url('+p.vfs_img+')'}"></div>
             </div>
           </div>
         </div>
@@ -143,38 +142,18 @@ footer .items {
   width: 250px;
   margin: 0px 50px 20px 0px;
 }
-.collection .title {
+.collection .signature .title {
   font-size: 28px;
   font-weight: 300;
   line-height: 1.2em;
   margin-bottom: 20px;
 }
-.collection .subtitle {
+.collection .signature .subtitle {
   line-height: 24px;
   font-size: 14px;
   font-weight: 300;
   margin-bottom: 50px;
 }
-.collection .previews {
-  width: calc(100% - 250px)
-}
-.collection .preview {
-  margin: 5px;
-  width: 45%;
-}
-.collection .preview .img {
-  height: 100%;
-  background-position-x: center !important;
-  background-size: cover !important;
-  background-repeat: no-repeat !important;
-}
-.collection .inner_previews {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  height: 100%;
-}
-
 .collection .signature button {
   background-color: transparent;
   border: 2px solid #e0e0e0;
@@ -186,6 +165,44 @@ footer .items {
 }
 .collection .signature button:hover {
   background: #e0e0e0;
+}
+
+.collection .previews {
+  width: calc(100% - 250px)
+}
+.collection .preview {
+  position: relative;
+  margin: 5px;
+  width: 45%;
+  cursor: pointer;
+}
+.collection .preview .img {
+  height: 100%;
+  background-position-x: center !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+}
+.collection .preview .title {
+  position: absolute;
+  bottom: 0;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 60px 10px 10px 10px;
+
+  background-image: linear-gradient(to top,rgba(0,0,0,.4) 0,transparent 100%);
+  
+  font-size: 14px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #fff;
+}
+.collection .inner_previews {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  height: 100%;
 }
 
 .credits {
