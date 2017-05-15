@@ -19,8 +19,8 @@
         <div class="previews">
           <div v-if="c.id in previews" class="inner_previews">
             <div v-if="p.vfs_img !== undefined" class="preview" v-for="p in previews[c.id].subspaces" :style="{
-              width: '250px',
-              height: '250px'}">
+              'max-width': '250px',
+              'max-height': '250px'}">
               <div v-if="p.vfs_img !== undefined" class="img"
               :style="{background: 'url('+p.vfs_img+')'}"></div>
             </div>
@@ -160,6 +160,7 @@ footer .items {
 }
 .collection .preview {
   margin: 5px;
+  width: 45%;
 }
 .collection .preview .img {
   height: 100%;
@@ -171,6 +172,7 @@ footer .items {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  height: 100%;
 }
 
 .collection .signature button {
