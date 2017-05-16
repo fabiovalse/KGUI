@@ -1,6 +1,6 @@
 <template>
   <div class="searchbar">
-    <input class="search" type="text" placeholder="Cerca" @input="click_search" @keyup="change_selected_result" :value="get_target()">
+    <input class="search" type="text" placeholder="Search" @input="click_search" @keyup="change_selected_result" :value="get_target()">
 
     <button @click="click_search"><i class="icon-search"></i></button>
     <div v-if="mode === 'info' || (searchdirectionsbox_enabled && mode === 'fullmap')" class="separator"></div>
@@ -44,9 +44,9 @@ export default {
 
 <style scoped>
 .searchbar {
-  background: #FFF;
+  background: #F5F5F5;
   border-radius: 3px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 -1px 0px rgba(0,0,0,0.02);
+  /*box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 -1px 0px rgba(0,0,0,0.02);*/
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -76,6 +76,7 @@ input {
   font-size: 15px;
   border: none;
   outline: none;
+  background: none;
 }
 input:active {
   border: none;

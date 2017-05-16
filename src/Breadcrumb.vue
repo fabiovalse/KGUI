@@ -2,7 +2,7 @@
   <div class="breadcrumb">
     <template v-for="(item,i) in path">
       <a class="item" @click="open(item)">{{item.label}}</a>
-      <i v-if="i < path.length-1" class="icon-chevron-right" style="color: white; font-size: 12px;"></i>
+      <i v-if="i < path.length-1" class="icon-chevron-right" style="color: black; font-size: 12px;"></i>
     </template>
   </div>
 </template>
@@ -19,15 +19,21 @@ export default {
 
 <style scoped>
 .breadcrumb {
-  mix-blend-mode: difference;
+  background: white;
 }
 .item {
   display: inline-block;
   padding: 10px;
-  margin-right: 4px;
+  margin-top: 10px;
   font-size: 18px;
-  color: white;
+  color: #333;
   cursor: pointer;
   text-decoration: none;
+}
+.breadcrumb > * {
+  opacity: 0.5;
+}
+.item:last-child {
+  opacity: 1;
 }
 </style>
