@@ -61,6 +61,7 @@ export default {
   overflow-y: scroll;
   padding: 12px;
   box-sizing: border-box;
+  margin-left: var(--left-panel-width);
 }
 .folders {
   display: flex;
