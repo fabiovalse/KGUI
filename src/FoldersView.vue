@@ -126,11 +126,11 @@ export default {
 .type {
   position: absolute;
   right: 11px;
-  bottom: 60px;
+  bottom: 40px;
   border: none;
   border-radius: 50%;
   background: transparent;
-  font-size: 18px;
+  font-size: 20px;
   color: #858585;
   line-height: 0px;
   padding: 5px;
