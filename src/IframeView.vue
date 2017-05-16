@@ -1,6 +1,5 @@
 <template>
   <div class="iframeview">
-    <div class="padding"></div>
     <iframe :src="url"></iframe>
   </div>
 </template>
@@ -20,10 +19,6 @@ export default {
 
   display: flex;
   flex-direction: row;
-}
-.padding {
-  width: 408px;
-  background: gray;
 }
 iframe {
   flex-grow: 1;

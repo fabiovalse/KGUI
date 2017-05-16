@@ -117,9 +117,11 @@ html, body {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  --main-bar-height: 64px;
+  --left-panel-width: 408px;
 }
 .box {
-  width: 408px;
+  width: var(--left-panel-width);
 }
 
 .searchbar {
@@ -156,15 +158,24 @@ html, body {
   background: #B44646;
 }
 .mainview {
+  position: absolute;
+  top: var(--main-bar-height);
+  left: 0;
+  box-sizing: border-box;
   width: 100%;
-  height: 100%;
+  height: calc(100% - var(--main-bar-height));
+  background: #f5f5f5;
+  padding-left: var(--left-panel-width);
 }
 .breadcrumb {
   position: absolute;
-  top: 10px;
-  left: 418px;
-  z-index: 10;
-  height: 48px;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  width: 100%;
+  height: var(--main-bar-height);
+  padding-left: var(--left-panel-width);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 -1px 0px rgba(0,0,0,0.02)
 }
 
 a {

@@ -1,6 +1,5 @@
 <template>
   <div class="foldersview">
-    <div class="margin"></div>
     <div class="folders">
         
       <div class="folder" v-for="folder in folders"
@@ -60,9 +59,7 @@ export default {
 .foldersview {
   height: 100%;
   overflow-y: scroll;
-  background: #f5f5f5;
-  padding-top: 60px; /* FIXME this is because of the breadcrumb, but we need a more intelligent way to do this */
-  padding-left: 430px; /* 12px more, needed for folders margin */
+  padding: 12px;
   box-sizing: border-box;
 }
 .folders {
