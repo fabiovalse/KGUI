@@ -14,12 +14,12 @@
 
     <div v-if="target.number !== undefined" class="number">
       <div>{{target.number}}</div>
-      <div class="field_description">radical number</div>
+      <div class="field_description">radical<br>number</div>
     </div>
 
     <div v-if="target.strokecount !== undefined" class="strokecount">
       <div>{{target.strokecount}}</div>
-      <div class="field_description">stroke count</div>
+      <div class="field_description">stroke<br>count</div>
     </div>
     
     <div class="sub_info">
@@ -27,7 +27,7 @@
         <div class="characters">
           <div v-for="variant in target.variants" class="variant">{{variant}}</div>
         </div>
-        <div class="field_description">variants</div>
+        <div class="field_description"><span class="square">v</span>ariants</div>
       </div>
 
       <div v-if="target.pinyin !== undefined" class="pinyin">
@@ -36,8 +36,8 @@
       </div>
 
       <div v-if="target.simplified !== undefined && target.simplified !== ''" class="simplified">
-        <div>{{target.simplified}}</div>
-        <div class="field_description">simplified form</div>
+        <div class="text">{{target.simplified}}</div>
+        <div class="field_description"><span class="square">s</span>implified form</div>
       </div>
     </div>
 
@@ -111,17 +111,31 @@ export default {
   flex-direction: row;
   justify-content: center;
 }
+.variants .square {
+  background: #fe7d5b;
+}
 .variant {
   margin: 0px 5px 0px 5px;
 }
 .simplified {
   flex-grow: 1;
   text-align: center;
+}
+.simplified .text {
   font-size: 30px;
+}
+.simplified .square {
+  background: #FEB75B;
 }
 .pinyin {
   flex-grow: 1;
   text-align: center;
+}
+
+.square {
+  padding: 1px 4px 1px 5px;
+  text-align: center;
+  font-weight: bold;
 }
 
 .field_description {

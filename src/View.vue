@@ -9,6 +9,7 @@
     <foldersview v-if="space !== undefined && space.view === 'foldersview'"></foldersview>
     <iframeview v-if="space !== undefined && space.view === 'iframeview'" :url="space.url"></iframeview>
     <radicalview v-if="space !== undefined && space.view === 'radicalview'"></radicalview>
+    <presentationview v-if="space !== undefined && space.view === 'presentationview'"></presentationview>
   </div>
 </template>
 
@@ -23,6 +24,7 @@ import Layer from './Layer.vue'
 import ZoomableImageView from './ZoomableImageView.vue'
 import IframeView from './IframeView.vue'
 import RadicalView from './RadicalView.vue'
+import PresentationView from './PresentationView.vue'
 
 export default {
   props: ['config']
@@ -39,6 +41,7 @@ export default {
     zoomableimageview: ZoomableImageView
     iframeview: IframeView
     radicalview: RadicalView
+    presentationview: PresentationView
 }
 </script>
 

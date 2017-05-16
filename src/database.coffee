@@ -55,6 +55,20 @@ module.exports = {
 
     @query_nodes context, id
 
+  query_previews: (context, id) ->
+    @execute {query: "MATCH (the_space:Space {id: {id}}) RETURN the_space", params: {id: id}}, (data) =>
+      space = JSON.parse(data.responseText).data[0][0].data
+      @execute {query: "MATCH (the_space:Space {id: {id}})-[{type: 'in_list'}]->(list) MATCH (list)<-[{type: 'in_list'}]-(s) RETURN s ORDER BY s.order", params: {id: id}}, (data) =>
+        space.list = JSON.parse(data.responseText).data.map (d) -> d[0].data
+        @execute {query: "MATCH (the_space:Space {id: {id}})-[{type: 'subspace'}]->(s) RETURN s", params: {id: id}}, (data) =>
+          space.subspaces = JSON.parse(data.responseText).data.map (d) -> d[0].data
+          @execute {query: "MATCH (:Space {id: {id}})-[r {type: 'subspace'}]-() RETURN COUNT(r)", params: {id: id}}, (data) =>
+            space.vfs_enabled = JSON.parse(data.responseText).data[0][0] > 0
+            @execute {query: "MATCH path=(:Space)-[*0.. {type: 'subspace'}]->({id: {id}}) WITH nodes(path) AS path ORDER BY length(path) RETURN path[0]", params: {id: id}}, (data) =>
+              space.vfs_path = JSON.parse(data.responseText).data.map (d) -> d[0].data
+              space.vfs_path.reverse()
+              context.commit '_set_previews', space
+
   query_info: (context, id, mutation_name) ->
     _this = @
 
