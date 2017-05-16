@@ -165,7 +165,6 @@ html, body {
   width: 100%;
   height: calc(100% - var(--main-bar-height));
   background: #f5f5f5;
-  padding-left: var(--left-panel-width);
 }
 .breadcrumb {
   position: absolute;
