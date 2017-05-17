@@ -174,6 +174,7 @@ footer .items {
   position: relative;
   margin: 5px;
   width: 45%;
+  height: 180px;
   cursor: pointer;
 }
 .collection .preview .img {
@@ -202,7 +203,6 @@ footer .items {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  height: 100%;
 }
 
 .credits {
