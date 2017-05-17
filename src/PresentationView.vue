@@ -203,7 +203,6 @@ footer .items {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  height: 100%;
 }
 
 .credits {
