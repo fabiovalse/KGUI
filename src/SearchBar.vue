@@ -1,11 +1,13 @@
 <template>
-  <div class="searchbar">
-    <input class="search" type="text" placeholder="Search" @input="click_search" @keyup="change_selected_result" :value="get_target()">
+  <div class="searchbar" :class="{targetdefined: target !== undefined}">
+    <div class="innerbar">
+      <input class="search" type="text" placeholder="Search" @input="click_search" @keyup="change_selected_result" :value="get_target()">
 
-    <button @click="click_search"><i class="icon-search"></i></button>
-    <div v-if="mode === 'info' || (searchdirectionsbox_enabled && mode === 'fullmap')" class="separator"></div>
-    <button v-if="mode === 'info'" @click="click_close"><i class="icon-x"></i></button>
-    <button v-if="searchdirectionsbox_enabled && mode === 'fullmap'" @click="click_directions"><i class="icon-directions"></i></button>
+      <button @click="click_search"><i class="icon-search"></i></button>
+      <div v-if="mode === 'info' || (searchdirectionsbox_enabled && mode === 'fullmap')" class="separator"></div>
+      <button v-if="mode === 'info'" @click="click_close"><i class="icon-x"></i></button>
+      <button v-if="searchdirectionsbox_enabled && mode === 'fullmap'" @click="click_directions"><i class="icon-directions"></i></button>
+    </div>
   </div>
 </template>
 
@@ -44,6 +46,22 @@ export default {
 
 <style scoped>
 .searchbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  height: var(--main-bar-height);
+  width: calc(var(--left-panel-width) - var(--left-panel-scrollbar-width));
+}
+.searchbar.targetdefined {
+  background: var(--main-color);
+}
+.innerbar {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: calc(var(--left-panel-width) - 16px - var(--left-panel-scrollbar-width));
+  height: calc(var(--main-bar-height) - 16px);
   background: #F5F5F5;
   border-radius: 3px;
   /*box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 -1px 0px rgba(0,0,0,0.02);*/

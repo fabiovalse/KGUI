@@ -119,24 +119,18 @@ html, body {
   overflow: hidden;
   --main-bar-height: 64px;
   --left-panel-width: 408px;
+  --main-color: #B44646;
+  --left-panel-scrollbar-width: 6px;
 }
 .box {
   width: var(--left-panel-width);
 }
 
-.searchbar {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  z-index: 10;
-  height: 48px;
-  width: 390px;
-}
 .resultsbox1 {
   position: absolute;
-  top: 59px;
-  left: 10px;
-  width: 390px;
+  top: 54px;
+  left: 8px;
+  width: 386px;
   z-index: 10;
   box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 -1px 0px rgba(0,0,0,0.02);
 }
@@ -144,13 +138,7 @@ html, body {
   position: absolute;
   top: 125px;
   left: 0;
-  z-index: 2;
-}
-.infobox {
-  position: absolute;
-  height: 100%;
-  background: #FFF;
-  z-index: 3;
+  z-index: 7;
 }
 .searchdirectionsbox {
   position: absolute;
@@ -173,7 +161,7 @@ html, body {
   z-index: 5;
   width: 100%;
   height: var(--main-bar-height);
-  padding-left: var(--left-panel-width);
+  padding-left: calc(var(--left-panel-width) + 2px);
   box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 -1px 0px rgba(0,0,0,0.02)
 }
 

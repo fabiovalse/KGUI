@@ -1,5 +1,6 @@
 <template>
   <div class="infobox" :class="{mobile_open: mobile_open}">
+    <div class="top_band"></div>
     <v-touch tag="div" class="expand" v-on:swipe="click"><span @click="click" v-if="mobile_open"><i class="icon-slide-down"></i></span><span @click="click" v-else><i class="icon-slide-up"></i></span>
     </v-touch>
 
@@ -37,9 +38,22 @@ export default {
 </script>
 
 <style scoped>
-.infobox {
-  box-shadow: 0 0 20px rgba(0,0,0,0.3);
+.top_band {
+  width: 100%;
+  height: var(--main-bar-height);
+  background: var(--main-color);
 }
+
+.infobox {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  background: #FFF;
+  z-index: 6;
+  box-shadow: 0 0 18px rgba(0,0,0,0.6);
+  box-sizing: border-box;
+}
+
 .mobile_open {
   top: 0%;
   margin-top: 0px;
@@ -63,7 +77,7 @@ export default {
   overflow-y: scroll;
 }
 ::-webkit-scrollbar {
-  width: 6px;
+  width: var(--left-panel-scrollbar-width);
 }
 ::-webkit-scrollbar-track {
   background: #EEE;

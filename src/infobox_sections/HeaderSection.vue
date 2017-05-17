@@ -33,7 +33,7 @@ export default {
   position: relative;
   height: 68px;
   padding: 16px 24px 20px 24px;
-  background: #B44646;
+  background: var(--main-color);
   color: white;
 }
 
