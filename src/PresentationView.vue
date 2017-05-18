@@ -105,7 +105,7 @@ header .subtitle {
   font-weight: 300;
 }
 header .description {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 300;
   line-height: 1.7em;
   text-align: left;
