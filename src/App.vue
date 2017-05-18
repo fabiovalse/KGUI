@@ -76,7 +76,11 @@ export default {
     route_changed: (route) ->
       if route.params.target?
         @$store.dispatch 'request_info', route.params.target
-      else if 'from' in Object.keys(route.params) and 'to' in Object.keys(route.params)
+      else
+        @$store.commit 'fullmap_mode'
+        @$emit 'mobile_open', false
+      
+      if 'from' in Object.keys(route.params) and 'to' in Object.keys(route.params)
         @$store.dispatch 'request_directions', {
           from_id: (if route.params.from is '_' then undefined else route.params.from),
           to_id: (if route.params.to is '_' then undefined else route.params.to),
