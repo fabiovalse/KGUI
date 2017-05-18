@@ -52,8 +52,8 @@ export default {
 }
 
 .icon {
-  font-size: 170px;
-  line-height: 400px;
+  font-size: 150px;
+  line-height: 270px;
   color: #FFF;
 }
 
