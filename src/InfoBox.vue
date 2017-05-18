@@ -50,7 +50,7 @@ export default {
   height: 100%;
   background: #FFF;
   z-index: 6;
-  box-shadow: 0 0 18px rgba(0,0,0,0.6);
+  box-shadow: 0 0 18px rgba(0,0,0,0.8);
   box-sizing: border-box;
 }
 

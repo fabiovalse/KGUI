@@ -158,16 +158,6 @@ html, body {
   height: calc(100% - var(--main-bar-height));
   background: #f5f5f5;
 }
-.breadcrumb {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 5;
-  width: 100%;
-  height: var(--main-bar-height);
-  padding-left: calc(var(--left-panel-width) + 2px);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 -1px 0px rgba(0,0,0,0.02)
-}
 
 a {
   color: #B44646;
