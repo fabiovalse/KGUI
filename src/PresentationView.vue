@@ -18,7 +18,7 @@
         </div>
         <div class="previews">
           <div v-if="c.id in previews" class="inner_previews">
-            <div v-if="p.vfs_img !== undefined" class="preview" v-for="p in previews[c.id].subspaces" :style="{'max-width': '250px','max-height': '250px'}" @click="open(p)">
+            <div v-if="p.vfs_img !== undefined" class="preview" v-for="p in sort_by_order(c.id)" :style="{'max-width': '250px','max-height': '250px'}" @click="open(p)">
               <div class="title">{{p.label}}</div>
               <div v-if="p.vfs_img !== undefined" class="img"
                    :style="{background: 'url('+p.vfs_img+')'}"></div>
@@ -78,6 +78,8 @@ export default {
 
       if item.template?
         @$store.dispatch 'select', {id: item.id}
+    
+    sort_by_order: (id) -> @previews[id].subspaces.sort (a,b) -> a.order - b.order
 }
 </script>
 
