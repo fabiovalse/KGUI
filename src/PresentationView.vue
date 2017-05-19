@@ -15,11 +15,10 @@
           <div class="title">{{c.label}}</div>
           <div class="subtitle">{{c.subtitle}}</div>
           <button @click="open(c)">EXPLORE COLLECTION</button>
-          <!--<div v-if="previews[c.id] !== undefined" class="count">({{previews[c.id].subspaces.length}} item{{previews[c.id].subspaces.length == 1 ? '' : 's'}})</div>-->
         </div>
         <div class="previews">
           <div v-if="c.id in previews" class="inner_previews">
-            <div v-if="p.vfs_img !== undefined" class="preview" v-for="p in sort_by_order(c.id)" :style="{'max-width': '250px','max-height': '250px'}" @click="open(p)">
+            <div v-if="p.vfs_img !== undefined" class="preview" v-for="p in previews[c.id].subspaces" :style="{'max-width': '250px','max-height': '250px'}" @click="open(p)">
               <div class="title">{{p.label}}</div>
               <div v-if="p.vfs_img !== undefined" class="img"
                    :style="{background: 'url('+p.vfs_img+')'}"></div>
