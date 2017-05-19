@@ -76,7 +76,7 @@ export default {
     route_changed: (route) ->
       if route.params.target?
         @$store.dispatch 'request_info', route.params.target
-      else
+      else if not route.params.target? and route.params.space?
         @$store.commit 'fullmap_mode'
         @$emit 'mobile_open', false
       
