@@ -2,7 +2,7 @@
   <div class="breadcrumb">
     <template v-for="(item,i) in path">
       <a class="item" @click="open(item)">{{item.label}}</a>
-      <i v-if="i < path.length-1" class="icon-chevron-right" style="color: black; font-size: 12px;"></i>
+      <i v-if="i < path.length-1" class="icon-chevron-right" style="color: #888; font-size: 12px;"></i>
     </template>
   </div>
 </template>
@@ -32,17 +32,14 @@ export default {
 .item {
   display: inline-block;
   padding: 10px;
-  margin-top: 10px;
+  margin-top: 8px;
   font-family: Roboto, sans-serif;
   font-size: 20px;
-  color: #333;
+  color: #888;
   cursor: pointer;
   text-decoration: none;
 }
-.breadcrumb > * {
-  opacity: 0.5;
-}
 .item:last-child {
-  opacity: 1;
+  color: #333;
 }
 </style>
