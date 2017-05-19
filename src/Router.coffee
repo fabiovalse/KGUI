@@ -15,11 +15,6 @@ export default {
       component: App
     }
     {
-      name: 'target_only'
-      path: if config.layout.infobox then '/target/:target' else '/'
-      component: App
-    }
-    {
       name: 'directions'
       path: if config.layout.view then '/:space/from/:from/to/:to' else '/from/:from/to/:to'
       component: App

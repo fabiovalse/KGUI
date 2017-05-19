@@ -15,7 +15,7 @@
           <div class="title">{{c.label}}</div>
           <div class="subtitle">{{c.subtitle}}</div>
           <button @click="open(c)">EXPLORE COLLECTION</button>
-          <div v-if="previews[c.id] !== undefined" class="count">({{previews[c.id].subspaces.length}} item{{previews[c.id].subspaces.length == 1 ? '' : 's'}})</div>
+          <!--<div v-if="previews[c.id] !== undefined" class="count">({{previews[c.id].subspaces.length}} item{{previews[c.id].subspaces.length == 1 ? '' : 's'}})</div>-->
         </div>
         <div class="previews">
           <div v-if="c.id in previews" class="inner_previews">
