@@ -1,5 +1,6 @@
 <template>
   <div class="foldersview">
+    <div v-if="space.subtitle !== undefined" class="subtitle">{{space.subtitle}}</div>
     <div class="folders">
         
       <div class="folder" v-for="folder in folders"
@@ -32,6 +33,7 @@
 <script lang="coffee">
 export default {
   computed:
+    space: () -> @$store.state.space
     folders: () -> @$store.state.space.subspaces.sort (a,b) -> 
       if a.order? and b.order?
         return a.order - b.order
@@ -62,6 +64,14 @@ export default {
   padding: 12px;
   box-sizing: border-box;
   padding-left: calc(var(--left-panel-width) + 12px);
+}
+.subtitle {
+  margin-left: 30px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 20px;
+  font-weight: 300;
+  color: #333;
 }
 .folders {
   display: flex;
