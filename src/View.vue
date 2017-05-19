@@ -4,6 +4,7 @@
     <layer v-for="(l,i) in layers" v-if="l.status"></layer>
 
     <buildingmapview v-if="space !== undefined && space.view === 'buildingmapview'"></buildingmapview>
+    <textview v-if="space !== undefined && space.view === 'textview'"></textview>
     <bilingualtextview v-if="space !== undefined && space.view === 'bilingualtextview'"></bilingualtextview>
     <zoomableimageview v-if="space !== undefined && space.view === 'zoomableimageview'" :config="config.openseadragon"></zoomableimageview>
     <foldersview v-if="space !== undefined && space.view === 'foldersview'"></foldersview>
@@ -17,9 +18,9 @@
 import LayerBox from './LayerBox.vue'
 import MapView from './MapView.vue'
 import BuildingMapView from './BuildingMapView.vue'
+import TextView from './TextView.vue'
 import BilingualTextView from './BilingualTextView.vue'
 import FoldersView from './FoldersView.vue'
-import TextView from './TextView.vue'
 import Layer from './Layer.vue'
 import ZoomableImageView from './ZoomableImageView.vue'
 import IframeView from './IframeView.vue'
@@ -34,6 +35,7 @@ export default {
     layers: () -> @$store.state.layers
   components:
     buildingmapview: BuildingMapView
+    textview: TextView
     bilingualtextview: BilingualTextView
     foldersview: FoldersView
     layerbox: LayerBox

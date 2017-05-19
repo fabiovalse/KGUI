@@ -1,44 +1,22 @@
 <template>
   <div class="textview">
-    <div>
-      <div v-for="(poi,i) in pois">
-        <div>{{poi.label}}</div>
-        <div>{{poi.description}}</div>
-        <div>aaaaaaaaaaaaaaaaaaa</div>
-        <div>aaaaaaaaaaaaaaaaaaa</div>
-        <div>aaaaaaaaaaaaaaaaaaa</div>
-        <div>aaaaaaaaaaaaaaaaaaa</div>
-        <div>aaaaaaaaaaaaaaaaaaa</div>
-        <div>aaaaaaaaaaaaaaaaaaa</div>
-        <div>aaaaaaaaaaaaaaaaaaa</div>
-        <div>aaaaaaaaaaaaaaaaaaa</div>
-        <div>aaaaaaaaaaaaaaaaaaa</div>
-        <div>aaaaaaaaaaaaaaaaaaa</div>
-        <div>aaaaaaaaaaaaaaaaaaa</div>
-        <div>aaaaaaaaaaaaaaaaaaa</div>
-        <div>aaaaaaaaaaaaaaaaaaa</div>
-        <div>aaaaaaaaaaaaaaaaaaa</div>
-        <div>aaaaaaaaaaaaaaaaaaa</div>
-        <div>aaaaaaaaaaaaaaaaaaa</div>
-        <div>aaaaaaaaaaaaaaaaaaa</div>
-        <div>aaaaaaaaaaaaaaaaaaa</div>
-        <div>aaaaaaaaaaaaaaaaaaa</div>
-        <div>aaaaaaaaaaaaaaaaaaa</div>
-        <div>aaaaaaaaaaaaaaaaaaa</div>
-        <div>aaaaaaaaaaaaaaaaaaa</div>
-        <div>aaaaaaaaaaaaaaaaaaa</div>
-        <div>aaaaaaaaaaaaaaaaaaa</div>
-      </div>
-    </div>
+    {{text}}
   </div>
 </template>
 
 <script lang="coffee">
 export default {
   computed:
-    pois: () -> if @$store.state.nodes? then @$store.state.nodes else []
+    text: () -> if @$store.state.space? then @$store.state.space.text else ''
 }
 </script>
 
 <style scoped>
+.textview {
+  height: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  padding-left: calc(var(--left-panel-width) + 12px);
+  overflow-y: scroll;
+}
 </style>
