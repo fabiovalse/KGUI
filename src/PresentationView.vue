@@ -15,10 +15,11 @@
           <div class="title">{{c.label}}</div>
           <div class="subtitle">{{c.subtitle}}</div>
           <button @click="open(c)">EXPLORE COLLECTION</button>
+          <div v-if="previews[c.id] !== undefined" class="count">({{previews[c.id].subspaces.length}} item{{previews[c.id].subspaces.length == 1 ? '' : 's'}})</div>
         </div>
         <div class="previews">
           <div v-if="c.id in previews" class="inner_previews">
-            <div v-if="p.vfs_img !== undefined" class="preview" v-for="p in sort_by_order(c.id)" :style="{'max-width': '250px','max-height': '250px'}" @click="open(p)">
+            <div v-if="p.vfs_img !== undefined" class="preview" v-for="p in previews[c.id].subspaces" :style="{'max-width': '250px','max-height': '250px'}" @click="open(p)">
               <div class="title">{{p.label}}</div>
               <div v-if="p.vfs_img !== undefined" class="img"
                    :style="{background: 'url('+p.vfs_img+')'}"></div>
@@ -78,8 +79,7 @@ export default {
 
       if item.template?
         @$store.dispatch 'select', {id: item.id}
-    
-    sort_by_order: (id) -> @previews[id].subspaces.sort (a,b) -> a.order - b.order
+
 }
 </script>
 
@@ -164,9 +164,14 @@ footer .items {
   font-family: Roboto;
   font-size: 14px;
   cursor: pointer;
+  margin-bottom: 10px;
 }
 .collection .signature button:hover {
   background: #e0e0e0;
+}
+.collection .signature .count {
+  font-size: 12px;
+  font-weight: 300;
 }
 
 .collection .previews {
