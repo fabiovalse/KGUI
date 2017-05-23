@@ -1,6 +1,9 @@
 <template>
   <div class="foldersview">
-    <div v-if="space.subtitle !== undefined" class="subtitle">{{space.subtitle}}</div>
+    <header>
+      <div v-if="space.label !== undefined" class="label">{{space.label}}</div>
+      <div v-if="space.subtitle !== undefined" class="subtitle">{{space.subtitle}}</div>
+    </header>
     <div class="folders">
         
       <div class="folder" v-for="folder in folders"
@@ -65,10 +68,21 @@ export default {
   box-sizing: border-box;
   padding-left: calc(var(--left-panel-width) + 12px);
 }
-.subtitle {
+header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--left-panel-width);
+}
+header .label {
   margin-left: 30px;
   margin-top: 20px;
-  margin-bottom: 20px;
+  font-size: 30px;
+  font-weight: 300;
+}
+header .subtitle {
+  margin-left: 30px;
+  margin-top: 20px;
   font-size: 20px;
   font-weight: 300;
   color: #333;
