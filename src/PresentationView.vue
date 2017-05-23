@@ -3,10 +3,9 @@
     <div class="margin"></div>
     
     <header>
-      <div class="title">{{space.title.toUpperCase()}}</div>
-      <div class="subtitle">{{space.subtitle}}</div>
-
-      <div class="description">{{space.description}}</div>
+      <div v-if="space.label !== undefined" class="label">{{space.label}}</div>
+      <div v-if="space.subtitle !== undefined" class="subtitle">{{space.subtitle}}</div>
+      <div v-if="space.description !== undefined" class="description">{{space.description}}</div>
     </header>
 
     <div class="collections">
@@ -88,30 +87,38 @@ export default {
   height: 100%;
   overflow-y: scroll;
   background: #f5f5f5;
-  padding-top: 60px; /* FIXME this is because of the breadcrumb, but we need a more intelligent way to do this */
+  padding-top: 32px; /* FIXME this is because of the breadcrumb, but we need a more intelligent way to do this */
   padding-left: 430px; /* 12px more, needed for folders margin */
   padding-right: 30px;
   box-sizing: border-box;
 }
 
 header {
-  padding: 30px 0px 1px 30px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--left-panel-width);
+  box-sizing: border-box;
 }
-header .title {
-  font-size: 40px;
+header .label {
+  margin-top: 32px;
+  padding-left: 30px;
+  font-size: 30px;
   font-weight: 300;
 }
 header .subtitle {
   margin-top: 20px;
+  padding-left: 30px;
   font-size: 20px;
   font-weight: 300;
+  color: #333;
 }
 header .description {
+  margin-top: 20px;
+  padding-left: 30px;
   font-size: 16px;
   font-weight: 300;
   line-height: 1.7em;
-  text-align: left;
-  margin: 50px 24px 50px 0px;
 }
 
 footer {
