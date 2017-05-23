@@ -3,6 +3,7 @@
     <header>
       <div v-if="space.label !== undefined" class="label">{{space.label}}</div>
       <div v-if="space.subtitle !== undefined" class="subtitle">{{space.subtitle}}</div>
+      <div v-if="space.description !== undefined" class="description">{{space.description}}</div>
     </header>
     <div class="folders">
         
@@ -87,6 +88,14 @@ header .subtitle {
   font-weight: 300;
   color: #333;
 }
+header .description {
+  margin-top: 20px;
+  padding-left: 30px;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.7em;
+}
+
 .folders {
   display: flex;
   flex-wrap: wrap;
