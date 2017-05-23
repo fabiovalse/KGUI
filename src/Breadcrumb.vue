@@ -32,7 +32,7 @@ export default {
 .item {
   display: inline-block;
   padding: 10px;
-  margin-top: 8px;
+  margin-top: 10px;
   font-family: Roboto, sans-serif;
   font-size: 20px;
   color: #888;
