@@ -125,6 +125,7 @@ html, body {
   --left-panel-width: 408px;
   --main-color: #B44646;
   --left-panel-scrollbar-width: 6px;
+  --paper-color: rgb(255, 246, 235);
 }
 .box {
   width: var(--left-panel-width);

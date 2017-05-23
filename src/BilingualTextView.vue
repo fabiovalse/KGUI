@@ -40,7 +40,7 @@ export default {
     padding-left: 408px;
     height: 100%;
     overflow-y: scroll;
-    background: rgb(253, 236, 215);
+    background: var(--paper-color);
     box-sizing: border-box;
   }
 
