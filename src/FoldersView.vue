@@ -64,9 +64,9 @@ export default {
 .foldersview {
   height: 100%;
   overflow-y: scroll;
-  padding: 12px;
+  padding: 24px;
   box-sizing: border-box;
-  padding-left: calc(var(--left-panel-width) + 12px);
+  padding-left: calc(var(--left-panel-width) + 30px);
 }
 header {
   position: absolute;
@@ -76,7 +76,7 @@ header {
 }
 header .label {
   margin-left: 30px;
-  margin-top: 20px;
+  margin-top: 32px;
   font-size: 30px;
   font-weight: 300;
 }
