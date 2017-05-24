@@ -1,9 +1,9 @@
 <template>
   <div class="foldersview">
     <header>
-      <div v-if="space.label !== undefined" class="label">{{space.label}}</div>
-      <div v-if="space.subtitle !== undefined" class="subtitle">{{space.subtitle}}</div>
-      <div v-if="space.description !== undefined" class="description">{{space.description}}</div>
+      <div v-if="space.label !== undefined" class="label" v-html="kgl(space.label)"></div>
+      <div v-if="space.subtitle !== undefined" class="subtitle" v-html="kgl(space.subtitle)"></div>
+      <div v-if="space.description !== undefined" class="description" v-html="kgl(space.description)"></div>
     </header>
     <div class="folders">
         
@@ -35,6 +35,8 @@
 </template>
 
 <script lang="coffee">
+import kgl from './infobox_sections/kgl.coffee'
+
 export default {
   computed:
     space: () -> @$store.state.space
@@ -52,6 +54,7 @@ export default {
         else
           return b.width - a.width
   methods:
+    kgl: (d) -> kgl.parse d, @$store.state.space
     open: (item) -> 
       if item.view?
         @$store.dispatch 'change_space', item.id
@@ -93,7 +96,6 @@ header .description {
   padding-left: 30px;
   font-size: 16px;
   font-weight: 300;
-  line-height: 1.7em;
 }
 
 .folders {
