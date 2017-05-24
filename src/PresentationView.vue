@@ -11,8 +11,8 @@
     <div class="collections">
       <div v-for="c in collections" class="collection">
         <div class="signature">
-          <div class="title">{{c.label}}</div>
-          <div class="subtitle">{{c.subtitle}}</div>
+          <div class="title" v-html="kgl(c.label)"></div>
+          <div class="subtitle" v-html="kgl(c.subtitle)"></div>
           <button @click="open(c)">EXPLORE COLLECTION</button>
           <div v-if="previews[c.id] !== undefined" class="count">({{previews[c.id].subspaces.length}} item{{previews[c.id].subspaces.length == 1 ? '' : 's'}})</div>
         </div>

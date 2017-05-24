@@ -21,8 +21,8 @@
               :style="{background: 'url('+folder.vfs_img+') #DDD'}"></div>
         
         <div class="title">
-          <div class="main">{{folder.label.toUpperCase()}}</div>
-          <div class="sub">{{folder.subtitle}}</div>
+          <div class="main" v-html="kgl(folder.label)"></div>
+          <div class="sub" v-html="kgl(folder.subtitle)"></div>
         </div>
 
         <div v-if="folder.view !== undefined" class="type">
@@ -145,6 +145,7 @@ header .description {
   border-bottom-left-radius: 2px;
 }
 .title .main {
+  text-transform: uppercase;
   font-size: 12px;
   font-weight: bold;
   color: #212121;
@@ -154,6 +155,10 @@ header .description {
   font-weight: 300;
   color: rgba(0,0,0,0.54);
   margin-top: 4px;
+}
+/* FIXME */
+.title .sub a {
+  color: inherit
 }
 
 .type {
