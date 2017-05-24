@@ -156,10 +156,6 @@ header .description {
   color: rgba(0,0,0,0.54);
   margin-top: 4px;
 }
-/* FIXME */
-.title .sub a {
-  color: inherit
-}
 
 .type {
   position: absolute;
@@ -191,5 +187,11 @@ header .description {
   .folder_container {
     width: 50%;
   }
+}
+</style>
+<style>
+/* FIXME */
+.foldersview .title .sub a {
+  color: inherit;
 }
 </style>
