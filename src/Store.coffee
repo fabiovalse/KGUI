@@ -80,7 +80,7 @@ export default {
 
       if params.default_space?
         db.query_nodes context, params.default_space
-        db.query_space context, params.default_space
+        db.query_space context, params.default_space, '_set_space'
 
     select: (context, params) ->
       if context.state.mode is 'fullmap'
@@ -109,10 +109,10 @@ export default {
               db.query_directions context, params.id
 
     change_space: (context, id) ->
-      db.query_space context, id
+      db.query_space context, id, '_set_space'
 
     request_previews: (context, id) ->
-      db.query_previews context, id
+      db.query_space context, id, '_set_previews'
 
     request_info: (context, id) ->
       db.query_info context, id, '_set_info_state'
