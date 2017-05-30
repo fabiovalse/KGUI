@@ -5,7 +5,6 @@ import Vue from 'vue'
 export default {
   state:
     mode: 'fullmap'
-    spaces: undefined
     space: undefined
     nodes: undefined
     previews: undefined
@@ -20,8 +19,6 @@ export default {
 
     local_path: '/'
   mutations:
-    _set_spaces: (state, spaces) ->
-      state.spaces = spaces
     _set_space: (state, space) ->
       state.space = space
       # FIXME this is a ugly hack

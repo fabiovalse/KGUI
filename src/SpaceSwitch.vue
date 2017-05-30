@@ -9,7 +9,7 @@
 <script lang="coffee">
 export default {
   computed:
-    spaces: () -> @$store.state.spaces
+    spaces: () -> @$store.state.space.list
     space: () -> @$store.state.space
   
   methods:

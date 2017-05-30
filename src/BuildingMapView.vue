@@ -31,7 +31,7 @@ export default {
     pois: () -> if @$store.state.nodes? then @$store.state.nodes.filter (n) -> n.template is 'poi' else []
     labels: () -> if @$store.state.nodes? then @$store.state.nodes.filter (n) -> n.template is 'room' else []
     icons: () -> if @$store.state.nodes? then @$store.state.nodes.filter (n) -> n.label in ['Stairs', 'Elevator', 'Toilet'] else []
-    spaces: () -> if @$store.state.spaces? then @$store.state.spaces.filter((d) -> d.urls?).reverse() else undefined
+    spaces: () -> if @$store.state.space? then @$store.state.space.list.filter((d) -> d.urls?).reverse() else undefined
     space: () -> @$store.state.space
 
   mounted: () ->

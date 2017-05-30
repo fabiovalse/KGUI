@@ -43,7 +43,6 @@ module.exports = {
               space.vfs_path = JSON.parse(data.responseText).data.map (d) -> d[0].data
               space.vfs_path.reverse()
               context.commit '_set_space', space
-              context.commit '_set_spaces', space.list
 
     @query_nodes context, id
 
