@@ -7,7 +7,6 @@ export default {
     mode: 'fullmap'
     spaces: undefined
     space: undefined
-    layers: undefined
     nodes: undefined
     previews: undefined
 
@@ -21,9 +20,6 @@ export default {
 
     local_path: '/'
   mutations:
-    set_layer: (state, id) ->
-      layer = state.layers.filter((d) -> d.label is id)[0]
-      layer.status = not layer.status
     _set_spaces: (state, spaces) ->
       state.spaces = spaces
     _set_space: (state, space) ->
@@ -39,8 +35,6 @@ export default {
       Vue.set(state.previews, preview.id, preview)
     set_transform: (state, transform) ->
       state.transform = transform
-    _set_layers: (state, layers) ->
-      state.layers = layers
     _set_starting_point: (state, starting_point) ->
       state.starting_point = starting_point
     _reset: (state) ->

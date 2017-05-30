@@ -1,8 +1,5 @@
 <template>
   <div class="mainview" :class="{mobile_mode: mode !== 'fullmap'}">
-    <layerbox v-if="layers !== undefined && layers.length > 0"></layerbox>
-    <layer v-for="(l,i) in layers" v-if="l.status"></layer>
-
     <buildingmapview v-if="space !== undefined && space.view === 'buildingmapview'"></buildingmapview>
     <textview v-if="space !== undefined && space.view === 'textview'"></textview>
     <bilingualtextview v-if="space !== undefined && space.view === 'bilingualtextview'"></bilingualtextview>
@@ -15,13 +12,11 @@
 </template>
 
 <script lang="coffee">
-import LayerBox from './LayerBox.vue'
 import MapView from './MapView.vue'
 import BuildingMapView from './BuildingMapView.vue'
 import TextView from './TextView.vue'
 import BilingualTextView from './BilingualTextView.vue'
 import FoldersView from './FoldersView.vue'
-import Layer from './Layer.vue'
 import ZoomableImageView from './ZoomableImageView.vue'
 import IframeView from './IframeView.vue'
 import RadicalView from './RadicalView.vue'
@@ -32,14 +27,11 @@ export default {
   computed:
     mode: () -> @$store.state.mode
     space: () -> @$store.state.space
-    layers: () -> @$store.state.layers
   components:
     buildingmapview: BuildingMapView
     textview: TextView
     bilingualtextview: BilingualTextView
     foldersview: FoldersView
-    layerbox: LayerBox
-    layer: Layer
     zoomableimageview: ZoomableImageView
     iframeview: IframeView
     radicalview: RadicalView
@@ -53,11 +45,4 @@ export default {
   height: 100%;
   overflow: hidden;
 }
-
-.layerbox {
-  position: absolute;
-  bottom: 85px;
-  left: 10px;
-}
-
 </style>
