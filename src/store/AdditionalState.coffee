@@ -4,7 +4,6 @@ import Vue from 'vue'
 
 export default {
   state:
-    mode: undefined
     local_path: '/'
     
     nodes: undefined
@@ -24,23 +23,10 @@ export default {
       Vue.set(state.previews, preview.id, preview)
     _set_starting_point: (state, starting_point) ->
       state.starting_point = starting_point
-    _reset: (state) ->
-      state.mode = 'info'
-      state.target = undefined
-      state.from = undefined
-      state.to = undefined
-      state.path = undefined
     set_transform: (state, transform) ->
       state.transform = transform
     set_path: (state, path) ->
       state.path = path
-    set_mode: (state, mode) ->
-      state.mode = mode
-      state.target = undefined
-      state.from = undefined
-      state.to = undefined
-      state.path = undefined
-      state.local_path = (if config.layout.view and state.space? then "/#{state.space.id}" else '')
 
   actions:
     init: (context, params) ->

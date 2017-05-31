@@ -7,6 +7,7 @@ export default {
     target: undefined
     from: undefined
     to: undefined
+    mode: undefined
 
   mutations:
     _set_space: (state, space) ->
@@ -30,6 +31,12 @@ export default {
       state.to = params.to
       state.path = params.path
       state.local_path = (if config.layout.view then "/#{state.space.id}" else '') + "/from/#{if params.from? then params.from.id else '_'}/to/#{if params.to? then params.to.id else '_'}"
+    _reset: (state) ->
+      state.mode = 'info'
+      state.target = undefined
+      state.from = undefined
+      state.to = undefined
+      state.path = undefined
 
     set_from: (state, from) ->
       state.from = from
@@ -37,8 +44,13 @@ export default {
     set_to: (state, to) ->
       state.to = to
       state.local_path = (if config.layout.view then "/#{state.space.id}" else '') + "/from/#{if state.from? then state.from.id else '_'}/to/#{if to? then to.id else '_'}"
-
-
+    set_mode: (state, mode) ->
+      state.mode = mode
+      state.target = undefined
+      state.from = undefined
+      state.to = undefined
+      state.path = undefined
+      state.local_path = (if config.layout.view and state.space? then "/#{state.space.id}" else '')
 
   actions:
     change_space: (context, id) ->
