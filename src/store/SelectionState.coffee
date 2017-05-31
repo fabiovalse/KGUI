@@ -8,6 +8,7 @@ export default {
     from: undefined
     to: undefined
     mode: undefined
+    path: undefined
     local_path: '/'
 
   mutations:
@@ -52,6 +53,8 @@ export default {
       state.to = undefined
       state.path = undefined
       state.local_path = (if config.layout.view and state.space? then "/#{state.space.id}" else '')
+    set_path: (state, path) ->
+      state.path = path
 
   actions:
     change_space: (context, id) ->

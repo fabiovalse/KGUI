@@ -8,7 +8,6 @@ export default {
     previews: undefined
 
     transform: d3.zoomTransform(1)
-    path: undefined
     starting_point: undefined
     
   mutations:
@@ -23,8 +22,6 @@ export default {
       state.starting_point = starting_point
     set_transform: (state, transform) ->
       state.transform = transform
-    set_path: (state, path) ->
-      state.path = path
 
   actions:
     init: (context, params) ->
