@@ -59,8 +59,8 @@ export default {
       if item.view?
         @$store.dispatch 'change_space', item.id
 
-      if item.template?
-        @$store.dispatch 'select', {id: item.id}
+      #if item.template?
+      #  @$store.dispatch 'select', {id: item.id}
 }
 </script>
 

@@ -14,6 +14,8 @@ export default {
   mutations:
     _set_space: (state, space) ->
       state.space = space
+      state.mode = undefined
+      state.target = undefined
       # FIXME this is a ugly hack
       state.local_path = '/'+([state.space.id].concat(state.local_path.split('/').slice(2))).join('/') 
     _set_target: (state, target) ->
