@@ -16,8 +16,8 @@
 export default {
   
   computed:
-    target: () -> @$store.state.target
-    transform: () -> @$store.state.transform
+    target: () -> @$store.state.selection.target
+    transform: () -> @$store.state.additional.transform
 
   methods:
     get_translate: () -> "translate(#{@target.position[0]}, #{@target.position[1]})"

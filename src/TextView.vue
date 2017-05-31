@@ -10,9 +10,9 @@ import kgl from './infobox_sections/kgl.coffee'
 export default {
   computed:
     text: () ->
-      text = if @$store.state.space? then @$store.state.space.text else ''
+      text = if @$store.state.selection.space? then @$store.state.selection.space.text else ''
       text = text.replace /\n/g, '<br/>'
-      text = kgl.parse(text, @$store.state.space)
+      text = kgl.parse(text, @$store.state.selection.space)
       return text
 }
 </script>

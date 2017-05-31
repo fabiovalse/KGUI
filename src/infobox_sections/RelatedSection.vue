@@ -26,7 +26,7 @@ export default {
     @refresh()
   
   computed:
-    space: () -> @$store.state.space
+    space: () -> @$store.state.selection.space
   
   watch:
     data: () ->

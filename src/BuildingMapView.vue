@@ -27,12 +27,12 @@ import Path from './Path.vue'
 export default {
 
   computed:
-    transform: () -> @$store.state.transform
-    pois: () -> if @$store.state.nodes? then @$store.state.nodes.filter (n) -> n.template is 'poi' else []
-    labels: () -> if @$store.state.nodes? then @$store.state.nodes.filter (n) -> n.template is 'room' else []
-    icons: () -> if @$store.state.nodes? then @$store.state.nodes.filter (n) -> n.label in ['Stairs', 'Elevator', 'Toilet'] else []
-    spaces: () -> if @$store.state.space? then @$store.state.space.list.filter((d) -> d.urls?).reverse() else undefined
-    space: () -> @$store.state.space
+    transform: () -> @$store.state.additional.transform
+    pois: () -> if @$store.state.additional.nodes? then @$store.state.additional.nodes.filter (n) -> n.template is 'poi' else []
+    labels: () -> if @$store.state.additional.nodes? then @$store.state.additional.nodes.filter (n) -> n.template is 'room' else []
+    icons: () -> if @$store.state.additional.nodes? then @$store.state.additional.nodes.filter (n) -> n.label in ['Stairs', 'Elevator', 'Toilet'] else []
+    spaces: () -> if @$store.state.selection.space? then @$store.state.selection.space.list.filter((d) -> d.urls?).reverse() else undefined
+    space: () -> @$store.state.selection.space
 
   mounted: () ->
     zoom = d3.zoom()

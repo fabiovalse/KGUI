@@ -22,8 +22,8 @@ export default {
     mobile_open:
       type: Boolean
   computed:
-    mode: () -> @$store.state.mode
-    target: () -> @$store.state.target
+    mode: () -> @$store.state.selection.mode
+    target: () -> @$store.state.selection.target
   methods: # FIXME some methods are unused
     click_directions: () -> @$store.dispatch 'request_directions', {def: true}
     click_node: (d) -> @$store.dispatch 'select', {id: d.id}

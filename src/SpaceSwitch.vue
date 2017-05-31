@@ -9,8 +9,8 @@
 <script lang="coffee">
 export default {
   computed:
-    spaces: () -> @$store.state.space.list
-    space: () -> @$store.state.space
+    spaces: () -> @$store.state.selection.space.list
+    space: () -> @$store.state.selection.space
   
   methods:
     change_space: (id) -> @$store.dispatch 'change_space', id

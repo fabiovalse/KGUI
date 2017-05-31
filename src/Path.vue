@@ -20,10 +20,10 @@
 export default {
 
   computed:
-    path: () -> @$store.state.path
-    space: () -> @$store.state.space
-    transform: () -> @$store.state.transform
-    waypoints: () -> if @$store.state.path? then @$store.state.path.nodes.filter((n) -> not n.label?).filter (n) => n.space.data.id is @space.id else undefined # FIXME: instead of label a type should be used
+    path: () -> @$store.state.selection.path
+    space: () -> @$store.state.selection.space
+    transform: () -> @$store.state.additional.transform
+    waypoints: () -> if @$store.state.selection.path? then @$store.state.selection.path.nodes.filter((n) -> not n.label?).filter (n) => n.space.data.id is @space.id else undefined # FIXME: instead of label a type should be used
 
   methods:
     get_d: (nodes) ->

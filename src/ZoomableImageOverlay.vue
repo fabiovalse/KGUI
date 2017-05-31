@@ -20,7 +20,7 @@ export default {
       type: Object
 
   computed:
-    selected: () -> @store.state.target
+    selected: () -> @store.state.selection.target
 
   methods:
     select: (id) -> 

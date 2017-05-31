@@ -53,8 +53,8 @@ export default {
     @collections.forEach (c) => @$store.dispatch 'request_previews', c.id
 
   computed:
-    space: () -> @$store.state.space
-    collections: () -> @$store.state.space.subspaces.sort (a,b) -> 
+    space: () -> @$store.state.selection.space
+    collections: () -> @$store.state.selection.space.subspaces.sort (a,b) -> 
       if a.order? and b.order?
         return a.order - b.order
       else
@@ -67,14 +67,14 @@ export default {
           return b.label < a.label
         else
           return b.width - a.width
-    previews: () -> if @$store.state.previews? then @$store.state.previews else {}
-    footer_sections: () -> JSON.parse(@$store.state.space.sections)
+    previews: () -> if @$store.state.additional.previews? then @$store.state.additional.previews else {}
+    footer_sections: () -> JSON.parse(@$store.state.selection.space.sections)
 
   watch:
     previews: (newPreviews) -> @previews = newPreviews
 
   methods:
-    kgl: (d) -> kgl.parse d, @$store.state.space
+    kgl: (d) -> kgl.parse d, @$store.state.selection.space
     open: (item) -> 
       if item.view?
         @$store.dispatch 'change_space', item.id

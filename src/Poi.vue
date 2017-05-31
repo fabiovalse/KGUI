@@ -29,8 +29,8 @@ export default {
   props: ['data']
 
   computed:
-    target: () -> @$store.state.target
-    transform: () -> @$store.state.transform
+    target: () -> @$store.state.selection.target
+    transform: () -> @$store.state.additional.transform
 
   methods:
     select: () -> @$store.dispatch 'select', {id: @data.id}

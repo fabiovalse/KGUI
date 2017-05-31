@@ -39,8 +39,8 @@ import kgl from './infobox_sections/kgl.coffee'
 
 export default {
   computed:
-    space: () -> @$store.state.space
-    folders: () -> @$store.state.space.subspaces.sort (a,b) -> 
+    space: () -> @$store.state.selection.space
+    folders: () -> @$store.state.selection.space.subspaces.sort (a,b) -> 
       if a.order? and b.order?
         return a.order - b.order
       else
@@ -54,7 +54,7 @@ export default {
         else
           return b.width - a.width
   methods:
-    kgl: (d) -> kgl.parse d, @$store.state.space
+    kgl: (d) -> kgl.parse d, @$store.state.selection.space
     open: (item) -> 
       if item.view?
         @$store.dispatch 'change_space', item.id

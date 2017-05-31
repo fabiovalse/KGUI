@@ -24,11 +24,11 @@
 export default {
 
   computed:
-    pois: () -> if @$store.state.nodes? then @$store.state.nodes else []
-    target: () -> @$store.state.target
-    from: () -> @$store.state.from
-    to: () -> @$store.state.to
-    path: () -> @$store.state.path
+    pois: () -> if @$store.state.additional.nodes? then @$store.state.additional.nodes else []
+    target: () -> @$store.state.selection.target
+    from: () -> @$store.state.selection.from
+    to: () -> @$store.state.selection.to
+    path: () -> @$store.state.selection.path
 
   methods:
     clicked_nowhere: () ->

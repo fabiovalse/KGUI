@@ -25,8 +25,8 @@ import PresentationView from './PresentationView.vue'
 export default {
   props: ['config']
   computed:
-    mode: () -> @$store.state.mode
-    space: () -> @$store.state.space
+    mode: () -> @$store.state.selection.mode
+    space: () -> @$store.state.selection.space
   components:
     buildingmapview: BuildingMapView
     textview: TextView

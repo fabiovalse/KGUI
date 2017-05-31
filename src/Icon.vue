@@ -14,7 +14,7 @@ export default {
   props: ['data']
 
   computed:
-    transform: () -> @$store.state.transform
+    transform: () -> @$store.state.additional.transform
 
   methods:
     get_translate: () -> "translate(#{@data.position[0]}, #{@data.position[1]})"

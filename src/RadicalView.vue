@@ -15,7 +15,7 @@
 <script lang="coffee">
 export default {
   computed:
-    nodes: () -> @$store.state.nodes.sort (a,b) -> a.number - b.number
+    nodes: () -> @$store.state.additional.nodes.sort (a,b) -> a.number - b.number
 
   methods:
     select: (item) -> @$store.dispatch 'select', {id: item.id}

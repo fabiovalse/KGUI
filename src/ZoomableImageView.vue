@@ -33,8 +33,8 @@ export default {
       required: true
 
   computed:
-    nodes: () -> @$store.state.nodes
-    space: () -> @$store.state.space
+    nodes: () -> @$store.state.additional.nodes
+    space: () -> @$store.state.selection.space
 
   watch:
     space: (newSpace) -> @load_map()

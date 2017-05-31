@@ -54,7 +54,7 @@ import PinyinConverter from '../../lib/pinyin_converter.js'
 export default {
 
   computed:
-    target: () -> @$store.state.target
+    target: () -> @$store.state.selection.target
     pinyin: () -> if @target.pinyin and @target.tone then PinyinConverter.convert("#{@target.pinyin}#{@target.tone}") else @target.pinyin
 
   methods:

@@ -29,8 +29,8 @@ export default {
       type: Boolean
 
   computed:
-    mode: () -> @$store.state.mode
-    target: () -> @$store.state.target
+    mode: () -> @$store.state.selection.mode
+    target: () -> @$store.state.selection.target
 
   methods:
     click_close: () ->

@@ -35,8 +35,8 @@ export default {
     current_input: undefined
 
   computed:
-    from: () -> @$store.state.from
-    to: () -> @$store.state.to
+    from: () -> @$store.state.selection.from
+    to: () -> @$store.state.selection.to
   
   methods:
     click_close: () -> @$store.commit 'set_mode', undefined

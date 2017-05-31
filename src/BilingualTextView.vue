@@ -24,9 +24,9 @@ import AnnotatedText from './AnnotatedText.vue'
 export default {
 
   computed:
-    bilingualtext: () -> JSON.parse(@$store.state.space.bilingualtext)
-    notes: () -> @$store.state.space.notes
-    note_ids: () -> @$store.state.space.note_ids
+    bilingualtext: () -> JSON.parse(@$store.state.selection.space.bilingualtext)
+    notes: () -> @$store.state.selection.space.notes
+    note_ids: () -> @$store.state.selection.space.note_ids
 
   components:
     annotatedtext: AnnotatedText

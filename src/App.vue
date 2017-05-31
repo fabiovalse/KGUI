@@ -58,9 +58,9 @@ export default {
     result_change: undefined
 
   computed:
-    mode: () -> @$store.state.mode
+    mode: () -> @$store.state.selection.mode
     config: () -> config
-    space: () -> @$store.state.space
+    space: () -> @$store.state.selection.space
 
   mounted: () ->
     @$store.dispatch 'init', {default_starting_point: config.default_starting_point, default_space: config.default_space}
@@ -86,7 +86,7 @@ export default {
           to_id: (if route.params.to is '_' then undefined else route.params.to),
         }
 
-      if (route.params.space? and not @$store.state.space?) or (route.params.space? and @$store.state.space? and route.params.space isnt @$store.state.space.id)
+      if (route.params.space? and not @$store.state.selection.space?) or (route.params.space? and @$store.state.selection.space? and route.params.space isnt @$store.state.selection.space.id)
         @$store.dispatch 'change_space', route.params.space
 
     search: (str) ->

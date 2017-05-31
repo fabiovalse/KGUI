@@ -14,7 +14,7 @@ export default {
   props: ['data']
 
   computed:
-    transform: () -> @$store.state.transform
+    transform: () -> @$store.state.additional.transform
 
   methods:
     select: () -> @$store.dispatch 'select', {id: @data.id}

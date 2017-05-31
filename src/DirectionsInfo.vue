@@ -18,7 +18,7 @@ export default {
     human_walking_speed: 1.25
 
   computed:
-    path: () -> @$store.state.path
+    path: () -> @$store.state.selection.path
 
   methods:
     get_time: (distance) ->
