@@ -8,6 +8,7 @@ export default {
     from: undefined
     to: undefined
     mode: undefined
+    local_path: '/'
 
   mutations:
     _set_space: (state, space) ->

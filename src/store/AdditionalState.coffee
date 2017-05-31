@@ -3,9 +3,7 @@ import config from '../config.coffee'
 import Vue from 'vue'
 
 export default {
-  state:
-    local_path: '/'
-    
+  state:    
     nodes: undefined
     previews: undefined
 
