@@ -1,5 +1,5 @@
 <template>
-  <div class="mainview" :class="{mobile_mode: mode !== 'fullmap'}">
+  <div class="mainview" :class="{mobile_mode: mode !== undefined}">
     <buildingmapview v-if="space !== undefined && space.view === 'buildingmapview'"></buildingmapview>
     <textview v-if="space !== undefined && space.view === 'textview'"></textview>
     <bilingualtextview v-if="space !== undefined && space.view === 'bilingualtextview'"></bilingualtextview>

@@ -46,7 +46,7 @@ export default {
     request_info: (context, id) ->
       db.query_info context, id, '_set_info_state'
     select: (context, params) ->
-      if context.state.mode is 'fullmap'
+      if context.state.mode is undefined
         context.commit '_reset'
 
       switch context.state.mode

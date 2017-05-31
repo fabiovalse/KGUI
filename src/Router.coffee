@@ -6,7 +6,7 @@ export default {
     {path: '/', redirect: config.default_local_path}
     {
       name: 'fullmap_mode'
-      path: if config.layout.view then '/:space/fullmap' else '/fullmap'
+      path: if config.layout.view then '/:space/' else '/'
       component: App
     }
     {

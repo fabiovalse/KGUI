@@ -16,14 +16,14 @@
       class="resultsbox2 box"
       ref="resultsbox2"
       :result_change="result_change"
-      v-if="mode !== 'fullmap'"
+      v-if="mode !== undefined"
     ></resultsbox>
     <infobox
       class="box"
       :searchdirectionsbox_enabled="config.layout.searchdirectionsbox"
       :mobile_open="mobile_open"
       v-on:mobile_open="toggle_mobile_open"
-      v-if="config.layout.infobox && mode !== 'fullmap'"
+      v-if="config.layout.infobox && mode !== undefined"
     ></infobox>
     <searchdirectionsbox
       ref="searchdirectionsbox"
@@ -77,7 +77,7 @@ export default {
       if route.params.target?
         @$store.dispatch 'request_info', route.params.target
       else if not route.params.target? and route.params.space?
-        @$store.commit 'fullmap_mode'
+        @$store.commit 'set_mode', undefined
         @$emit 'mobile_open', false
       
       if 'from' in Object.keys(route.params) and 'to' in Object.keys(route.params)

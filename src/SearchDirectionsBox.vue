@@ -39,7 +39,7 @@ export default {
     to: () -> @$store.state.to
   
   methods:
-    click_close: () -> @$store.commit 'fullmap_mode'
+    click_close: () -> @$store.commit 'set_mode', undefined
     
     search_from: () ->
       @current_input = 'from'

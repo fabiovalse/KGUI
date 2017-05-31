@@ -4,7 +4,7 @@ import Vue from 'vue'
 
 export default {
   state:
-    mode: 'fullmap'
+    mode: undefined
     local_path: '/'
     
     nodes: undefined
@@ -34,13 +34,13 @@ export default {
       state.transform = transform
     set_path: (state, path) ->
       state.path = path
-    fullmap_mode: (state) ->
-      state.mode = 'fullmap'
+    set_mode: (state, mode) ->
+      state.mode = mode
       state.target = undefined
       state.from = undefined
       state.to = undefined
       state.path = undefined
-      state.local_path = (if config.layout.view then "/#{state.space.id}" else '') + "/fullmap"
+      state.local_path = (if config.layout.view and state.space? then "/#{state.space.id}" else '')
 
   actions:
     init: (context, params) ->

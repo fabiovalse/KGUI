@@ -74,7 +74,7 @@ module.exports = {
       result = JSON.parse(data.responseText)
 
       if result.data.length is 0 # If a node has no position, dijkstra fails, result is undefined, then switch to fullmap_mode
-        context.commit 'fullmap_mode'
+        context.commit 'set_mode', undefined
         return
 
       [start, end] = result.data[0]
