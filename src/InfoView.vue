@@ -1,5 +1,7 @@
 <template>
   <div class="infoview">
+    <spaceheader></spaceheader>
+    
     <div class="preview">
       <zoomableimageview v-if="space !== undefined && space.view === 'zoomableimageview'" :config="config.openseadragon"></zoomableimageview>
     </div>
@@ -10,6 +12,7 @@
 </template>
 
 <script lang="coffee">
+import SpaceHeader from './SpaceHeader.vue'
 import ZoomableImageView from './ZoomableImageView.vue'
 import IframeView from './IframeView.vue'
 
@@ -20,6 +23,7 @@ export default {
   components:
     zoomableimageview: ZoomableImageView
     iframeview: IframeView
+    spaceheader: SpaceHeader
 }
 </script>
 
