@@ -1,10 +1,8 @@
 <template>
   <div class="foldersview">
-    <header>
-      <div v-if="space.label !== undefined" class="label" v-html="kgl(space.label)"></div>
-      <div v-if="space.subtitle !== undefined" class="subtitle" v-html="kgl(space.subtitle)"></div>
-      <div v-if="space.description !== undefined" class="description" v-html="kgl(space.description)"></div>
-    </header>
+
+    <spaceheader></spaceheader>
+    
     <div class="folders">
         
       <div class="folder" v-for="folder in folders"
@@ -36,10 +34,10 @@
 
 <script lang="coffee">
 import kgl from './infobox_sections/kgl.coffee'
+import SpaceHeader from './SpaceHeader.vue'
 
 export default {
   computed:
-    space: () -> @$store.state.selection.space
     folders: () -> @$store.state.selection.space.subspaces.sort (a,b) -> 
       if a.order? and b.order?
         return a.order - b.order
@@ -59,8 +57,8 @@ export default {
       if item.view?
         @$store.dispatch 'change_space', item.id
 
-      #if item.template?
-      #  @$store.dispatch 'select', {id: item.id}
+  components:
+    spaceheader: SpaceHeader
 }
 </script>
 
@@ -71,31 +69,6 @@ export default {
   padding: 24px;
   box-sizing: border-box;
   padding-left: calc(var(--left-panel-width) + 30px);
-}
-header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: var(--left-panel-width);
-}
-header .label {
-  margin-left: 30px;
-  margin-top: 32px;
-  font-size: 30px;
-  font-weight: 300;
-}
-header .subtitle {
-  margin-left: 30px;
-  margin-top: 20px;
-  font-size: 20px;
-  font-weight: 300;
-  color: #333;
-}
-header .description {
-  margin-top: 20px;
-  padding-left: 30px;
-  font-size: 16px;
-  font-weight: 300;
 }
 
 .folders {

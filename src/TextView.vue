@@ -1,11 +1,14 @@
 <template>
   <div class="textview">
+    <spaceheader></spaceheader>
+
     <div class="text" v-html="text"></div>
   </div>
 </template>
 
 <script lang="coffee">
 import kgl from './infobox_sections/kgl.coffee'
+import SpaceHeader from './SpaceHeader.vue'
 
 export default {
   computed:
@@ -14,6 +17,8 @@ export default {
       text = text.replace /\n/g, '<br/>'
       text = kgl.parse(text, @$store.state.selection.space)
       return text
+  components:
+    spaceheader: SpaceHeader
 }
 </script>
 

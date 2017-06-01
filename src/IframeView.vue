@@ -1,14 +1,20 @@
 <template>
   <div class="iframeview">
+    <spaceheader :overlay="true"></spaceheader>
+    
     <iframe :src="url"></iframe>
   </div>
 </template>
 
 <script lang="coffee">
+import SpaceHeader from './SpaceHeader.vue'
+
 export default {
   props:
     url:
       type: String
+  components:
+    spaceheader: SpaceHeader
 }
 </script>
 

@@ -2,11 +2,7 @@
   <div class="presentationview">
     <div class="margin"></div>
     
-    <header>
-      <div v-if="space.label !== undefined" class="label" v-html="kgl(space.label)"></div>
-      <div v-if="space.subtitle !== undefined" class="subtitle" v-html="kgl(space.subtitle)"></div>
-      <div v-if="space.description !== undefined" class="description" v-html="kgl(space.description)"></div>
-    </header>
+    <spaceheader></spaceheader>
 
     <div class="collections">
       <div v-for="c in collections" class="collection">
@@ -47,6 +43,7 @@
 
 <script lang="coffee">
 import kgl from './infobox_sections/kgl.coffee'
+import SpaceHeader from './SpaceHeader.vue'
 
 export default {
   mounted: () ->
@@ -74,13 +71,13 @@ export default {
     previews: (newPreviews) -> @previews = newPreviews
 
   methods:
-    kgl: (d) -> kgl.parse d, @$store.state.selection.space
+    kgl: (d) -> kgl.parse d, @space
     open: (item) -> 
       if item.view?
         @$store.dispatch 'change_space', item.id
 
-      #if item.template?
-      #  @$store.dispatch 'select', {id: item.id}
+  components:
+    spaceheader: SpaceHeader
 
 }
 </script>
@@ -94,33 +91,6 @@ export default {
   padding-left: 430px; /* 12px more, needed for folders margin */
   padding-right: 30px;
   box-sizing: border-box;
-}
-
-header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: var(--left-panel-width);
-  box-sizing: border-box;
-}
-header .label {
-  margin-top: 32px;
-  padding-left: 30px;
-  font-size: 30px;
-  font-weight: 300;
-}
-header .subtitle {
-  margin-top: 20px;
-  padding-left: 30px;
-  font-size: 20px;
-  font-weight: 300;
-  color: #333;
-}
-header .description {
-  margin-top: 20px;
-  padding-left: 30px;
-  font-size: 16px;
-  font-weight: 300;
 }
 
 footer {
