@@ -20,7 +20,6 @@ import SpaceSwitch from './SpaceSwitch.vue'
 import Vue from 'vue'
 
 export default {
-#  render: (createElement) -> createElement 'div', {attrs: {id: 'zoomableimageview'}}
 
   data: () ->
     initial_pan: undefined
@@ -55,20 +54,29 @@ export default {
     @load_map()
 
   methods:
-    get_icon: () -> if @annotation_visible then 'hide' else 'show'
+    get_icon: () -> if @annotation_visible then 'show' else 'hide'
 
     show_hide: () -> 
       @annotation_visible = not @annotation_visible
-      @$el.querySelector('svg').style['display'] = if @annotation_visible then 'inline' else 'none'
+      @$el.querySelector('svg').style['display'] = if @annotation_visible then 'none' else 'inline'
 
     open: () ->
       @$el.classList.remove 'zoom_cursor'
       @$el.classList.add 'fullscreen'
 
       @fullscreen_mode = true
-      @annotation_visible = true
       
+      @$el.querySelector('svg').style['display'] = 'inline'
+
       @viewer.setMouseNavEnabled(true)
+
+    close: () ->
+      @$el.classList.add 'zoom_cursor'
+      @$el.classList.remove 'fullscreen'
+
+      @fullscreen_mode = false
+      
+      @viewer.setMouseNavEnabled(false)
 
     load_map: () ->
       new_zoom = @initial_zoom
@@ -126,6 +134,7 @@ export default {
         ### Add CSS mix blend mode style
         ###
         @$el.querySelector('svg').style['mix-blend-mode'] = 'multiply'
+        @$el.querySelector('svg').style['display'] = 'none'
 
   #    @viewer.addHandler 'canvas-click', (event) =>
   #      # The canvas-click event gives us a position in web coordinates.
@@ -169,9 +178,6 @@ export default {
   }
   .zoom_cursor {
     cursor: zoom-in;
-  }
-  .hidden {
-    display: none;
   }
 
   .zoom_control {
