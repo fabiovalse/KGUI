@@ -1,11 +1,11 @@
 <template>
-  <div id="zoomableimageview">
-    <spaceswitch></spaceswitch>
-    <div class="zoom_control">
+  <div id="zoomableimageview" class="zoom_cursor" @click="open()">
+    <spaceswitch v-if="fullscreen_mode"></spaceswitch>
+    <div class="zoom_control" v-if="fullscreen_mode">
       <div><button id="openseadragon_zoom_in_control" class="in"><i class="icon-plus"></i></button></div>
       <div><button id="openseadragon_zoom_out_control" class="out"><i class="icon-minus"></i></button></div>
     </div>
-    <div class="annotation_control">
+    <div class="annotation_control" v-if="fullscreen_mode">
       <button @click="show_hide()"><i :class="'icon-'+get_icon()"></i></button>
     </div>
   </div>
@@ -25,7 +25,8 @@ export default {
   data: () ->
     initial_pan: undefined
     initial_zoom: undefined
-    annotation_visible: true
+    fullscreen_mode: false
+    annotation_visible: false
 
   props:
     config:
@@ -49,7 +50,7 @@ export default {
       @viewer.controls[0].destroy()
 
     # set margins according to infobox
-    @viewer.viewport.setMargins({left: 428, right: 20, top: 0, bottom: 0})
+    @viewer.viewport.setMargins({left: 20, right: 20, top: 0, bottom: 0})
 
     @load_map()
 
@@ -59,6 +60,15 @@ export default {
     show_hide: () -> 
       @annotation_visible = not @annotation_visible
       @$el.querySelector('svg').style['display'] = if @annotation_visible then 'inline' else 'none'
+
+    open: () ->
+      @$el.classList.remove 'zoom_cursor'
+      @$el.classList.add 'fullscreen'
+
+      @fullscreen_mode = true
+      @annotation_visible = true
+      
+      @viewer.setMouseNavEnabled(true)
 
     load_map: () ->
       new_zoom = @initial_zoom
@@ -141,10 +151,24 @@ export default {
   #zoomableimageview {
     width: 100%;
     height: 100%;
+    position: relative;
     background: #000;
   }
   #zoomableimageview * {
     outline: none !important;
+  }
+
+  .fullscreen {
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    padding: 0;
+  }
+  .zoom_cursor {
+    cursor: zoom-in;
+  }
+  .hidden {
+    display: none;
   }
 
   .zoom_control {
