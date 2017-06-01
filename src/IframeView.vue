@@ -25,6 +25,8 @@ export default {
 
   display: flex;
   flex-direction: row;
+
+  background: black;
 }
 iframe {
   flex-grow: 1;
