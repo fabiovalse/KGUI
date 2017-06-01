@@ -149,8 +149,9 @@ export default {
 
 <style scoped>
   #zoomableimageview {
-    width: 100%;
+    width: 92%;
     height: 100%;
+    margin: auto;
     position: relative;
     background: #000;
   }
@@ -160,6 +161,7 @@ export default {
 
   .fullscreen {
     position: absolute !important;
+    width: 100% !important;
     top: 0;
     left: 0;
     padding: 0;

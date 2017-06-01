@@ -29,15 +29,16 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
   overflow: hidden;
   background: #FFF;
 }
-.preview, .details {
+.details {
   width: 84%;
 }
 .preview {
-  padding: 40px 20px;
+  width: calc(100% - 408px);
+  padding: 40px 0px;
   height: 400px;
   border-bottom: 1px solid #e0e0e0;
 }
