@@ -2,7 +2,9 @@
   <div class="textview">
     <spaceheader></spaceheader>
 
-    <div class="text" v-html="text"></div>
+    <div class="page" v-for="page in pages">
+      <div class="text" v-html="page"></div>
+    </div>
   </div>
 </template>
 
@@ -12,11 +14,13 @@ import SpaceHeader from './SpaceHeader.vue'
 
 export default {
   computed:
-    text: () ->
-      text = if @$store.state.selection.space? then @$store.state.selection.space.text else ''
-      text = text.replace /\n/g, '<br/>'
-      text = kgl.parse(text, @$store.state.selection.space)
-      return text
+    pages: () ->
+      ps = if @$store.state.selection.space? then @$store.state.selection.space.pages else []
+      ps = ps.map (d) =>
+        d = d.replace /\n/g, '<br/>'
+        d = kgl.parse(d, @$store.state.selection.space)
+        return d
+      return ps
   components:
     spaceheader: SpaceHeader
 }
@@ -30,5 +34,10 @@ export default {
   padding-left: calc(var(--left-panel-width) + 12px);
   overflow-y: scroll;
   background: var(--paper-color);
+}
+.page:not(:last-child) {
+  border-bottom: 1px solid #DDD;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
 }
 </style>
