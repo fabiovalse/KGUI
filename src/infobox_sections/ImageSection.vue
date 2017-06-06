@@ -31,7 +31,6 @@ export default {
 
 <style scoped>
 .image_section {
-  width: 408px;
   height: 214px;
   background-size: cover;
   background-color: #DDD;

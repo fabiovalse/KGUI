@@ -23,7 +23,7 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 5;
+  z-index: 6;
   width: 100%;
   height: var(--main-bar-height);
   padding-left: calc(var(--left-panel-width) + 12px);

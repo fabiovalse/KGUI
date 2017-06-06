@@ -174,7 +174,7 @@ export default {
     top: 0;
     left: 0;
     padding: 0;
-    z-index: 10;
+    z-index: 4;
   }
   .zoom_cursor {
     cursor: zoom-in;

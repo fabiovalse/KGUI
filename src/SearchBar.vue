@@ -1,5 +1,5 @@
 <template>
-  <div class="searchbar" :class="{targetdefined: target !== undefined, focused: focused}">
+  <div class="searchbar" :class="{focused: focused}">
     <div class="innerbar">
       <input
         class="search"
@@ -64,9 +64,6 @@ export default {
   z-index: 10;
   height: var(--main-bar-height);
   width: calc(var(--left-panel-width) - var(--left-panel-scrollbar-width));
-}
-.searchbar.targetdefined {
-  background: var(--main-color);
 }
 .innerbar {
   position: absolute;

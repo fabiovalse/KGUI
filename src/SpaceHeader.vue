@@ -28,7 +28,7 @@ header {
   top: 0;
   left: 0;
   width: calc(var(--left-panel-width) - 2 * var(--margin));
-  z-index: 5;
+  z-index: 3;
   margin: var(--margin);
   padding: var(--margin);
   box-sizing: border-box;

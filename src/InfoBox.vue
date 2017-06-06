@@ -1,6 +1,5 @@
 <template>
   <div class="infobox" :class="{mobile_open: mobile_open}">
-    <div class="top_band"></div>
     <v-touch tag="div" class="expand" v-on:swipe="click"><span @click="click" v-if="mobile_open"><i class="icon-slide-down"></i></span><span @click="click" v-else><i class="icon-slide-up"></i></span>
     </v-touch>
 
@@ -38,18 +37,17 @@ export default {
 </script>
 
 <style scoped>
-.top_band {
-  width: 100%;
-  height: var(--main-bar-height);
-  background: var(--main-color);
-}
-
 .infobox {
+  --margin: 17px;
+  --radius: 3px;
   position: absolute;
-  top: 0;
-  height: 100%;
+  top: calc(var(--main-bar-height) + var(--margin));
+  left: var(--margin);
+  width: calc(var(--left-panel-width) - 2 * var(--margin) - 6px);
+  max-height: calc(100% - var(--main-bar-height) - 2 * var(--margin));
+  z-index: 5;
   background: #FFF;
-  z-index: 6;
+  border-radius: var(--radius);
   box-shadow: 0 0 18px rgba(0,0,0,0.8);
   box-sizing: border-box;
 }
@@ -74,16 +72,19 @@ export default {
 /* Google-style scrollbar on webkit */
 .infobox {
   overflow-x: hidden;
-  overflow-y: scroll;
 }
 ::-webkit-scrollbar {
   width: var(--left-panel-scrollbar-width);
 }
 ::-webkit-scrollbar-track {
   background: #EEE;
+  border-top-right-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
 }
 ::-webkit-scrollbar-thumb {
   background: #888;
+  border-top-right-radius: var(--radius);
+  border-bottom-right-radius: var(--radius);
 }
 
 @media (max-width: 480px) {
