@@ -48,7 +48,7 @@ export default {
   z-index: 5;
   background: #FFF;
   border-radius: var(--radius);
-  box-shadow: 0 0 18px rgba(0,0,0,0.8);
+  box-shadow: 1px 1px 12px rgba(0,0,0,0.8);
   box-sizing: border-box;
 }
 

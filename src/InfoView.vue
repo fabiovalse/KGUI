@@ -40,6 +40,7 @@ export default {
   flex-direction: column;
   align-items: flex-end;
   overflow: scroll;
+  overflow-x: hidden;
   background: #FFF;
 }
 .details {
