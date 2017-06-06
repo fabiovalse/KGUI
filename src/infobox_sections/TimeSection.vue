@@ -30,12 +30,21 @@ export default {
       type: Object
       required: true
 
+  data: () ->
+    width: 0
+
+  mounted: () ->
+    @width = @$el.getBoundingClientRect().width
+
   computed:
     start_date: () -> kgl.parse(@config.start_date, @data)
     end_date: () -> kgl.parse(@config.end_date, @data)
     ref: () -> @config.ref
     height: () -> if @height? then @height else undefined
-    scale: () -> d3.scaleLinear().domain([Math.min(@config.ref.start_date, @start_date)-50, Math.max(@config.ref.end_date, @end_date)+50]).range(@config.range)
+    scale: () ->
+      d3.scaleLinear()
+        .domain([Math.min(@config.ref.start_date, @start_date)-50, Math.max(@config.ref.end_date, @end_date)+50])
+        .range([0, @width])
 
   methods:
     scale_value: (value) -> @scale(value)
