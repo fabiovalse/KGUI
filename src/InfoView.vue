@@ -4,7 +4,7 @@
     
     <div class="preview">
       <zoomableimageview v-if="space !== undefined && space.view === 'zoomableimageview'" :config="config.openseadragon"></zoomableimageview>
-      <imageview v-if="space !== undefined && space.view === 'imageview'" :url="space.vfs_img"></imageview>
+      <imageview v-if="space !== undefined && space.view === 'imageview'"></imageview>
     </div>
     <div class="details">
       <sections></sections>
