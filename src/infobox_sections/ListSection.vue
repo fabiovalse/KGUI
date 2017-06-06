@@ -53,16 +53,13 @@ export default {
 <style scoped>
 table {
   padding: 16px;
-  font-size: 13px;
   border-collapse: separate;
   border-spacing: 8px;
   width: 100%;
 }
-
 table td {
   word-wrap: break-word;
 }
-
 td:not(:last-child) {
   padding-right: 8px;
 }
@@ -71,13 +68,18 @@ td:not(:last-child) {
   font-size: 18px;
   color: #B44646;
 }
-
 </style>
+
 <style>
+.infobox table {
+  font-size: 13px;
+}
+.infoview table {
+  font-size: 15px;
+  font-weight: 300;
+}
+
 .list_section .item {
   margin-bottom: 2px
 }
-
-
-
 </style>

@@ -41,11 +41,17 @@ export default {
   }
   
 }
-
 </style>
 <style>
 .text_section sup {
   vertical-align: top;
   font-size: 0.7em;
+}
+.infobox .text_section {
+  font-size: 13px;
+}
+.infoview .text_section {
+  font-size: 15px;
+  font-weight: 300;
 }
 </style>

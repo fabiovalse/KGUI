@@ -4,9 +4,10 @@
     
     <div class="preview">
       <zoomableimageview v-if="space !== undefined && space.view === 'zoomableimageview'" :config="config.openseadragon"></zoomableimageview>
+      <imageview v-if="space !== undefined && space.view === 'imageview'" :url="space.vfs_img"></imageview>
     </div>
     <div class="details">
-      
+      <sections></sections>
     </div>
   </div>
 </template>
@@ -14,7 +15,9 @@
 <script lang="coffee">
 import SpaceHeader from './SpaceHeader.vue'
 import ZoomableImageView from './ZoomableImageView.vue'
+import ImageView from './ImageView.vue'
 import IframeView from './IframeView.vue'
+import Sections from './infoview_sections/Sections.vue'
 
 export default {
   props: ['config']
@@ -24,6 +27,8 @@ export default {
     zoomableimageview: ZoomableImageView
     iframeview: IframeView
     spaceheader: SpaceHeader
+    sections: Sections
+    imageview: ImageView
 }
 </script>
 
@@ -34,11 +39,11 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  overflow: hidden;
+  overflow: scroll;
   background: #FFF;
 }
 .details {
-  width: 84%;
+  width: calc(100% - var(--left-panel-width));
 }
 .preview {
   width: calc(100% - 408px);

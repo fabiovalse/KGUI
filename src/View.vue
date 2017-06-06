@@ -1,14 +1,15 @@
 <template>
   <div class="mainview" :class="{mobile_mode: mode !== undefined}">
-    <buildingmapview v-if="space !== undefined && space.view === 'buildingmapview'"></buildingmapview>
-    <textview v-if="space !== undefined && space.view === 'textview'"></textview>
-    <bilingualtextview v-if="space !== undefined && space.view === 'bilingualtextview'"></bilingualtextview>
-    <!--<zoomableimageview v-if="space !== undefined && space.view === 'zoomableimageview'" :config="config.openseadragon"></zoomableimageview>-->
-    <foldersview v-if="space !== undefined && space.view === 'foldersview'"></foldersview>
-    <iframeview v-if="space !== undefined && space.view === 'iframeview'" :url="space.url"></iframeview>
-    <radicalview v-if="space !== undefined && space.view === 'radicalview'"></radicalview>
-    <presentationview v-if="space !== undefined && space.view === 'presentationview'"></presentationview>
-    <infoview v-if="space !== undefined && space.template === 'map'" :config="config"></infoview>
+    <infoview v-if="space !== undefined && space.template !== undefined && space.view !== undefined" :config="config"></infoview>
+
+    <buildingmapview v-if="space !== undefined && space.template === undefined && space.view === 'buildingmapview'"></buildingmapview>
+    <textview v-if="space !== undefined && space.template === undefined && space.view === 'textview'"></textview>
+    <bilingualtextview v-if="space !== undefined && space.template === undefined && space.view === 'bilingualtextview'"></bilingualtextview>
+    <zoomableimageview v-if="space !== undefined && space.template === undefined && space.view === 'zoomableimageview'" :config="config.openseadragon"></zoomableimageview>
+    <foldersview v-if="space !== undefined && space.template === undefined && space.view === 'foldersview'"></foldersview>
+    <iframeview v-if="space !== undefined && space.template === undefined && space.view === 'iframeview'" :url="space.url"></iframeview>
+    <radicalview v-if="space !== undefined && space.template === undefined && space.view === 'radicalview'"></radicalview>
+    <presentationview v-if="space !== undefined && space.template === undefined && space.view === 'presentationview'"></presentationview>
   </div>
 </template>
 
