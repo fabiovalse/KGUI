@@ -22,10 +22,6 @@
           <div class="main" v-html="kgl(folder.label)"></div>
           <div class="sub" v-html="kgl(folder.subtitle)"></div>
         </div>
-
-        <div v-if="folder.view !== undefined" class="type">
-          <i :class="folder.view === 'foldersview' ? 'icon-folder' : 'icon-zoom_in'"></i>
-        </div>
       </div>
 
     </div>
@@ -113,7 +109,7 @@ export default {
   height: 55px;
   pointer-events: none;
   background: #FFF;
-  padding: 24px 48px 24px 16px;
+  padding: 24px 24px 24px 16px;
   border-bottom-right-radius: 2px;
   border-bottom-left-radius: 2px;
 }
@@ -128,20 +124,6 @@ export default {
   font-weight: 300;
   color: rgba(0,0,0,0.54);
   margin-top: 4px;
-}
-
-.type {
-  position: absolute;
-  right: 11px;
-  bottom: 40px;
-  border: none;
-  border-radius: 50%;
-  background: transparent;
-  font-size: 20px;
-  color: #858585;
-  line-height: 0px;
-  padding: 5px;
-  cursor: pointer;
 }
 
 @media (max-width: 480px) {
