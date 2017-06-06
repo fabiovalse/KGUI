@@ -17,7 +17,7 @@
             <div v-if="p.vfs_img !== undefined" class="preview" v-for="p in previews[c.id].subspaces" :style="{'max-width': '250px','max-height': '250px'}" @click="open(p)">
               <div class="title">{{p.label}}</div>
               <div v-if="p.vfs_img !== undefined" class="img"
-                   :style="{background: 'url('+p.vfs_img+')'}"></div>
+                   :style="{background: 'url('+config.main_uri+'/images/depictions/'+p.id+'.jpg)'}"></div>
             </div>
           </div>
         </div>
@@ -44,12 +44,14 @@
 <script lang="coffee">
 import kgl from './infobox_sections/kgl.coffee'
 import SpaceHeader from './SpaceHeader.vue'
+import config from './config.coffee'
 
 export default {
   mounted: () ->
     @collections.forEach (c) => @$store.dispatch 'request_previews', c.id
 
   computed:
+    config: () -> config
     space: () -> @$store.state.selection.space
     collections: () -> @$store.state.selection.space.subspaces.sort (a,b) -> 
       if a.order? and b.order?

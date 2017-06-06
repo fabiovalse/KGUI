@@ -57,7 +57,7 @@ export default {
 }
 
 .ancient_background {
-  background: url(../../data/img/grapheme_background.png);
+  background: url(../../img/grapheme_background.png);
 }
 
 @media (max-width: 480px){

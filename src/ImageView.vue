@@ -1,6 +1,6 @@
 <template>
   <div class="imageview">
-    <img v-if="space.vfs_img !== undefined" :src="space.vfs_img" />
+    <img v-if="space.vfs_img !== undefined" :src="config.main_uri+'/images/depictions/'+space.id+'.jpg'" />
     <div v-if="space.icon !== undefined" class="fake_image">
       <div class="icon"><i :class="'icon-'+space.icon"></i></div>
       <div>IMAGE NOT AVAILABLE</div>
@@ -9,10 +9,12 @@
 </template>
 
 <script lang="coffee">
+import config from './config.coffee'
 
 export default {
   computed:
     space: () -> @$store.state.selection.space
+    config: () -> config
 
 }
 </script>

@@ -3,7 +3,7 @@
     
     <div class="character"> 
       <div class="image">
-        <img v-if="target.template === 'radical'" :src="'data/img/'+target.number+'.gif'">
+        <img v-if="target.template === 'radical'" :src="config.main_uri+'/images/chinese_radicals_animations/'+target.number+'.gif'">
         <div v-else class="character">{{target.label}}</div>
       </div>
       <div v-if="target.radical !== undefined" class="text">
@@ -50,10 +50,12 @@
 
 <script lang="coffee">
 import PinyinConverter from '../../lib/pinyin_converter.js'
+import config from '../config.coffee'
 
 export default {
 
   computed:
+    config: () -> config
     target: () -> @$store.state.selection.target
     pinyin: () -> if @target.pinyin and @target.tone then PinyinConverter.convert("#{@target.pinyin}#{@target.tone}") else @target.pinyin
 

@@ -16,7 +16,7 @@
           <i :class="'icon-' + folder.icon"></i>
         </div>
         <div v-if="folder.icon == undefined" class="img"
-              :style="{background: 'url('+folder.vfs_img+') #DDD'}"></div>
+              :style="{background: 'url('+config.main_uri+'/images/depictions/'+folder.id+'.jpg) #DDD'}"></div>
         
         <div class="title">
           <div class="main" v-html="kgl(folder.label)"></div>
@@ -31,6 +31,7 @@
 <script lang="coffee">
 import kgl from './infobox_sections/kgl.coffee'
 import SpaceHeader from './SpaceHeader.vue'
+import config from './config.coffee'
 
 export default {
   computed:
@@ -47,6 +48,7 @@ export default {
           return b.label < a.label
         else
           return b.width - a.width
+    config: () -> config
   methods:
     kgl: (d) -> kgl.parse d, @$store.state.selection.space
     open: (item) -> 
