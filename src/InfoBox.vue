@@ -5,6 +5,7 @@
 
     <sections v-if="target !== undefined"></sections>
     <directionsinfo v-if="mode === 'directions'"></directionsinfo>
+    <button class="close_button" @click="click_close"><i class="icon-x"></i></button>
   </div>
 
 </template>
@@ -29,6 +30,9 @@ export default {
     click: (e) ->
       d3.select(@$el)._groups[0][0].scrollTop = 0
       @$emit 'mobile_open'
+    click_close: () ->
+      @$store.commit 'set_mode', undefined
+      @$emit 'mobile_open', false
   components:
     sections: Sections
     directionsinfo: DirectionsInfo
@@ -67,6 +71,18 @@ export default {
 }
 .expand i {
   color: #fff;
+}
+
+.close_button {
+  position: absolute;
+  top: 15px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: #FFF;
+  text-shadow: #000 0px 0px 6px;
+  font-size: 15px;
+  cursor: pointer;
 }
 
 /* Google-style scrollbar on webkit */
