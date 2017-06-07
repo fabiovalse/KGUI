@@ -7,6 +7,7 @@
         <img :src="kgl_parse(img.icon)" :title="kgl_parse(img.label)">
       </a>
     </div>
+    <div v-if="config.id !== undefined" class="explore"><a :href="get_link(kgl_parse(config.id, data))"><i class="icon-zoom_in"></i></a></div>
   </div>
 </template>
 
@@ -22,8 +23,13 @@ export default {
     config:
       type: Object
       required: true
+  computed:
+    local_path: () -> @$store.state.selection.local_path
   methods:
     kgl_parse: kgl.parse
+    get_link: (id) -> 
+      console.log id
+      "#/#{id}"
 
 }
 </script>
@@ -66,6 +72,25 @@ export default {
   line-height: 0px;
   padding: 15px;
   cursor: pointer;
+}
+
+.explore {
+  --width: 50px;
+  position: absolute;
+  top: calc(var(--width) / 2 * -1);
+  right: 15px;
+  width: var(--width);
+  height: var(--width);
+  background: #BBB;
+  border-radius: calc(var(--width) / 2);
+  text-align: center;
+  line-height: 55px;
+  font-size: 18px;
+  box-shadow: 0 0 4px rgba(0,0,0,.14), 0 4px 8px rgba(0,0,0,.28);
+  cursor: pointer;
+}
+.explore a {
+  color: #FFF;
 }
 
 @media (max-width: 480px) {
