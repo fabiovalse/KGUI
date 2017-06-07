@@ -4,6 +4,10 @@
       <a class="item" @click="open(item)">{{item.label}}</a>
       <i v-if="i < path.length-1" class="icon-chevron-right" style="color: #888; font-size: 12px;"></i>
     </template>
+
+    <div class="actions"> <!--FIXME: the breadcrumb component should be called Topbar and it should be contains breadcrumb and actions.-->
+      <div class="icon"><i :class="'icon-share'"></i></div>
+    </div>
   </div>
 </template>
 
@@ -41,5 +45,14 @@ export default {
 }
 .item:last-child {
   color: #333;
+}
+
+.actions {
+  position: absolute;
+  top: 22px;
+  right: calc(var(--left-panel-width) + 12px + 10px);
+}
+.actions .icon {
+  font-size: 20px;
 }
 </style>
