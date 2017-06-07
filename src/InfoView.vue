@@ -3,8 +3,8 @@
     <spaceheader></spaceheader>
     
     <div class="preview">
-      <zoomableimageview v-if="space !== undefined && space.view === 'zoomableimageview'" :config="config.openseadragon"></zoomableimageview>
-      <imageview v-if="space !== undefined && space.view === 'imageview'"></imageview>
+      <zoomableimageview v-if="space !== undefined && space.innerview === 'zoomableimageview'" :config="config.openseadragon"></zoomableimageview>
+      <imageview v-if="space !== undefined && space.innerview === 'imageview'"></imageview>
     </div>
     <div class="details">
       <sections></sections>

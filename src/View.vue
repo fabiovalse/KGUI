@@ -1,10 +1,9 @@
 <template>
   <div class="mainview" :class="{mobile_mode: mode !== undefined}">
-    <infoview v-if="space !== undefined && space.template !== undefined && space.view !== undefined" :config="config"></infoview>
-
+    <infoview v-if="space !== undefined && space.template !== undefined && space.view === 'infoview'" :config="config"></infoview>
     <buildingmapview v-if="space !== undefined && space.template === undefined && space.view === 'buildingmapview'"></buildingmapview>
     <textview v-if="space !== undefined && space.template === undefined && space.view === 'textview'"></textview>
-    <bilingualtextview v-if="space !== undefined && space.template === undefined && space.view === 'bilingualtextview'"></bilingualtextview>
+    <bilingualtextview v-if="space !== undefined && space.template !== undefined && space.view === 'bilingualtextview'"></bilingualtextview>
     <zoomableimageview v-if="space !== undefined && space.template === undefined && space.view === 'zoomableimageview'" :config="config.openseadragon"></zoomableimageview>
     <foldersview v-if="space !== undefined && space.template === undefined && space.view === 'foldersview'"></foldersview>
     <iframeview v-if="space !== undefined && space.template === undefined && space.view === 'iframeview'" :url="space.url"></iframeview>
