@@ -8,6 +8,7 @@
     <div class="annotation_control" v-if="fullscreen_mode">
       <button @click="show_hide()"><i :class="'icon-'+get_icon()"></i></button>
     </div>
+    <button v-if="fullscreen_mode" class="close_button" @click.stop="close()"><i class="icon-x"></i></button>
   </div>
 </template>
 
@@ -25,7 +26,7 @@ export default {
     initial_pan: undefined
     initial_zoom: undefined
     fullscreen_mode: false
-    annotation_visible: false
+    annotation_visible: true
 
   props:
     config:
@@ -54,29 +55,32 @@ export default {
     @load_map()
 
   methods:
-    get_icon: () -> if @annotation_visible then 'show' else 'hide'
+    get_icon: () -> if @annotation_visible then 'hide' else 'show'
 
     show_hide: () -> 
       @annotation_visible = not @annotation_visible
-      @$el.querySelector('svg').style['display'] = if @annotation_visible then 'none' else 'inline'
+      @$el.querySelector('svg').style['display'] = if @annotation_visible then 'inline' else 'none'
 
     open: () ->
-      @$el.classList.remove 'zoom_cursor'
-      @$el.classList.add 'fullscreen'
+      if not @fullscreen_mode
+        @fullscreen_mode = true
+        @viewer.setMouseNavEnabled true
 
-      @fullscreen_mode = true
-      
-      @$el.querySelector('svg').style['display'] = 'inline'
-
-      @viewer.setMouseNavEnabled(true)
+        @$el.classList.remove 'zoom_cursor'
+        @$el.classList.add 'fullscreen'
+        
+        @show_hide()
 
     close: () ->
-      @$el.classList.add 'zoom_cursor'
-      @$el.classList.remove 'fullscreen'
+      if @fullscreen_mode
+        @viewer.setMouseNavEnabled false
 
-      @fullscreen_mode = false
-      
-      @viewer.setMouseNavEnabled(false)
+        @$el.classList.add 'zoom_cursor'
+        @$el.classList.remove 'fullscreen'
+
+        @show_hide()
+        @viewer.viewport.goHome true
+        @fullscreen_mode = false
 
     load_map: () ->
       new_zoom = @initial_zoom
@@ -134,21 +138,23 @@ export default {
         ### Add CSS mix blend mode style
         ###
         @$el.querySelector('svg').style['mix-blend-mode'] = 'multiply'
-        @$el.querySelector('svg').style['display'] = 'none'
+        @show_hide()
 
-  #    @viewer.addHandler 'canvas-click', (event) =>
-  #      # The canvas-click event gives us a position in web coordinates.
-  #      webPoint = event.position;
-  #
-  #      # Convert that to viewport coordinates, the lingua franca of OpenSeadragon coordinates.
-  #      viewportPoint = @viewer.viewport.pointFromPixel(webPoint);
-  #
-  #      # Convert from viewport coordinates to image coordinates.
-  #      imagePoint = @viewer.viewport.viewportToImageCoordinates(viewportPoint);
-  #
-  #      # Show the results.
-  #      #console.log(webPoint.toString(), viewportPoint.toString(), imagePoint.toString());
-  #      console.log imagePoint
+      ### Console points
+      ###
+      @viewer.addHandler 'canvas-click', (event) =>
+        # The canvas-click event gives us a position in web coordinates.
+        webPoint = event.position;
+  
+        # Convert that to viewport coordinates, the lingua franca of OpenSeadragon coordinates.
+        viewportPoint = @viewer.viewport.pointFromPixel(webPoint);
+  
+        # Convert from viewport coordinates to image coordinates.
+        imagePoint = @viewer.viewport.viewportToImageCoordinates(viewportPoint);
+  
+        # Show the results.
+        #console.log(webPoint.toString(), viewportPoint.toString(), imagePoint.toString());
+        console.log imagePoint
 
   components:
     spaceswitch: SpaceSwitch
@@ -227,5 +233,18 @@ export default {
   }
   .annotation_control button:hover {
     color: rgb(100, 100, 100);
+  }
+
+  .close_button {
+    position: absolute;
+    top: 15px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    color: #FFF;
+    text-shadow: #000 0px 0px 6px;
+    font-size: 15px;
+    cursor: pointer;
+    z-index: 1;
   }
 </style>
