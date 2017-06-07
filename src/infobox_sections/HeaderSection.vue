@@ -27,9 +27,7 @@ export default {
     local_path: () -> @$store.state.selection.local_path
   methods:
     kgl_parse: kgl.parse
-    get_link: (id) -> 
-      console.log id
-      "#/#{id}"
+    get_link: (id) -> "#/#{id}"
 
 }
 </script>
