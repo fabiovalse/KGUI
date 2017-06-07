@@ -42,11 +42,16 @@ export default {
 }
 
 .title {
-  font-size: 18px;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: bold;
+  color: #FFF;
 }
 .subtitle {
-  margin-top: 11px;
-  font-size: 13px;
+  font-size: 16px;
+  font-weight: 300;
+  color: #FFF;
+  margin-top: 4px;
 }
 
 .hlinks {
