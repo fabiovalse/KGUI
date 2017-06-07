@@ -36,6 +36,7 @@ export default {
   computed:
     nodes: () -> @$store.state.additional.nodes
     space: () -> @$store.state.selection.space
+    annotations: () -> if @space.annotations? then JSON.parse(@space.annotations) else {}
 
   watch:
     space: (newSpace) -> @load_map()
@@ -131,7 +132,7 @@ export default {
         @svg_overlay = @viewer.svgOverlay()
         OverlayComponent = Vue.extend(ZoomableImageOverlay)
 
-        overlay_component = new OverlayComponent({propsData: {data: @converted_nodes, store: @$store, viewer: @viewer}})
+        overlay_component = new OverlayComponent({propsData: {data: @converted_nodes, store: @$store, viewer: @viewer, annotations: @annotations}})
         overlay_component.$mount()
         @$el.querySelector('svg g').appendChild(overlay_component.$el)
 

@@ -18,6 +18,12 @@ export default {
       type: Object
     viewer:
       type: Object
+    annotations:
+      type: Object
+
+  mounted: () ->
+    @$el.style.setProperty '--selected-color', @annotations.selected_color
+    @$el.style.setProperty '--color', @annotations.color
 
   computed:
     selected: () -> @store.state.selection.target
@@ -47,17 +53,17 @@ export default {
 
 <style scoped>
 rect, circle, path {
-  fill: rgb(181, 255, 254); /*#ffd26d;*/
+  fill: var(--color);
   vector-effect: non-scaling-stroke;
   cursor: pointer;
 }
 
 rect:hover, circle:hover, path:hover {
-  stroke: #ff9e72;
+  stroke: var(--selected-color);
   stroke-width: 3px;
 }
 
 .selected rect, .selected circle, .selected path {
-  fill: #ff9e72;
+  fill: var(--selected-color);
 }
 </style>
