@@ -34,7 +34,6 @@ export default {
       required: true
 
   computed:
-    nodes: () -> @$store.state.additional.nodes
     space: () -> @$store.state.selection.space
     annotations: () -> if @space.annotations? then JSON.parse(@space.annotations) else {}
 
@@ -109,7 +108,7 @@ export default {
         ### Image to viewport coordinates conversion
         ###
         if not @converted_nodes? or @converted_nodes.length is 0
-          @converted_nodes = @nodes.map (d) => 
+          @converted_nodes = @space.nodes.map (d) => 
             if d.data.x1? and d.data.y1?
               p = @viewer.viewport.imageToViewportCoordinates d.data.x1, d.data.y1
               d.data.x1 = p.x

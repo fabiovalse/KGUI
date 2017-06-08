@@ -20,5 +20,4 @@ export default {
   actions:
     load_space: (context, id) ->
       db.query_space id, (space) -> context.commit '_set_space', space
-      # TODO inserire qui la chiamata a query nodes ??
 }

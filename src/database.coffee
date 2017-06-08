@@ -19,17 +19,6 @@ module.exports = {
 
       context.commit '_set_starting_point', result.data[0][0].data
 
-  query_nodes: (context, id) ->
-    payload = {query: "MATCH (n:Info)-[]-(a:Annotation)-[]-(s:Space {id: {id}}) RETURN n, a.x, a.y, a;", params: {id: id}} #FIXME: only a should be returned
-    @execute payload, (data) ->
-      nodes = JSON.parse(data.responseText).data.map (d) ->
-        r = d[0].data
-        r.position = [d[1], d[2]]
-        r.data = d[3].data
-        return r
-
-      context.commit '_set_nodes', nodes
-
   query_space: (id, cb) ->
     @execute {query: "MATCH (the_space:Space {id: {id}}) RETURN the_space", params: {id: id}}, (data) =>
       space = JSON.parse(data.responseText).data[0][0].data
@@ -42,10 +31,14 @@ module.exports = {
             @execute {query: "MATCH path=(:Space)-[*0.. {type: 'subspace'}]->({id: {id}}) WITH nodes(path) AS path ORDER BY length(path) RETURN path[0]", params: {id: id}}, (data) =>
               space.vfs_path = JSON.parse(data.responseText).data.map (d) -> d[0].data
               space.vfs_path.reverse()
-              cb space
+              @execute {query: "MATCH (n:Info)-[]-(a:Annotation)-[]-(s:Space {id: {id}}) RETURN n, a.x, a.y, a;", params: {id: id}}, (data) => # FIXME: only a should be returned
+                space.nodes = JSON.parse(data.responseText).data.map (d) ->
+                  r = d[0].data
+                  r.position = [d[1], d[2]]
+                  r.data = d[3].data
+                  return r
 
-    # if mutation_name is '_set_space'
-    #   @query_nodes context, id
+                cb space
 
   query_info: (context, id, mutation_name) ->
     _this = @
