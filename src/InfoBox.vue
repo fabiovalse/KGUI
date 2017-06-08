@@ -32,7 +32,7 @@ export default {
       @$emit 'mobile_open'
     click_close: () ->
       # @$store.commit 'set_mode', undefined
-      @$store.commit 'clear_target'
+      @$store.commit 'goto_target', undefined
       @$emit 'mobile_open', false
   components:
     sections: Sections

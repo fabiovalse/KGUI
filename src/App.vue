@@ -100,6 +100,8 @@ export default {
     target_id: (id) ->
       if id?
         @$store.dispatch 'load_target', id
+      else
+        @$store.commit 'clear_target'
 
   methods:
     toggle_mobile_open: (flag) ->

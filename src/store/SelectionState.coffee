@@ -15,8 +15,8 @@ export default {
       state.target_id = ids.target
     goto_target: (state, id) ->
       state.target_id = id
+      
     clear_target: (state) ->
-      state.target_id = undefined
       state.target = undefined
 
     _set_space: (state, data) ->
