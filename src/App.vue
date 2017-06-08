@@ -23,7 +23,6 @@
       :searchdirectionsbox_enabled="config.layout.searchdirectionsbox"
       :mobile_open="mobile_open"
       v-on:mobile_open="toggle_mobile_open"
-      v-if="config.layout.infobox && mode !== undefined"
     ></infobox>
     <searchdirectionsbox
       ref="searchdirectionsbox"
@@ -69,6 +68,8 @@ export default {
     }
 
     space_id: () -> @$store.state.selection.space_id
+    target_id: () -> @$store.state.selection.target_id
+
     space: () -> @$store.state.selection.space
 
   mounted: () ->
@@ -94,8 +95,11 @@ export default {
             space: ids.space
             target: ids.target
 
-    # space data loading
+    # data loading
     space_id: (id) -> @$store.dispatch 'load_space', id
+    target_id: (id) ->
+      if id?
+        @$store.dispatch 'load_target', id
 
   methods:
     toggle_mobile_open: (flag) ->

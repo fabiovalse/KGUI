@@ -5,6 +5,7 @@ export default {
     space_id: undefined
     target_id: undefined
     space: undefined
+    target: undefined
   mutations:
     goto_space: (state, id) ->
       state.space_id = id
@@ -14,10 +15,17 @@ export default {
       state.target_id = ids.target
     goto_target: (state, id) ->
       state.target_id = id
+    clear_target: (state) ->
+      state.target_id = undefined
+      state.target = undefined
 
     _set_space: (state, data) ->
       state.space = data
+    _set_target: (state, data) ->
+      state.target = data
   actions:
     load_space: (context, id) ->
       db.query_space id, (space) -> context.commit '_set_space', space
+    load_target: (context, id) ->
+      db.query_target id, (target) -> context.commit '_set_target', target
 }

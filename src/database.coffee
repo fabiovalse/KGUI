@@ -40,11 +40,10 @@ module.exports = {
 
                 cb space
 
-  query_info: (context, id, mutation_name) ->
-    _this = @
+  query_target: (id, cb) ->
+    # _this = @
 
-    payload = {query: "OPTIONAL MATCH (target {id: {id}}) OPTIONAL MATCH (target {id: {id}})-[]-(a:Annotation {ghost: false})-[]-(space) OPTIONAL MATCH (target {id: {id}})-[]->(out) WHERE labels(out)='Info' OPTIONAL MATCH (target {id: {id}})<-[]-(in) WHERE labels(in)='Info' RETURN {node: target, position: [a.x, a.y]}, collect(DISTINCT out) AS out, collect(DISTINCT in) AS in, space;", params: {id: id}}
-    @execute payload, (data) =>
+    @execute {query: "OPTIONAL MATCH (target {id: {id}}) OPTIONAL MATCH (target {id: {id}})-[]-(a:Annotation {ghost: false})-[]-(space) OPTIONAL MATCH (target {id: {id}})-[]->(out) WHERE labels(out)='Info' OPTIONAL MATCH (target {id: {id}})<-[]-(in) WHERE labels(in)='Info' RETURN {node: target, position: [a.x, a.y]}, collect(DISTINCT out) AS out, collect(DISTINCT in) AS in, space;", params: {id: id}}, (data) =>
       result = JSON.parse(data.responseText).data[0]
       node = result[0].node.data
       node.position = if result[0].position[0] is null then undefined else result[0].position
@@ -52,11 +51,12 @@ module.exports = {
       node.out = result[1].filter((d) -> d.data?).map (d) -> d.data
       node.in = result[2].filter((d) -> d.data?).map (d) -> d.data
 
-      context.commit mutation_name, node
+      cb node
 
+      # FIXME this logic should be reintegrated elsewhere
       # Change space if necessary
-      if result[3]? and (not context.state.selection.space? or result[3].data.id isnt context.state.selection.space.id)
-        _this.query_space context, result[3].data.id, '_set_space'
+      # if result[3]? and (not context.state.selection.space? or result[3].data.id isnt context.state.selection.space.id)
+      #   _this.query_space context, result[3].data.id, '_set_space'
 
   query_directions: (context, from_id, to_id) ->
     to_id = if to_id? then to_id else '""' # Undefined is replaced by quotes. In this way it is possible to write only a Cypher query using the OPTIONAL MATCH operator.

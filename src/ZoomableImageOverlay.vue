@@ -30,7 +30,7 @@ export default {
 
   methods:
     select: (id) -> 
-      @store.dispatch 'select', {id: id}
+      @store.commit 'goto_target', id
 
       if @selected? and @selected.id is id
         @focus id

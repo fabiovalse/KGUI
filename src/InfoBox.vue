@@ -31,7 +31,8 @@ export default {
       d3.select(@$el)._groups[0][0].scrollTop = 0
       @$emit 'mobile_open'
     click_close: () ->
-      @$store.commit 'set_mode', undefined
+      # @$store.commit 'set_mode', undefined
+      @$store.commit 'clear_target'
       @$emit 'mobile_open', false
   components:
     sections: Sections
