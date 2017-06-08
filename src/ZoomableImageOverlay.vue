@@ -44,9 +44,15 @@ export default {
       classes["obj_#{obj.id.replace('|','_')}"] = true
       return classes
 
-    to_path_description: (points) ->
-      points = points.concat([points[0]])
-      return (points.map (p,i) -> return if i is 0 then "M#{points[i].x} #{points[i].y}" else "L #{points[i].x} #{points[i].y} ").join('')
+    to_path_description: (paths) ->      
+      d_attribute = ""
+
+      # Append the first point to the end of the point set for a correct costruction of SVG d attribute
+      for path in paths
+        path = path.concat([path[0]])
+        d_attribute += (path.map (p,i) -> return if i is 0 then "M#{path[i].x} #{path[i].y}" else "L #{path[i].x} #{path[i].y} ").join('')
+      
+      return d_attribute
 
 }
 </script>

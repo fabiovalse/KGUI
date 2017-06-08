@@ -124,7 +124,7 @@ export default {
               d.data.cy = p.y
               d.data.rx = @viewer.viewport.imageToViewportCoordinates(d.data.rx).x
             if d.data.points?
-              d.data.points = JSON.parse(d.data.points).map (p) => @viewer.viewport.imageToViewportCoordinates p.x, p.y
+              d.data.points = JSON.parse(d.data.points).map((path) => path.map((p) => @viewer.viewport.imageToViewportCoordinates p.x, p.y))
             return d
 
         ### SVG overlay creation
