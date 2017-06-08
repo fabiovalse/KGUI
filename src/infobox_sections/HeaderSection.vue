@@ -34,7 +34,7 @@ export default {
 .header_section {
   position: relative;
   height: 68px;
-  padding: 16px 24px 20px 24px;
+  padding: 16px 50px 20px 24px;
   background: var(--main-color);
   color: white;
 }

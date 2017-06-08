@@ -26,14 +26,14 @@ export default {
 <style scoped>
 .source_section {
   font-size: 12px;
-  margin: 10px 0px 10px 0px;
-  padding: 10px 24px 10px 24px;
+  padding: 20px 24px 10px 24px;
+  background: #EEE;
 }
 
 .title {
   color: rgba(0,0,0,0.54);
-  border-bottom: 1px solid #DDD;
-  margin-bottom: 10px;
+  font-size: 14px;
+  margin-bottom: 20px;
 }
 
 .reference {

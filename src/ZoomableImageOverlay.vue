@@ -22,8 +22,8 @@ export default {
       type: Object
 
   mounted: () ->
-    @$el.style.setProperty '--selected-color', @annotations.selected_color
-    @$el.style.setProperty '--color', @annotations.color
+    @$el.style.setProperty '--selected-color', if @annotations.selected_color? then @annotations.selected_color else '#ff9e72'
+    @$el.style.setProperty '--color', if @annotations.color? then @annotations.color else '#CCC'
 
   computed:
     selected: () -> @store.state.selection.target
