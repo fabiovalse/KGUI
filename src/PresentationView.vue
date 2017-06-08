@@ -9,7 +9,7 @@
         <div class="signature">
           <div class="title" v-html="kgl(c.label)"></div>
           <div class="subtitle" v-html="kgl(c.subtitle)"></div>
-          <button @click="open(c)">EXPLORE COLLECTION</button>
+          <router-link class="button" :to="{name: 'goto_space', params: {space: c.id}}">EXPLORE COLLECTION</router-link>
           <div v-if="previews[c.id] !== undefined" class="count">({{previews[c.id].subspaces.length}} item{{previews[c.id].subspaces.length == 1 ? '' : 's'}})</div>
         </div>
         <div class="previews">
@@ -74,9 +74,6 @@ export default {
 
   methods:
     kgl: (d) -> kgl.parse d, @space
-    open: (item) -> 
-      if item.view?
-        @$store.dispatch 'change_space', item.id
 
   components:
     spaceheader: SpaceHeader
@@ -137,8 +134,10 @@ footer .items {
   font-weight: 300;
   margin-bottom: 50px;
 }
-.collection .signature button {
+.collection .signature .button {
   background-color: transparent;
+  color: inherit;
+  text-decoration: none;
   border: 2px solid #e0e0e0;
   border-radius: 3px;
   padding: 8px;
