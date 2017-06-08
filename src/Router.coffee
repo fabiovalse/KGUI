@@ -5,23 +5,23 @@ export default {
   routes: [
     {path: '/', redirect: config.default_local_path}
     {
-      name: 'fullmap_mode'
-      path: if config.layout.view then '/:space/' else '/'
+      name: 'goto_space'
+      path: '/:space/'
       component: App
     }
     {
-      name: 'target'
-      path: if config.layout.view then '/:space/target/:target' else '/target/:target'
+      name: 'goto_space_target'
+      path: '/:space/target/:target'
       component: App
     }
     {
-      name: 'target_only'
-      path: if config.layout.infobox then '/target/:target' else '/'
+      name: 'goto_target'
+      path: '/target/:target'
       component: App
     }
     {
-      name: 'directions'
-      path: if config.layout.view then '/:space/from/:from/to/:to' else '/from/:from/to/:to'
+      name: 'goto_directions'
+      path: '/:space/from/:from/to/:to'
       component: App
     }
   ]

@@ -60,34 +60,59 @@ export default {
   computed:
     mode: () -> @$store.state.selection.mode
     config: () -> config
+
+    # STORE -> ROUTER
+    # read space and target as a reactive property
+    space_target: () -> {
+      space: @$store.state.selection.space_id
+      target: @$store.state.selection.target_id
+    }
+
+    space_id: () -> @$store.state.selection.space_id
     space: () -> @$store.state.selection.space
 
   mounted: () ->
-    @$store.dispatch 'init', {default_starting_point: config.default_starting_point, default_space: config.default_space}
-    @route_changed @$route
+    # @$store.dispatch 'init', {default_starting_point: config.default_starting_point, default_space: config.default_space}
+    @route_changed @$route # ROUTER -> STORE
 
   watch:
-    $route: (to, from) -> @route_changed(to)
+    $route: (to, from) -> @route_changed(to) # ROUTER -> STORE
+    
+    # STORE -> ROUTER
+    space_target: (ids) ->
+      if not ids.space?
+        throw 'Assertion error: a space ID must always be defined'
+      if not ids.target?
+        @$router.push
+          name: 'goto_space',
+          params:
+            space: ids.space
+      else
+        @$router.push
+          name: 'goto_space_target',
+          params:
+            space: ids.space
+            target: ids.target
+
+    # space data loading
+    space_id: (id) -> @$store.dispatch 'load_space', id
 
   methods:
     toggle_mobile_open: (flag) ->
       @mobile_open = if flag? then flag else (not @mobile_open)
 
+    # ROUTER -> STORE
     route_changed: (route) ->
-      if route.params.target?
-        @$store.dispatch 'request_info', route.params.target
-      else if not route.params.target? and route.params.space?
-        @$store.commit 'set_mode', undefined
-        @$emit 'mobile_open', false
-      
-      if 'from' in Object.keys(route.params) and 'to' in Object.keys(route.params)
-        @$store.dispatch 'request_directions', {
-          from_id: (if route.params.from is '_' then undefined else route.params.from),
-          to_id: (if route.params.to is '_' then undefined else route.params.to),
-        }
-
-      if (route.params.space? and not @$store.state.selection.space?) or (route.params.space? and @$store.state.selection.space? and route.params.space isnt @$store.state.selection.space.id)
-        @$store.dispatch 'change_space', route.params.space
+      switch route.name
+        when 'goto_space'
+          @$store.commit 'goto_space', route.params.space
+        when 'goto_space_target'
+          @$store.commit 'goto_space_target', {
+            space: route.params.space
+            target: route.params.target
+          }
+        when 'goto_target'
+          @$store.commit 'goto_target', route.params.target
 
     search: (str) ->
       if @mode is 'directions'

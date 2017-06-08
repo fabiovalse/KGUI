@@ -13,9 +13,7 @@ import VueTouch from 'vue-touch'
 Vue.use(VueTouch)
 
 router = new VueRouter(Router)
-store = new Vuex.Store(Store)
-
-store.watch ((d) -> d.local_path), ((local_path) -> router.push local_path)
+window.store = new Vuex.Store(Store)
 
 app = new Vue
   el: '#app'

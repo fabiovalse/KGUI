@@ -1,7 +1,7 @@
 <template>
   <div class="breadcrumb">
     <template v-for="(item,i) in path">
-      <a class="item" @click="open(item)">{{item.label}}</a>
+      <router-link class="item" :to="{name: 'goto_space', params: {space: item.id}}">{{item.label}}</router-link>
       <i v-if="i < path.length-1" class="icon-chevron-right" style="color: #888; font-size: 12px;"></i>
     </template>
 
@@ -16,8 +16,6 @@ export default {
   props:
     path:
       type: Array
-  methods:
-    open: (item) -> @$store.dispatch 'change_space', item.id
 }
 </script>
 
@@ -43,7 +41,7 @@ export default {
   cursor: pointer;
   text-decoration: none;
 }
-.item:last-child {
+.item.router-link-active {
   color: #333;
 }
 

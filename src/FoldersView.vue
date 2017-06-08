@@ -4,26 +4,26 @@
     <spaceheader></spaceheader>
     
     <div class="folders">
-        
-      <div class="folder" v-for="folder in folders"
-            @click="open(folder)"
-            :class="{vfs_img: folder.vfs_img !== undefined}"
-            :style="{
-              width: folder.width === 2 ? '384px' : '250px',
-              height: folder.height === 2 ? '361px' : '250px'}">
+      
+      <router-link class="folder_a" v-for="folder in folders" :to="{name: 'goto_space', params: {space: folder.id}}">
+        <div class="folder"
+          :class="{vfs_img: folder.vfs_img !== undefined}"
+          :style="{
+            width: folder.width === 2 ? '384px' : '250px',
+            height: folder.height === 2 ? '361px' : '250px'}">
 
-        <div v-if="folder.icon !== undefined" class="icon">
-          <i :class="'icon-' + folder.icon"></i>
-        </div>
-        <div v-if="folder.icon == undefined" class="img"
-              :style="{background: 'url('+config.main_uri+'/images/depictions/'+folder.id+'.jpg) #DDD'}"></div>
+          <div v-if="folder.icon !== undefined" class="icon">
+            <i :class="'icon-' + folder.icon"></i>
+          </div>
+          <div v-if="folder.icon == undefined" class="img"
+                :style="{background: 'url('+config.main_uri+'/images/depictions/'+folder.id+'.jpg) #DDD'}"></div>
         
-        <div class="title">
-          <div class="main" v-html="kgl(folder.label)"></div>
-          <div class="sub" v-html="kgl(folder.subtitle)"></div>
+          <div class="title">
+            <div class="main" v-html="kgl(folder.label)"></div>
+            <div class="sub" v-html="kgl(folder.subtitle)"></div>
+          </div>
         </div>
-      </div>
-
+      </router-link>
     </div>
   </div>
 </template>
@@ -51,9 +51,6 @@ export default {
     config: () -> config
   methods:
     kgl: (d) -> kgl.parse d, @$store.state.selection.space
-    open: (item) -> 
-      if item.view?
-        @$store.dispatch 'change_space', item.id
 
   components:
     spaceheader: SpaceHeader
@@ -84,6 +81,9 @@ export default {
   box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 -1px 0px rgba(0,0,0,0.02);
   cursor: pointer;
   border-radius: 2px;
+}
+.folder_a {
+  text-decoration: none;
 }
 
 .icon {

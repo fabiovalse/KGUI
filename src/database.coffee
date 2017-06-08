@@ -30,7 +30,7 @@ module.exports = {
 
       context.commit '_set_nodes', nodes
 
-  query_space: (context, id, mutation_name) ->
+  query_space: (id, cb) ->
     @execute {query: "MATCH (the_space:Space {id: {id}}) RETURN the_space", params: {id: id}}, (data) =>
       space = JSON.parse(data.responseText).data[0][0].data
       @execute {query: "MATCH (the_space:Space {id: {id}})-[{type: 'in_list'}]->(list) MATCH (list)<-[{type: 'in_list'}]-(s) RETURN s ORDER BY s.order", params: {id: id}}, (data) =>
@@ -42,10 +42,10 @@ module.exports = {
             @execute {query: "MATCH path=(:Space)-[*0.. {type: 'subspace'}]->({id: {id}}) WITH nodes(path) AS path ORDER BY length(path) RETURN path[0]", params: {id: id}}, (data) =>
               space.vfs_path = JSON.parse(data.responseText).data.map (d) -> d[0].data
               space.vfs_path.reverse()
-              context.commit mutation_name, space
+              cb space
 
-    if mutation_name is '_set_space'
-      @query_nodes context, id
+    # if mutation_name is '_set_space'
+    #   @query_nodes context, id
 
   query_info: (context, id, mutation_name) ->
     _this = @
