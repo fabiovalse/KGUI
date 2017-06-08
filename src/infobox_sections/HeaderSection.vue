@@ -23,8 +23,6 @@ export default {
     config:
       type: Object
       required: true
-  computed:
-    local_path: () -> @$store.state.selection.local_path
   methods:
     kgl_parse: kgl.parse
     get_link: (id) -> "#/#{id}"
