@@ -1,6 +1,7 @@
 <template>
   <div class="radicalview">
-    <div v-for="node in nodes" class="radical" @click="select(node)" :style="{background: node.strokecount%2 === 0 ? '#ECD9C8' : '#CCB49C'}">
+    <spaceheader></spaceheader>
+    <div v-for="node in nodes" class="radical" @click="select(node.id)" :style="{background: node.strokecount%2 === 0 ? '#ECD9C8' : '#CCB49C'}">
       <div class="number" title="Radical identification number">{{node.number}}</div>
       <div class="strokecount" title="Stroke count">{{node.strokecount}}</div>
       <div class="character">{{node.label}}</div>
@@ -13,12 +14,17 @@
 </template>
 
 <script lang="coffee">
+import SpaceHeader from './SpaceHeader.vue'
+
 export default {
   computed:
-    nodes: () -> @$store.state.additional.nodes.sort (a,b) -> a.number - b.number
+    nodes: () -> @$store.state.selection.space.nodes.sort (a,b) -> a.number - b.number
 
   methods:
-    select: (item) -> @$store.dispatch 'select', {id: item.id}
+    select: (id) -> @$store.commit 'goto_target', id
+  
+  components:
+    spaceheader: SpaceHeader
 }
 </script>
 
