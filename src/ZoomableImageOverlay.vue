@@ -4,6 +4,12 @@
       <rect v-if="obj.data.selector === 'rect'" :x="obj.data.x1" :y="obj.data.y1" :width="obj.data.x2-obj.data.x1" :height="obj.data.y2-obj.data.y1"></rect>
       <circle v-if="obj.data.selector === 'circle'" :cx="obj.data.cx" :cy="obj.data.cy" :r="obj.data.rx-obj.data.cx"></circle>
       <path v-if="obj.data.selector === 'path'" :d="to_path_description(obj.data.points)"></path>
+      
+      <text
+        v-if="obj.data.label !== undefined"
+        :x="obj.data.cx" :y="obj.data.cy">
+          {{obj.data.label}}
+      </text>
     </g>
   </g>
 </template>
@@ -71,5 +77,10 @@ rect:hover, circle:hover, path:hover {
 
 .selected rect, .selected circle, .selected path {
   fill: var(--selected-color);
+}
+
+text {
+  font-size: 0.02px; /* FIXME this should be configurable somehow */
+  text-anchor: middle;
 }
 </style>
