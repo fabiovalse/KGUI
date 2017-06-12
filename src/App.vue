@@ -1,5 +1,5 @@
 <template>
-  <div id="app" :class="{mobile_open: mobile_open}">
+  <div id="app" :class="{mobile_open: mobile_open, vfs_enabled: vfs_enabled}">
     <searchbar
       :searchdirectionsbox_enabled="config.layout.searchdirectionsbox"
       v-on:change_result="change_result"
@@ -34,7 +34,6 @@
     <mainview
       :config="config"
       v-if="config.layout.view"
-      :class="{breadcrumb_enabled: vfs_enabled}"
     ></mainview>
     <breadcrumb
       :path="space.vfs_path"
@@ -192,7 +191,7 @@ html, body {
   height: 100%;
   background: #f5f5f5;
 }
-.breadcrumb_enabled {
+.vfs_enabled .mainview {
   top: var(--main-bar-height);
   height: calc(100% - var(--main-bar-height));
 }

@@ -53,7 +53,7 @@ export default {
   z-index: 5;
   background: #FFF;
   border-radius: var(--radius);
-  box-shadow: 1px 1px 12px rgba(0,0,0,0.8);
+  box-shadow: 2px 2px 7px rgba(0,0,0,0.25);
   box-sizing: border-box;
 }
 

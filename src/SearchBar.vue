@@ -80,7 +80,7 @@ export default {
 }
 .searchbar.focused .innerbar {
   background: white;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 -1px 0px rgba(0,0,0,0.02);
+  box-shadow: 2px 2px 7px rgba(0,0,0,0.25);
 }
 .icon-search, .icon-x {
   color: rgb(178, 178, 178);
@@ -129,4 +129,9 @@ button {
   }
 }
 
+</style>
+<style>
+#app:not(.vfs_enabled) .searchbar .innerbar {
+  box-shadow: 2px 2px 7px rgba(0,0,0,0.25);
+}
 </style>
