@@ -34,10 +34,11 @@
     <mainview
       :config="config"
       v-if="config.layout.view"
+      class="{breadcrumb_enabled: space.vfs_enabled}"
     ></mainview>
     <breadcrumb
       :path="space.vfs_path"
-      v-if="space !== undefined && space.vfs_enabled"
+      v-if="space.vfs_enabled"
     ></breadcrumb>
   </div>
 </template>
@@ -183,12 +184,16 @@ html, body {
 }
 .mainview {
   position: absolute;
-  top: var(--main-bar-height);
+  top: 0;
   left: 0;
   box-sizing: border-box;
   width: 100%;
-  height: calc(100% - var(--main-bar-height));
+  height: 100%;
   background: #f5f5f5;
+}
+.breadcrumb_enabled {
+  top: var(--main-bar-height);
+  height: calc(100% - var(--main-bar-height));
 }
 
 a {
