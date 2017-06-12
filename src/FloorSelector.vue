@@ -11,7 +11,7 @@ export default {
     space: () -> @$store.state.selection.space
   
   methods:
-    change_space: (id) -> @$store.dispatch 'change_space', id
+    change_space: (id) -> @$store.commit 'goto_space', id
 }
 </script>
 
