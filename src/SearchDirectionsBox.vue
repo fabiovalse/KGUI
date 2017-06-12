@@ -1,6 +1,6 @@
 <template>
   <div class="searchdirectionsbox">
-    <button class="close" @click="click_close"><i class="icon-x"></i></button>
+    <button class="close" @click="close"><i class="icon-x"></i></button>
     <div class="from_to">
       <div class="from">
         <input 
@@ -35,11 +35,11 @@ export default {
     current_input: undefined
 
   computed:
-    from: () -> @$store.state.selection.from
-    to: () -> @$store.state.selection.to
+    from: () -> @$store.state.selection.directions.from
+    to: () -> @$store.state.selection.directions.to
   
   methods:
-    click_close: () -> @$store.commit 'set_mode', undefined
+    close: () -> @$store.commit 'clear'
     
     search_from: () ->
       @current_input = 'from'
@@ -65,6 +65,7 @@ export default {
 <style scoped>
 .searchdirectionsbox {
   height: 125px;
+  z-index: 10;
 }
 
 .icon-search, .icon-x {

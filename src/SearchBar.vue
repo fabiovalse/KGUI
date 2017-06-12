@@ -12,8 +12,7 @@
         :value="get_target()">
 
       <button @click="click_search"><i class="icon-search"></i></button>
-      <div v-if="mode === 'info' || (searchdirectionsbox_enabled && mode === undefined)" class="separator"></div>
-      <button v-if="mode === 'info'" @click="click_close"><i class="icon-x"></i></button>
+      <div v-if="searchdirectionsbox_enabled && mode === undefined" class="separator"></div>
       <button v-if="searchdirectionsbox_enabled && mode === undefined" @click="click_directions"><i class="icon-directions"></i></button>
     </div>
   </div>
@@ -30,13 +29,18 @@ export default {
 
   computed:
     mode: () -> @$store.state.selection.mode
+    space: () -> @$store.state.selection.space
     target: () -> @$store.state.selection.target
 
   methods:
     click_close: () ->
       @$store.commit 'set_mode', undefined
       @$emit 'mobile_open', false
-    click_directions: () -> @$store.dispatch 'request_directions', {def: true}
+    click_directions: () -> @$store.commit 'goto_directions', {
+      space: @space.id # FIXME this should be removed
+      from: '_'
+      to: if @target? then @target.id else '_'
+    }
     click_search: () ->
       @$emit 'search', d3.select('.search').node().value
     change_selected_result: (event) ->

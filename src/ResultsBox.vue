@@ -25,12 +25,7 @@ export default {
           if (@selected is @results.length-1 and new_change.value is 1) or (@selected is 0 and new_change.value is -1)
             @selected = undefined
           else if new_change.value is 0 # Enter
-            # @$store.dispatch 'select', {id: @results[@selected].id, directions_input: @directions_input}
-            # FIXME this should be more smart
-            if @results[@selected].view?
-              @$store.commit 'goto_space', @results[@selected].id
-            else if @results[@selected].template?
-              @$store.commit 'goto_target', @results[@selected].id
+            @$store.dispatch 'select', {d: @results[@selected], directions_input: @directions_input}
               
             @results = undefined
             @selected = undefined
@@ -44,12 +39,7 @@ export default {
   methods:
     click_node: (d) ->
       @results = undefined
-      # @$store.dispatch 'select', {id: d.id, directions_input: @directions_input}
-      # FIXME this should be more smart
-      if d.view?
-        @$store.commit 'goto_space', d.id
-      else if d.template?
-        @$store.commit 'goto_target', d.id
+      @$store.dispatch 'select', {d: d, directions_input: @directions_input}
 
     search_node: (str, directions_input) ->
       if str isnt ''

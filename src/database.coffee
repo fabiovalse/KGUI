@@ -58,47 +58,63 @@ module.exports = {
       # if result[3]? and (not context.state.selection.space? or result[3].data.id isnt context.state.selection.space.id)
       #   _this.query_space context, result[3].data.id, '_set_space'
 
-  query_directions: (context, from_id, to_id) ->
-    to_id = if to_id? then to_id else '""' # Undefined is replaced by quotes. In this way it is possible to write only a Cypher query using the OPTIONAL MATCH operator.
-    from_id = if from_id? then from_id else '""'
+#  query_directions: (context, from_id, to_id) ->
+#    to_id = if to_id? then to_id else '""' # Undefined is replaced by quotes. In this way it is possible to write only a Cypher query using the OPTIONAL MATCH operator.
+#    from_id = if from_id? then from_id else '""'
+#
+#    payload = {query: "OPTIONAL MATCH (start:Info) WHERE start.id={from_id} OPTIONAL MATCH (end:Info) WHERE end.id={to_id} RETURN start, end", params: {from_id: from_id, to_id: to_id}}
+#    @execute payload, (data) ->
+#      result = JSON.parse(data.responseText)
+#
+#      if result.data.length is 0 # If a node has no position, dijkstra fails, result is undefined, then switch to fullmap_mode
+#        context.commit 'set_mode', undefined
+#        return
+#
+#      [start, end] = result.data[0]
+#
+#      if start isnt null
+#        from_node = start.data
+#        from_node.id = from_id
+#      if end isnt null
+#        to_node = end.data
+#        to_node.id = to_id
+#
+#      context.commit '_set_directions_state', {path: undefined, weight: undefined, from: from_node, to: to_node}
 
-    payload = {query: "OPTIONAL MATCH (start:Info) WHERE start.id={from_id} OPTIONAL MATCH (end:Info) WHERE end.id={to_id} RETURN start, end", params: {from_id: from_id, to_id: to_id}}
-    @execute payload, (data) ->
-      result = JSON.parse(data.responseText)
+  query_directions: (ids, cb) ->
+    # Retrieve data about from or to
+    if ids.from is '_' or ids.to is '_'
+      @execute {query: "OPTIONAL MATCH (start:Info) WHERE start.id={from_id} OPTIONAL MATCH (end:Info) WHERE end.id={to_id} RETURN start, end", params: {from_id: ids.from, to_id: ids.to}}, (data) ->
+        result = JSON.parse(data.responseText)
 
-      if result.data.length is 0 # If a node has no position, dijkstra fails, result is undefined, then switch to fullmap_mode
-        context.commit 'set_mode', undefined
-        return
+        #if result.data.length is 0 # If a node has no position, dijkstra fails, result is undefined, then switch to fullmap_mode
+        #  context.commit 'set_mode', undefined
+        #  return
 
-      [start, end] = result.data[0]
+        [start, end] = result.data[0]
 
-      if start isnt null
-        from_node = start.data
-        from_node.id = from_id
-      if end isnt null
-        to_node = end.data
-        to_node.id = to_id
+        if start isnt null
+          from_node = start.data
+          from_node.id = ids.from
+        if end isnt null
+          to_node = end.data
+          to_node.id = ids.to
 
-      context.commit '_set_directions_state', {path: undefined, weight: undefined, from: from_node, to: to_node}
+        cb {path: undefined, from: from_node, to: to_node}
+    # Execute dijkstra when both from and to exist
+    else
+      @execute {query: "MATCH (start:Info), (end:Info) WHERE start.id={from_id} AND end.id={to_id} CALL apoc.algo.dijkstra(start, end, 'related', 'weight') YIELD path, weight UNWIND nodes(path) AS point MATCH (point)-[:body]-(a:Annotation {ghost: false})-[:target]-(space) RETURN collect(DISTINCT {node: point, position: [a.x, a.y], space: space}) AS nodes, rels(path) AS rels, weight", params: {from_id: ids.from, to_id: ids.to}}, (data) =>
+        result = JSON.parse(data.responseText)
 
-  query_directions_dijkstra: (context, from_id, to_id) ->
-    payload = {query: "MATCH (start:Info), (end:Info) WHERE start.id={from_id} AND end.id={to_id} CALL apoc.algo.dijkstra(start, end, 'related', 'weight') YIELD path, weight UNWIND nodes(path) AS point MATCH (point)-[:body]-(a:Annotation {ghost: false})-[:target]-(space) RETURN collect(DISTINCT {node: point, position: [a.x, a.y], space: space}) AS nodes, rels(path) AS rels, weight", params: {from_id: from_id, to_id: to_id}}
+        [nodes, links, weight] = result.data[0]
 
-    @execute payload, (data) =>
-      result = JSON.parse(data.responseText)
+        nodes = nodes.map (d) ->
+          n = d.node.data
+          n.position = d.position
+          n.space = d.space
+          return n
 
-      [nodes, links, weight] = result.data[0]
-
-      nodes = nodes.map (d) ->
-        n = d.node.data
-        n.position = d.position
-        n.space = d.space
-        return n
-
-      context.commit '_set_space', nodes[0].space.data
-      context.commit '_set_directions_state', {path: {nodes: nodes, links: links, weight: weight}, from: nodes[0], to: nodes[nodes.length-1]}
-
-      @query_nodes context, nodes[0].space.data.id
+        cb {path: {nodes: nodes, links: links, weight: weight}, from: nodes[0], to: nodes[nodes.length-1]}
 
   query_node: (str, callback) ->
     payload = {query: "MATCH (n:Info) WHERE lower(n.label) CONTAINS {str} RETURN n LIMIT 5", params: {str: str.toLowerCase()}}

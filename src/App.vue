@@ -1,44 +1,47 @@
 <template>
   <div id="app" :class="{mobile_open: mobile_open, vfs_enabled: vfs_enabled}">
+    <breadcrumb
+      :path="space.vfs_path"
+      v-if="vfs_enabled"
+    ></breadcrumb>
+    
     <searchbar
       :searchdirectionsbox_enabled="config.layout.searchdirectionsbox"
       v-on:change_result="change_result"
       v-on:search="search"
       v-on:mobile_open="toggle_mobile_open"
-      v-if="config.layout.searchbar && mode !== 'directions'"
+      v-if="mode === 'target' || mode === 'space'"
     ></searchbar>
     <resultsbox
-      class="resultsbox1"
-      ref="resultsbox1"
+      class="resultsbox_target"
+      ref="resultsbox_target"
       :result_change="result_change"
     ></resultsbox>
+
+    <searchdirectionsbox
+      ref="searchdirectionsbox"
+      class="box"
+      v-on:search="search"
+      v-on:change_result="change_result"
+      v-if="mode === 'directions'"
+    ></searchdirectionsbox>
     <resultsbox
-      class="resultsbox2 box"
-      ref="resultsbox2"
+      class="resultsbox_directions box"
+      ref="resultsbox_directions"
       :result_change="result_change"
-      v-if="mode !== undefined"
     ></resultsbox>
+    
     <infobox
       class="box"
       :searchdirectionsbox_enabled="config.layout.searchdirectionsbox"
       :mobile_open="mobile_open"
       v-on:mobile_open="toggle_mobile_open"
     ></infobox>
-    <searchdirectionsbox
-      ref="searchdirectionsbox"
-      class="box"
-      v-on:search="search"
-      v-on:change_result="change_result"
-      v-if="config.layout.searchdirectionsbox && mode === 'directions'"
-    ></searchdirectionsbox>
+    
     <mainview
       :config="config"
       v-if="config.layout.view"
     ></mainview>
-    <breadcrumb
-      :path="space.vfs_path"
-      v-if="vfs_enabled"
-    ></breadcrumb>
   </div>
 </template>
 
@@ -57,18 +60,25 @@ export default {
     result_change: undefined
 
   computed:
-    mode: () -> @$store.state.selection.mode
+    mode: () -> @$store.getters.mode
+
     config: () -> config
 
     # STORE -> ROUTER
-    # read space and target as a reactive property
-    space_target: () -> {
+    # read the selection state as a single reactive property
+    selection_state: () -> {
       space: @$store.state.selection.space_id
       target: @$store.state.selection.target_id
+      from: @$store.state.selection.from_id
+      to: @$store.state.selection.to_id
     }
 
     space_id: () -> @$store.state.selection.space_id
     target_id: () -> @$store.state.selection.target_id
+    from_to_ids: () -> {
+      from: @$store.state.selection.from_id
+      to: @$store.state.selection.to_id
+    }
 
     space: () -> @$store.state.selection.space
     vfs_enabled: () -> @space? and @space.vfs_enabled
@@ -81,20 +91,25 @@ export default {
     $route: (to, from) -> @route_changed(to) # ROUTER -> STORE
     
     # STORE -> ROUTER
-    space_target: (ids) ->
+    selection_state: (ids) -> 
       if not ids.space?
         throw 'Assertion error: a space ID must always be defined'
-      if not ids.target?
-        @$router.push
-          name: 'goto_space',
-          params:
-            space: ids.space
-      else
+      if ids.target?
         @$router.push
           name: 'goto_space_target',
           params:
             space: ids.space
             target: ids.target
+      else
+        if ids.from? and ids.to?
+          @$router.push
+            name: 'goto_directions',
+            params: ids
+        else
+          @$router.push
+            name: 'goto_space',
+            params:
+              space: ids.space
 
     # data loading
     space_id: (id) -> @$store.dispatch 'load_space', id
@@ -102,14 +117,19 @@ export default {
       if id?
         @$store.dispatch 'load_target', id
       else
-        @$store.commit 'clear_target'
+        @$store.commit 'unload_target'
+    from_to_ids: (ids) ->
+      if ids.from? and ids.to?
+        @$store.dispatch 'load_directions', ids
+      else
+        @$store.commit 'unload_directions'
 
   methods:
     toggle_mobile_open: (flag) ->
       @mobile_open = if flag? then flag else (not @mobile_open)
 
     # ROUTER -> STORE
-    route_changed: (route) ->
+    route_changed: (route) -> # FIXME: this function could be improved by avoiding multiple calls (such as committing a "goto mutation" from console)
       switch route.name
         when 'goto_space'
           @$store.commit 'goto_space', route.params.space
@@ -120,12 +140,14 @@ export default {
           }
         when 'goto_target'
           @$store.commit 'goto_target', route.params.target
+        when 'goto_directions'
+          @$store.commit 'goto_directions', route.params
 
     search: (str) ->
       if @mode is 'directions'
-        @$refs.resultsbox2.search_node str, @$refs.searchdirectionsbox.current_input
+        @$refs.resultsbox_directions.search_node str, @$refs.searchdirectionsbox.current_input
       else
-        @$refs.resultsbox1.search_node str
+        @$refs.resultsbox_target.search_node str
 
     change_result: (value) ->
       @result_change = {value: value}
@@ -163,7 +185,7 @@ html, body {
   width: var(--left-panel-width);
 }
 
-.resultsbox1 {
+.resultsbox_target {
   position: absolute;
   top: 54px;
   left: 8px;
@@ -171,7 +193,7 @@ html, body {
   z-index: 10;
   box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 -1px 0px rgba(0,0,0,0.02);
 }
-.resultsbox2 {
+.resultsbox_directions {
   position: absolute;
   top: 125px;
   left: 0;
@@ -225,15 +247,15 @@ sup {
     width: 95%;
   }
 
-  .resultsbox1, .resultsbox2 {
+  .resultsbox_target, .resultsbox_directions {
     font-size: 15px;
   }
 
-  .resultsbox1 {
+  .resultsbox_target {
     width: 95%;
   }
 
-  .resultsbox2 {
+  .resultsbox_directions {
     width: 100%;
     top: 110px;
 

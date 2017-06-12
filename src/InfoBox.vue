@@ -22,7 +22,7 @@ export default {
     mobile_open:
       type: Boolean
   computed:
-    mode: () -> @$store.state.selection.mode
+    mode: () -> @$store.getters.mode
     target: () -> @$store.state.selection.target
   methods: # FIXME some methods are unused
     click_directions: () -> @$store.dispatch 'request_directions', {def: true}
@@ -32,7 +32,7 @@ export default {
       @$emit 'mobile_open'
     click_close: () ->
       # @$store.commit 'set_mode', undefined
-      @$store.commit 'goto_target', undefined
+      @$store.commit 'clear'
       @$emit 'mobile_open', false
   components:
     sections: Sections
