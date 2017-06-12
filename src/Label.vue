@@ -17,7 +17,7 @@ export default {
     transform: () -> @$store.state.additional.transform
 
   methods:
-    select: () -> @$store.dispatch 'select', {id: @data.id}
+    select: () -> @$store.commit 'goto_target', @data.id
     get_translate: () -> "translate(#{@data.position[0]}, #{@data.position[1]}) scale(#{if @transform? then 6/@transform.k else 1})"
     semantic_zoom: () -> @transform.k > 5
 }

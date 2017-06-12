@@ -37,7 +37,7 @@ export default {
       db.execute {query: @config.query, params: {current: @data.id}}, (data) =>
         result = JSON.parse(data.responseText)
         @nodes = result.data.map (d) => {data: d[0].data, new_data: {label: kgl.parse(@config.label, d[0].data)}}
-    get_link: (id) -> if @space? then "#/#{@space.id}/target/#{id}" else "#/target/#{id}"
+    get_link: (id) -> "#/target/#{id}"
     get_label: (n) -> if n.new_data.label? then n.new_data.label else n.data.label
 
   components:
