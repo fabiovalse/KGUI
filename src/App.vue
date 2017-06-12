@@ -34,11 +34,11 @@
     <mainview
       :config="config"
       v-if="config.layout.view"
-      class="{breadcrumb_enabled: space.vfs_enabled}"
+      :class="{breadcrumb_enabled: vfs_enabled}"
     ></mainview>
     <breadcrumb
       :path="space.vfs_path"
-      v-if="space.vfs_enabled"
+      v-if="vfs_enabled"
     ></breadcrumb>
   </div>
 </template>
@@ -72,6 +72,7 @@ export default {
     target_id: () -> @$store.state.selection.target_id
 
     space: () -> @$store.state.selection.space
+    vfs_enabled: () -> @space? and @space.vfs_enabled
 
   mounted: () ->
     # @$store.dispatch 'init', {default_starting_point: config.default_starting_point, default_space: config.default_space}
