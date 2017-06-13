@@ -20,6 +20,7 @@ import ZoomableImageOverlay from './ZoomableImageOverlay.vue'
 import SpaceSwitch from './SpaceSwitch.vue'
 import config from './config.coffee'
 import Vue from 'vue'
+import * as d3 from 'd3'
 
 export default {
 
@@ -28,6 +29,9 @@ export default {
     initial_zoom: undefined
     fullscreen_mode: false
     annotation_visible: true
+    mercator: d3.geoMercator()
+      .translate [0.5, 0.5]
+      .scale 1/(2*Math.PI)
 
   props:
     openseadragon_config:
@@ -42,17 +46,18 @@ export default {
     space: (newSpace) -> @load_map()
 
   mounted: () ->
-    # OpenSeadragon viewer creation
+    # Compute tilesources through config template according to data
     tilesources = JSON.parse(@space.tile_source).map (ts) -> config.openseadragon_templates[ts.type](ts)
 
+    # OpenSeadragon viewer creation
     @openseadragon_config.tileSources = tilesources
     @viewer = OpenSeadragon @openseadragon_config
 
-    # remove default zoom controls
+    # Remove default zoom controls
     if not (@openseadragon_config.zoomInButton? and @openseadragon_config.zoomOutButton?)
       @viewer.controls[0].destroy()
 
-    # set margins according to infobox
+    # Set margins according to infobox
     @viewer.viewport.setMargins({left: 20, right: 20, top: 0, bottom: 0})
 
     @load_map()
@@ -82,7 +87,13 @@ export default {
         @$el.classList.remove 'fullscreen'
 
         @show_hide()
-        @viewer.viewport.goHome true
+
+        # set initial view
+        if @space.geo_bounds?
+          @fit_bounds()
+        else
+          @viewer.viewport.goHome true
+        
         @fullscreen_mode = false
 
     load_map: () ->
@@ -100,6 +111,10 @@ export default {
         @initial_zoom = event.zoom
 
       @viewer.addHandler 'open', (event) =>
+        ### Fit an initial bounding box in the case of geo tiles
+        ###
+        if @space.geo_bounds?
+          @fit_bounds()
 
         ### Restore the zoom & pan of the previous space
         ###
@@ -145,19 +160,24 @@ export default {
 
       ### Console points
       ###
-      @viewer.addHandler 'canvas-click', (event) =>
-        # The canvas-click event gives us a position in web coordinates.
-        webPoint = event.position;
-  
-        # Convert that to viewport coordinates, the lingua franca of OpenSeadragon coordinates.
-        viewportPoint = @viewer.viewport.pointFromPixel(webPoint);
-  
-        # Convert from viewport coordinates to image coordinates.
-        imagePoint = @viewer.viewport.viewportToImageCoordinates(viewportPoint);
-  
-        # Show the results.
-        #console.log(webPoint.toString(), viewportPoint.toString(), imagePoint.toString());
-        console.log imagePoint
+#      @viewer.addHandler 'canvas-click', (event) =>
+#        # The canvas-click event gives us a position in web coordinates.
+#        webPoint = event.position;
+#  
+#        # Convert that to viewport coordinates, the lingua franca of OpenSeadragon coordinates.
+#        viewportPoint = @viewer.viewport.pointFromPixel(webPoint);
+#  
+#        # Convert from viewport coordinates to image coordinates.
+#        imagePoint = @viewer.viewport.viewportToImageCoordinates(viewportPoint);
+#  
+#        # Show the results.
+#        #console.log(webPoint.toString(), viewportPoint.toString(), imagePoint.toString());
+#        console.log imagePoint
+
+    fit_bounds: () ->
+      min = @mercator([@space.geo_bounds[1], @space.geo_bounds[0]])
+      max = @mercator([@space.geo_bounds[3], @space.geo_bounds[2]])
+      @viewer.viewport.fitBounds(new OpenSeadragon.Rect(min[0], max[1], max[0]-min[0], min[1]-max[1]), true)
 
   components:
     spaceswitch: SpaceSwitch
