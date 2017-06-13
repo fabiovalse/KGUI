@@ -13,7 +13,7 @@
       v-if="mode === 'target' || mode === 'space'"
     ></searchbar>
     <resultsbox
-      class="resultsbox_target"
+      class="resultsbox_target box"
       ref="resultsbox_target"
       :result_change="result_change"
     ></resultsbox>
@@ -184,7 +184,7 @@ html, body {
   --box-shadow: 2px 2px 7px rgba(0,0,0,0.25);
 }
 .box {
-  width: var(--left-panel-width);
+  width: var(--left-margined-panel-width);
 }
 
 .resultsbox_target {

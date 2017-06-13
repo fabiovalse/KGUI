@@ -68,7 +68,6 @@ export default {
   position: absolute;
   top: 8px;
   left: 8px;
-  width: var(--left-margined-panel-width);
   height: 105px;
   border-radius: var(--radius);
   box-shadow: var(--box-shadow);

@@ -48,7 +48,6 @@ export default {
   position: absolute;
   top: calc(var(--main-bar-height) + 2 * var(--margin));
   left: var(--margin);
-  width: var(--left-margined-panel-width);
   max-height: calc(100% - var(--main-bar-height) - 2 * var(--margin));
   
   background: #FFF;

@@ -117,6 +117,7 @@ button {
   height: 50%;
   border: none;
   background: transparent;
+  outline: none;
 }
 .separator {
   height: 60%;
