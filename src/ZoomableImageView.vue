@@ -186,89 +186,93 @@ export default {
 </script>
 
 <style scoped>
-  #zoomableimageview {
-    width: 92%;
-    height: 100%;
-    margin: auto;
-    position: relative;
-    border: 1px solid #DDD;
-    box-sizing: border-box;
-  }
-  #zoomableimageview * {
-    outline: none !important;
-  }
+#zoomableimageview {
+  width: 92%;
+  height: 100%;
+  margin: auto;
+  position: relative;
+  border: 1px solid #DDD;
+  box-sizing: border-box;
+}
 
-  .fullscreen {
-    position: absolute !important;
-    width: 100% !important;
-    top: 0;
-    left: 0;
-    padding: 0;
-    z-index: 4;
-  }
-  .zoom_cursor {
-    cursor: zoom-in;
-  }
+.fullscreen {
+  position: absolute !important;
+  width: 100% !important;
+  top: 0;
+  left: 0;
+  padding: 0;
+  z-index: 4;
+  border: 0 !important;
+}
+.zoom_cursor {
+  cursor: zoom-in;
+}
 
-  .zoom_control {
-    position: absolute;
-    bottom: 15px;
-    right: 20px;
-    z-index: 2;
-  }
-  .zoom_control .in, .zoom_control .out {
-    width: 30px;
-    height: 30px;
-    background: #FFF;
-    border: none;
-    border-bottom: 1px solid #F2F2F2;
-    box-shadow: 0px 1px 4px rgba(0,0,0,0.3);
-    color: rgb(178, 178, 178);
-    cursor: pointer;
-  }
-  .zoom_control .in:hover, .zoom_control .out:hover {
-    color: rgb(100, 100, 100);
-  }
-  .zoom_control .in {
-    border-top-right-radius: 5px;
-    border-top-left-radius: 5px;
-  }
-  .zoom_control .out {
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-  }
+.zoom_control {
+  position: absolute;
+  bottom: 15px;
+  right: 20px;
+  z-index: 2;
+}
+.zoom_control .in, .zoom_control .out {
+  width: 30px;
+  height: 30px;
+  background: #FFF;
+  border: none;
+  border-bottom: 1px solid #F2F2F2;
+  box-shadow: 0px 1px 4px rgba(0,0,0,0.3);
+  color: rgb(178, 178, 178);
+  cursor: pointer;
+}
+.zoom_control .in:hover, .zoom_control .out:hover {
+  color: rgb(100, 100, 100);
+}
+.zoom_control .in {
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+}
+.zoom_control .out {
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
 
-  .annotation_control {
-    position: absolute;
-    bottom: 80px;
-    right: 20px;
-    z-index: 2;
-  }
-  .annotation_control button {
-    width: 30px;
-    height: 30px;
-    background: #FFF;
-    border: none;
-    border-radius: 5px;
-    box-shadow: 0px 1px 4px rgba(0,0,0,0.3);
-    color: rgb(178, 178, 178);
-    cursor: pointer;
-    font-size: 14px;
-  }
-  .annotation_control button:hover {
-    color: rgb(100, 100, 100);
-  }
+.annotation_control {
+  position: absolute;
+  bottom: 80px;
+  right: 20px;
+  z-index: 2;
+}
+.annotation_control button {
+  width: 30px;
+  height: 30px;
+  background: #FFF;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0px 1px 4px rgba(0,0,0,0.3);
+  color: rgb(178, 178, 178);
+  cursor: pointer;
+  font-size: 14px;
+}
+.annotation_control button:hover {
+  color: rgb(100, 100, 100);
+}
 
-  .close_button {
-    position: absolute;
-    top: 15px;
-    right: 10px;
-    background: transparent;
-    border: none;
-    color: #FFF;
-    text-shadow: #000 0px 0px 6px;
-    font-size: 15px;
-    cursor: pointer;
-    z-index: 1;
-  }
+.close_button {
+  position: absolute;
+  top: 15px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: #FFF;
+  text-shadow: #000 0px 0px 6px;
+  font-size: 15px;
+  cursor: pointer;
+  z-index: 1;
+}
 </style>
+<style>
+#zoomableimageview .openseadragon-canvas {
+  outline: none; /* fix for outline appearing on some computers, e.g., Microsoft Surface */
+}
+</style>
+
