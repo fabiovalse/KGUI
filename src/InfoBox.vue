@@ -43,18 +43,20 @@ export default {
 
 <style scoped>
 .infobox {
-  --margin: 17px;
+  --margin: 8px;
   --radius: 3px;
   position: absolute;
-  top: calc(var(--main-bar-height) + var(--margin));
+  top: calc(var(--main-bar-height) + 2 * var(--margin));
   left: var(--margin);
-  width: calc(var(--left-panel-width) - 2 * var(--margin) - 6px);
+  width: var(--left-margined-panel-width);
   max-height: calc(100% - var(--main-bar-height) - 2 * var(--margin));
-  z-index: 5;
+  
   background: #FFF;
   border-radius: var(--radius);
-  box-shadow: 2px 2px 7px rgba(0,0,0,0.25);
+  box-shadow: var(--box-shadow);
   box-sizing: border-box;
+
+  z-index: 5;
 }
 
 .mobile_open {
@@ -68,6 +70,7 @@ export default {
   text-align: center;
   width: 100%;
   background: transparent;
+  
   z-index: 10;
 }
 .expand i {
@@ -107,10 +110,11 @@ export default {
 @media (max-width: 480px) {
   .infobox {
     padding-top: 0px;
-    z-index: 1;
     transition: top 1s;
     -webkit-transition: top 1s;
     -moz-transition: top 1s;
+
+    z-index: 1;
   }
   .expand {
     display: block;

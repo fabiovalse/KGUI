@@ -180,6 +180,8 @@ html, body {
   --main-color: #B44646;
   --left-panel-scrollbar-width: 6px;
   --paper-color: rgb(255, 246, 235);
+  --left-margined-panel-width: calc(var(--left-panel-width) - 16px - var(--left-panel-scrollbar-width));
+  --box-shadow: 2px 2px 7px rgba(0,0,0,0.25);
 }
 .box {
   width: var(--left-panel-width);
@@ -189,15 +191,19 @@ html, body {
   position: absolute;
   top: 54px;
   left: 8px;
-  width: 386px;
+  width: var(--left-margined-panel-width);
+  box-shadow: var(--box-shadow);
+
   z-index: 10;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 -1px 0px rgba(0,0,0,0.02);
 }
 .resultsbox_directions {
   position: absolute;
-  top: 125px;
-  left: 0;
-  z-index: 7;
+  top: 111px;
+  left: 8px;
+  width: var(--left-margined-panel-width);
+  box-shadow: var(--box-shadow);
+
+  z-index: 10;
 }
 .searchdirectionsbox {
   position: absolute;

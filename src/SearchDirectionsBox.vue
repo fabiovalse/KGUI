@@ -64,7 +64,15 @@ export default {
 
 <style scoped>
 .searchdirectionsbox {
-  height: 125px;
+  --radius: 3px;
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: var(--left-margined-panel-width);
+  height: 105px;
+  border-radius: var(--radius);
+  box-shadow: var(--box-shadow);
+
   z-index: 10;
 }
 
@@ -75,8 +83,8 @@ export default {
 }
 .close {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 12px;
+  right: 16px;
 }
 
 button {
@@ -93,7 +101,7 @@ input {
   background: transparent;
   border: none;
   color: #FFF;
-  font-size: 14px;
+  font-size: 15px;
   outline: none;
 }
 
@@ -104,15 +112,14 @@ input {
   border-bottom: 1px solid rgba(255,255,255,0.6);
 }
 .from {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .from_to {
-  margin: 40px 0px 0px 40px;
+  margin: 12px 0px 0px 30px;
 }
 
 @media (max-width: 480px) {
-  
   .mobile_open .searchdirectionsbox {
     display: none;
   }
@@ -129,7 +136,5 @@ input {
   .searchdirectionsbox {
     height: 110px;
   }
-
 }
-
 </style>

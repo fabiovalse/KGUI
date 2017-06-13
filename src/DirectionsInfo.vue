@@ -77,7 +77,7 @@ export default {
 <style scoped>
 .directionsinfo {
   padding: 15px;
-  margin-top: 125px;
+  margin-top: 40px;
 }
 
 .title {
