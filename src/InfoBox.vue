@@ -46,9 +46,9 @@ export default {
   --margin: 8px;
   --radius: 3px;
   position: absolute;
-  top: calc(var(--main-bar-height) + 2 * var(--margin));
+  top: calc(var(--main-bar-height) + var(--margin));
   left: var(--margin);
-  max-height: calc(100% - var(--main-bar-height) - 2 * var(--margin));
+  max-height: calc(100% - var(--main-bar-height) - var(--margin));
   
   background: #FFF;
   border-radius: var(--radius);
