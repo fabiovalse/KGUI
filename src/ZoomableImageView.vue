@@ -18,6 +18,7 @@ import SVGOverlay from '../lib/openseadragon-svg-overlay.js'
 import ZoomifyTileSource from '../lib/zoomifytilesource.js'
 import ZoomableImageOverlay from './ZoomableImageOverlay.vue'
 import SpaceSwitch from './SpaceSwitch.vue'
+import config from './config.coffee'
 import Vue from 'vue'
 
 export default {
@@ -29,7 +30,7 @@ export default {
     annotation_visible: true
 
   props:
-    config:
+    openseadragon_config:
       type: Object
       required: true
 
@@ -42,11 +43,13 @@ export default {
 
   mounted: () ->
     # OpenSeadragon viewer creation
-    @config.tileSources = @space.tile_source
-    @viewer = OpenSeadragon @config
+    tilesources = JSON.parse(@space.tile_source).map (ts) -> config.openseadragon_templates[ts.type](ts)
+
+    @openseadragon_config.tileSources = tilesources
+    @viewer = OpenSeadragon @openseadragon_config
 
     # remove default zoom controls
-    if not (@config.zoomInButton? and @config.zoomOutButton?)
+    if not (@openseadragon_config.zoomInButton? and @openseadragon_config.zoomOutButton?)
       @viewer.controls[0].destroy()
 
     # set margins according to infobox

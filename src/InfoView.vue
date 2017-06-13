@@ -3,7 +3,7 @@
     <spaceheader></spaceheader>
     
     <div class="preview">
-      <zoomableimageview v-if="space !== undefined && space.innerview === 'zoomableimageview'" :config="config.openseadragon"></zoomableimageview>
+      <zoomableimageview v-if="space !== undefined && space.innerview === 'zoomableimageview'" :openseadragon_config="config.openseadragon"></zoomableimageview>
       <imageview v-if="space !== undefined && space.innerview === 'imageview'"></imageview>
     </div>
     <div class="details">
