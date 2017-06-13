@@ -1,5 +1,5 @@
 <template>
-  <div id="zoomableimageview" class="zoom_cursor" @click="open()">
+  <div id="zoomableimageview" class="zoom_cursor" @click="open()" :style="{background: background}">
     <spaceswitch v-if="fullscreen_mode"></spaceswitch>
     <div class="zoom_control" v-if="fullscreen_mode">
       <div><button id="openseadragon_zoom_in_control" class="in"><i class="icon-plus"></i></button></div>
@@ -41,7 +41,7 @@ export default {
   computed:
     space: () -> @$store.state.selection.space
     annotations: () -> if @space.annotations? then JSON.parse(@space.annotations) else {}
-
+    background: () -> if @space.background_color? then @space.background_color else 'black'
   watch:
     space: (newSpace) -> @load_map()
 
@@ -191,7 +191,8 @@ export default {
     height: 100%;
     margin: auto;
     position: relative;
-    background: #000;
+    border: 1px solid #DDD;
+    box-sizing: border-box;
   }
   #zoomableimageview * {
     outline: none !important;
