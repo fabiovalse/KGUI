@@ -12,8 +12,7 @@
         :value="get_target()">
 
       <button @click="click_search"><i class="icon-search"></i></button>
-      <div v-if="mode === 'info' || (searchdirectionsbox_enabled && mode === undefined)" class="separator"></div>
-      <button v-if="mode === 'info'" @click="click_close"><i class="icon-x"></i></button>
+      <div v-if="searchdirectionsbox_enabled && mode === undefined" class="separator"></div>
       <button v-if="searchdirectionsbox_enabled && mode === undefined" @click="click_directions"><i class="icon-directions"></i></button>
     </div>
   </div>
@@ -30,13 +29,18 @@ export default {
 
   computed:
     mode: () -> @$store.state.selection.mode
+    space: () -> @$store.state.selection.space
     target: () -> @$store.state.selection.target
 
   methods:
     click_close: () ->
       @$store.commit 'set_mode', undefined
       @$emit 'mobile_open', false
-    click_directions: () -> @$store.dispatch 'request_directions', {def: true}
+    click_directions: () -> @$store.commit 'goto_directions', {
+      space: @space.id # FIXME this should be removed
+      from: '_'
+      to: if @target? then @target.id else '_'
+    }
     click_search: () ->
       @$emit 'search', d3.select('.search').node().value
     change_selected_result: (event) ->
@@ -59,17 +63,13 @@ export default {
 <style scoped>
 .searchbar {
   position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 10;
-  height: var(--main-bar-height);
-  width: calc(var(--left-panel-width) - var(--left-panel-scrollbar-width));
-}
-.innerbar {
-  position: absolute;
   top: 8px;
   left: 8px;
-  width: calc(var(--left-panel-width) - 16px - var(--left-panel-scrollbar-width));
+  
+  z-index: 10;
+}
+.innerbar {
+  width: var(--left-margined-panel-width);
   height: calc(var(--main-bar-height) - 16px);
   background: #F5F5F5;
   border-radius: 3px;
@@ -80,7 +80,7 @@ export default {
 }
 .searchbar.focused .innerbar {
   background: white;
-  box-shadow: 2px 2px 7px rgba(0,0,0,0.25);
+  box-shadow: var(--box-shadow);
 }
 .icon-search, .icon-x {
   color: rgb(178, 178, 178);
@@ -117,6 +117,7 @@ button {
   height: 50%;
   border: none;
   background: transparent;
+  outline: none;
 }
 .separator {
   height: 60%;

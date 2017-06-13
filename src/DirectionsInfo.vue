@@ -18,7 +18,7 @@ export default {
     human_walking_speed: 1.25
 
   computed:
-    path: () -> @$store.state.selection.path
+    path: () -> @$store.state.selection.directions.path
 
   methods:
     get_time: (distance) ->
@@ -77,7 +77,7 @@ export default {
 <style scoped>
 .directionsinfo {
   padding: 15px;
-  margin-top: 125px;
+  margin-top: 40px;
 }
 
 .title {

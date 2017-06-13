@@ -20,14 +20,14 @@
 export default {
 
   computed:
-    path: () -> @$store.state.selection.path
+    path: () -> if @$store.state.selection.directions? then @$store.state.selection.directions.path else undefined
     space: () -> @$store.state.selection.space
     transform: () -> @$store.state.additional.transform
-    waypoints: () -> if @$store.state.selection.path? then @$store.state.selection.path.nodes.filter((n) -> not n.label?).filter (n) => n.space.data.id is @space.id else undefined # FIXME: instead of label a type should be used
+    waypoints: () -> if @$store.state.selection.directions? and @$store.state.selection.directions.path? then @$store.state.selection.directions.path.nodes.filter((n) -> not n.label?).filter (n) => n.space.data.id is @space.id else undefined # FIXME: instead of label a type should be used
 
   methods:
     get_d: (nodes) ->
-      nodes = nodes.filter (n) => n.space.data.id is @space.id
+      #nodes = nodes.filter (n) => n.space.data.id is @space.id
 
       if nodes.length > 0
         str = "M#{nodes[0].position[0]} #{nodes[0].position[1]}"
