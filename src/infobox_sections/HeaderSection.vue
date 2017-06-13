@@ -33,7 +33,6 @@ export default {
 <style scoped>
 .header_section {
   position: relative;
-  height: 68px;
   padding: 16px 50px 20px 24px;
   background: var(--main-color);
   color: white;
