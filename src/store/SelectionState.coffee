@@ -21,12 +21,12 @@ export default {
   mutations:
     goto_space: (state, id) ->
       state.space_id = id
-      state.from_id = undefined
-      state.to_id = undefined
-
-      # reset the target if we are leaving the context (spaces not in the same list)
+      
+      # reset target and directions if we are leaving the context (spaces not in the same list)
       if not (state.space? and id in (state.space.list.map (d) -> d.id))
         state.target_id = undefined
+        state.from_id = undefined
+        state.to_id = undefined
         
     goto_space_target: (state, ids) ->
       state.space_id = ids.space
