@@ -1,13 +1,20 @@
 <template>
-  <div id="zoomableimageview" class="zoom_cursor" @click="open()" :style="{background: background}">
+  <div id="zoomableimageview" :class="{fullscreen: fullscreen_mode, zoom_cursor: !fullscreen_mode}" :style="{background: background}" @click="open()">
     <spaceswitch v-if="fullscreen_mode"></spaceswitch>
+    
     <div class="zoom_control" v-if="fullscreen_mode">
       <div><button id="openseadragon_zoom_in_control" class="in"><i class="icon-plus"></i></button></div>
       <div><button id="openseadragon_zoom_out_control" class="out"><i class="icon-minus"></i></button></div>
     </div>
+    
     <div class="annotation_control" v-if="fullscreen_mode">
       <button @click="show_hide()"><i :class="'icon-'+get_icon()"></i></button>
     </div>
+    
+    <div class="opacity_control" v-if="fullscreen_mode && space.geo_bounds !== undefined">
+      <input v-on:mouseover.once="register_opacity_changes()" type="range" class="slider" step="1" min="0" max="10" value="10">
+    </div>
+    
     <button v-if="fullscreen_mode" class="close_button" @click.stop="close()"><i class="icon-x"></i></button>
   </div>
 </template>
@@ -42,6 +49,7 @@ export default {
     space: () -> @$store.state.selection.space
     annotations: () -> if @space.annotations? then JSON.parse(@space.annotations) else {}
     background: () -> if @space.background_color? then @space.background_color else 'black'
+  
   watch:
     space: (newSpace) -> @load_map()
 
@@ -74,27 +82,36 @@ export default {
         @fullscreen_mode = true
         @viewer.setMouseNavEnabled true
 
-        @$el.classList.remove 'zoom_cursor'
-        @$el.classList.add 'fullscreen'
-        
         @show_hide()
 
     close: () ->
       if @fullscreen_mode
+        @fullscreen_mode = false
         @viewer.setMouseNavEnabled false
-
-        @$el.classList.add 'zoom_cursor'
-        @$el.classList.remove 'fullscreen'
 
         @show_hide()
 
         # set initial view
         if @space.geo_bounds?
+          @change_opacity 1
           @fit_bounds()
         else
           @viewer.viewport.goHome true
-        
-        @fullscreen_mode = false
+
+    fit_bounds: () ->
+      min = @mercator([@space.geo_bounds[1], @space.geo_bounds[0]])
+      max = @mercator([@space.geo_bounds[3], @space.geo_bounds[2]])
+      @viewer.viewport.fitBounds(new OpenSeadragon.Rect(min[0], max[1], max[0]-min[0], min[1]-max[1]), true)
+    
+    register_opacity_changes: () ->
+      # When there is a gdal2tiles image register oninput event for opacity changes
+      if @space.geo_bounds?
+        _this = @
+        document.querySelector('.slider').oninput = (e) ->
+          _this.change_opacity this.value/10
+
+    change_opacity: (value) ->
+      @viewer.world.getItemAt(1).setOpacity value
 
     load_map: () ->
       new_zoom = @initial_zoom
@@ -174,11 +191,6 @@ export default {
 #        #console.log(webPoint.toString(), viewportPoint.toString(), imagePoint.toString());
 #        console.log imagePoint
 
-    fit_bounds: () ->
-      min = @mercator([@space.geo_bounds[1], @space.geo_bounds[0]])
-      max = @mercator([@space.geo_bounds[3], @space.geo_bounds[2]])
-      @viewer.viewport.fitBounds(new OpenSeadragon.Rect(min[0], max[1], max[0]-min[0], min[1]-max[1]), true)
-
   components:
     spaceswitch: SpaceSwitch
 
@@ -255,6 +267,13 @@ export default {
 }
 .annotation_control button:hover {
   color: rgb(100, 100, 100);
+}
+
+.opacity_control {
+  position: absolute;
+  top: 10px;
+  right: calc((100% - 129px) / 2);
+  z-index: 2;
 }
 
 .close_button {
