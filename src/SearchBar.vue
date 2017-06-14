@@ -6,7 +6,9 @@
         type="text"
         placeholder="Search"
         @input="click_search"
-        @keyup="change_selected_result"
+        @keyup.down="change_result(1)"
+        @keyup.up="change_result(-1)"
+        @keyup.enter="change_result(0)"
         @focus="focus"
         @blur="blur"
         :value="get_target()">
@@ -43,13 +45,8 @@ export default {
     }
     click_search: () ->
       @$emit 'search', d3.select('.search').node().value
-    change_selected_result: (event) ->
-      if event.key is 'ArrowDown'
-        @$emit 'change_result', 1
-      else if event.key is 'ArrowUp'
-        @$emit 'change_result', -1
-      else if event.key is 'Enter'
-        @$emit 'change_result', 0
+    change_result: (value) ->
+      @$emit 'change_result', value
     get_target: () -> 
       if @target isnt undefined
         @target.label
