@@ -81,7 +81,7 @@ export default {
   right: 15px;
   width: var(--width);
   height: var(--width);
-  background: #BBB;
+  background: white;
   border-radius: calc(var(--width) / 2);
   text-align: center;
   line-height: 55px;
@@ -90,7 +90,7 @@ export default {
   cursor: pointer;
 }
 .explore a {
-  color: #FFF;
+  color: var(--main-color);
 }
 
 @media (max-width: 480px) {
