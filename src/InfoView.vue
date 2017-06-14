@@ -41,7 +41,6 @@ export default {
   align-items: flex-end;
   overflow: scroll;
   overflow-x: hidden;
-  background: #FFF;
 }
 .details {
   width: calc(100% - var(--left-panel-width));
@@ -51,8 +50,5 @@ export default {
   padding: 40px 0px;
   height: 400px;
   border-bottom: 1px solid #e0e0e0;
-}
-
-.zoomableimageview {
 }
 </style>
