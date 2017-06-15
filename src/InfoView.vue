@@ -4,7 +4,6 @@
     
     <div class="preview">
       <zoomableimageview v-if="with_zoomable"
-        :openseadragon_config="config.openseadragon"
         :fullscreen="fullscreen"
         @click.native="to_fullscreen"
         @close="fullscreen = false">

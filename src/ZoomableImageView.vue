@@ -40,9 +40,6 @@ export default {
       .scale 1/(2*Math.PI)
 
   props:
-    openseadragon_config:
-      type: Object
-      required: true
     fullscreen:
       type: Boolean
       'default': true
@@ -80,11 +77,11 @@ export default {
     tilesources = JSON.parse(@space.tile_source).map (ts) -> config.openseadragon_templates[ts.type](ts)
 
     # OpenSeadragon viewer creation
-    @openseadragon_config.tileSources = tilesources
-    @viewer = OpenSeadragon @openseadragon_config
+    config.openseadragon.tileSources = tilesources
+    @viewer = OpenSeadragon config.openseadragon
 
     # Remove default zoom controls
-    if not (@openseadragon_config.zoomInButton? and @openseadragon_config.zoomOutButton?)
+    if not (config.openseadragon.zoomInButton? and config.openseadragon.zoomOutButton?)
       @viewer.controls[0].destroy()
 
     # Set margins according to infobox
