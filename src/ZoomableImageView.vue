@@ -15,7 +15,7 @@
       <input v-on:mouseover.once="register_opacity_changes()" type="range" class="slider" step="1" min="0" max="10" value="10">
     </div>
     
-    <button v-if="fullscreen" class="close_button" @click.stop="$emit('close')"><i class="icon-x"></i></button>
+    <button v-if="fullscreen && closeable" class="close_button" @click.stop="$emit('close')"><i class="icon-x"></i></button>
   </div>
 </template>
 
@@ -43,6 +43,9 @@ export default {
     fullscreen:
       type: Boolean
       'default': true
+    closeable:
+      type: Boolean
+      'default': false
 
   computed:
     space: () -> @$store.state.selection.space
@@ -51,7 +54,28 @@ export default {
   
   watch:
     space: (newSpace) -> @load_map()
-    fullscreen: (new_value, old_value) ->
+    fullscreen: (n, o) -> @refresh(n, o)
+
+  mounted: () ->
+    # Compute tilesources through config template according to data
+    tilesources = JSON.parse(@space.tile_source).map (ts) -> config.openseadragon_templates[ts.type](ts)
+
+    # OpenSeadragon viewer creation
+    config.openseadragon.tileSources = tilesources
+    @viewer = OpenSeadragon config.openseadragon
+
+    # Remove default zoom controls
+    if not (config.openseadragon.zoomInButton? and config.openseadragon.zoomOutButton?)
+      @viewer.controls[0].destroy()
+
+    # Set margins according to infobox
+    @viewer.viewport.setMargins({left: 20, right: 20, top: 0, bottom: 0})
+
+    @load_map()
+    @refresh(@fullscreen)
+
+  methods:
+    refresh: (new_value, old_value) ->
       # go to fullscreen
       if not old_value and new_value
         @viewer.setMouseNavEnabled true
@@ -72,24 +96,6 @@ export default {
 
     annotation_visible: () -> @show_hide()
 
-  mounted: () ->
-    # Compute tilesources through config template according to data
-    tilesources = JSON.parse(@space.tile_source).map (ts) -> config.openseadragon_templates[ts.type](ts)
-
-    # OpenSeadragon viewer creation
-    config.openseadragon.tileSources = tilesources
-    @viewer = OpenSeadragon config.openseadragon
-
-    # Remove default zoom controls
-    if not (config.openseadragon.zoomInButton? and config.openseadragon.zoomOutButton?)
-      @viewer.controls[0].destroy()
-
-    # Set margins according to infobox
-    @viewer.viewport.setMargins({left: 20, right: 20, top: 0, bottom: 0})
-
-    @load_map()
-
-  methods:
     show_hide: () -> 
       @$el.querySelector('svg').style['display'] = if @fullscreen and @annotation_visible then 'inline' else 'none'
 

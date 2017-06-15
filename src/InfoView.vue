@@ -5,6 +5,7 @@
     <div class="preview">
       <zoomableimageview v-if="with_zoomable"
         :fullscreen="fullscreen"
+        :closeable="true"
         @click.native="to_fullscreen"
         @close="fullscreen = false">
       </zoomableimageview>
