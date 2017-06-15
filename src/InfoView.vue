@@ -3,9 +3,14 @@
     <spaceheader></spaceheader>
     
     <div class="preview">
-      <zoomableimageview v-if="space !== undefined && space.innerview === 'zoomableimageview'" :openseadragon_config="config.openseadragon"></zoomableimageview>
-      <imageview v-if="space !== undefined && space.innerview === 'imageview'"></imageview>
-      <div class="explore"><i class="icon-zoom_in"></i></div>
+      <zoomableimageview v-if="with_zoomable"
+        :openseadragon_config="config.openseadragon"
+        :fullscreen="fullscreen"
+        @click.native="to_fullscreen"
+        @close="fullscreen = false">
+      </zoomableimageview>
+      <imageview v-if="with_image"></imageview>
+      <div v-if="with_zoomable" class="explore" @click="to_fullscreen"><i class="icon-zoom_in"></i></div>
     </div>
     <div class="details">
       <sections></sections>
@@ -22,8 +27,14 @@ import Sections from './infoview_sections/Sections.vue'
 
 export default {
   props: ['config']
+  data: () ->
+    fullscreen: false
   computed:
     space: () -> @$store.state.selection.space
+    with_zoomable: () -> @space? and @space.innerview is 'zoomableimageview'
+    with_image: () -> @space? and @space.innerview is 'imageview'
+  methods:
+    to_fullscreen: () -> @fullscreen = true
   components:
     zoomableimageview: ZoomableImageView
     iframeview: IframeView
@@ -42,23 +53,24 @@ export default {
   align-items: flex-end;
   overflow: scroll;
   overflow-x: hidden;
+  --preview-height: 400px;
+  --preview-margin: 40px;
 }
 .details {
   width: calc(100% - var(--left-panel-width));
 }
 .preview {
-  width: calc(100% - 408px);
-  padding: 40px 0px;
-  height: 400px;
+  width: calc(100% - var(--left-panel-width));
+  padding: var(--preview-margin) 0px;
+  height: var(--preview-height);
   border-bottom: 1px solid #e0e0e0;
-  position: relative;
 }
 
 .explore {
   --width: 50px;
-  position: absolute;
-  bottom: calc(var(--width) / 2 - 2px);
-  right: calc(var(--width) * 1.5);
+  position: relative;
+  bottom: calc(var(--width) / 2);
+  left: calc(100% - var(--width) * 2.5);
   width: var(--width);
   height: var(--width);
   color: white;

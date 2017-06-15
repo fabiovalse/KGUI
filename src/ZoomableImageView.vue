@@ -1,21 +1,21 @@
 <template>
-  <div id="zoomableimageview" :class="{fullscreen: fullscreen_mode, zoom_cursor: !fullscreen_mode}" :style="{background: background}" @click="open()">
-    <spaceswitch v-if="fullscreen_mode"></spaceswitch>
+  <div id="zoomableimageview" :class="{fullscreen: fullscreen, zoom_cursor: !fullscreen}" :style="{background: background}">
+    <spaceswitch v-if="fullscreen"></spaceswitch>
     
-    <div class="zoom_control" v-if="fullscreen_mode">
+    <div class="zoom_control" v-if="fullscreen">
       <div><button id="openseadragon_zoom_in_control" class="in"><i class="icon-plus"></i></button></div>
       <div><button id="openseadragon_zoom_out_control" class="out"><i class="icon-minus"></i></button></div>
     </div>
     
-    <div class="annotation_control" v-if="fullscreen_mode">
-      <button @click="show_hide()"><i :class="annotation_visible !== undefined ? 'icon-hide' : 'icon-show'"></i></button>
+    <div class="annotation_control" v-if="fullscreen">
+      <button @click="annotation_visible = !annotation_visible"><i :class="annotation_visible ? 'icon-hide' : 'icon-show'"></i></button>
     </div>
     
-    <div class="opacity_control" v-if="fullscreen_mode && space.geo_bounds !== undefined">
+    <div class="opacity_control" v-if="fullscreen && space.geo_bounds !== undefined">
       <input v-on:mouseover.once="register_opacity_changes()" type="range" class="slider" step="1" min="0" max="10" value="10">
     </div>
     
-    <button v-if="fullscreen_mode" class="close_button" @click.stop="close()"><i class="icon-x"></i></button>
+    <button v-if="fullscreen" class="close_button" @click.stop="$emit('close')"><i class="icon-x"></i></button>
   </div>
 </template>
 
@@ -34,7 +34,6 @@ export default {
   data: () ->
     initial_pan: undefined
     initial_zoom: undefined
-    fullscreen_mode: false
     annotation_visible: true
     mercator: d3.geoMercator()
       .translate [0.5, 0.5]
@@ -44,6 +43,9 @@ export default {
     openseadragon_config:
       type: Object
       required: true
+    fullscreen:
+      type: Boolean
+      'default': true
 
   computed:
     space: () -> @$store.state.selection.space
@@ -52,6 +54,26 @@ export default {
   
   watch:
     space: (newSpace) -> @load_map()
+    fullscreen: (new_value, old_value) ->
+      # go to fullscreen
+      if not old_value and new_value
+        @viewer.setMouseNavEnabled true
+        @annotation_visible = true
+
+      # exit fullscreen
+      else if old_value and not new_value
+        @viewer.setMouseNavEnabled false
+
+        # set initial view
+        if @space.geo_bounds?
+          @change_opacity 1
+          @fit_bounds()
+        else
+          @viewer.viewport.goHome true
+
+      @show_hide()
+
+    annotation_visible: () -> @show_hide()
 
   mounted: () ->
     # Compute tilesources through config template according to data
@@ -72,29 +94,7 @@ export default {
 
   methods:
     show_hide: () -> 
-      @annotation_visible = not @annotation_visible
-      @$el.querySelector('svg').style['display'] = if @annotation_visible then 'inline' else 'none'
-
-    open: () ->
-      if not @fullscreen_mode
-        @fullscreen_mode = true
-        @viewer.setMouseNavEnabled true
-
-        @show_hide()
-
-    close: () ->
-      if @fullscreen_mode
-        @fullscreen_mode = false
-        @viewer.setMouseNavEnabled false
-
-        @show_hide()
-
-        # set initial view
-        if @space.geo_bounds?
-          @change_opacity 1
-          @fit_bounds()
-        else
-          @viewer.viewport.goHome true
+      @$el.querySelector('svg').style['display'] = if @fullscreen and @annotation_visible then 'inline' else 'none'
 
     fit_bounds: () ->
       min = @mercator([@space.geo_bounds[1], @space.geo_bounds[0]])
@@ -206,7 +206,6 @@ export default {
   width: 92%;
   height: 100%;
   margin: auto;
-  position: relative;
   border: 1px solid #DDD;
   box-sizing: border-box;
 }
