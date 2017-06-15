@@ -60,12 +60,18 @@ export default {
     # Compute tilesources through config template according to data
     tilesources = JSON.parse(@space.tile_source).map (ts) -> config.openseadragon_templates[ts.type](ts)
 
+    # override global config with space config
+    openseadragon = {}
+    Object.assign openseadragon, config.openseadragon
+    if @space.openseadragon?
+      Object.assign openseadragon, JSON.parse @space.openseadragon
+
     # OpenSeadragon viewer creation
-    config.openseadragon.tileSources = tilesources
-    @viewer = OpenSeadragon config.openseadragon
+    openseadragon.tileSources = tilesources
+    @viewer = OpenSeadragon openseadragon
 
     # Remove default zoom controls
-    if not (config.openseadragon.zoomInButton? and config.openseadragon.zoomOutButton?)
+    if not (openseadragon.zoomInButton? and openseadragon.zoomOutButton?)
       @viewer.controls[0].destroy()
 
     # Set margins according to infobox
@@ -97,7 +103,9 @@ export default {
     annotation_visible: () -> @show_hide()
 
     show_hide: () -> 
-      @$el.querySelector('svg').style['display'] = if @fullscreen and @annotation_visible then 'inline' else 'none'
+      svg = @$el.querySelector('svg')
+      if svg?
+        svg.style['display'] = if @fullscreen and @annotation_visible then 'inline' else 'none'
 
     fit_bounds: () ->
       min = @mercator([@space.geo_bounds[1], @space.geo_bounds[0]])

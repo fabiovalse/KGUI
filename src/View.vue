@@ -1,5 +1,5 @@
 <template>
-  <div class="mainview" :class="{mobile_mode: mode !== undefined}">
+  <div v-if="space !== undefined" class="mainview" :class="{mobile_mode: mode !== undefined}">
     <infoview v-if="space.template !== undefined && space.view === 'infoview'" :config="config"></infoview>
     <buildingmapview v-if="space.view === 'buildingmapview'"></buildingmapview>
     <textview v-if="space.view === 'textview'"></textview>
