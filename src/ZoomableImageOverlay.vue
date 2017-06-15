@@ -1,6 +1,6 @@
 <template>
   <g>
-    <g v-for="obj in data" :class="get_classes(obj)" @click="select(obj.id)">
+    <g v-for="obj in nodes" :class="get_classes(obj)" @click="select(obj.id)">
       <rect v-if="obj.data.selector === 'rect'" :x="obj.data.x1" :y="obj.data.y1" :width="obj.data.x2-obj.data.x1" :height="obj.data.y2-obj.data.y1"></rect>
       <circle v-if="obj.data.selector === 'circle'" :cx="obj.data.cx" :cy="obj.data.cy" :r="obj.data.rx-obj.data.cx"></circle>
       <path v-if="obj.data.selector === 'path'" :d="to_path_description(obj.data.points)"></path>
@@ -16,16 +16,6 @@
 
 <script lang="coffee">
 export default {
-  props:
-    data:
-      type: Array
-      required: true
-    store:
-      type: Object
-    viewer:
-      type: Object
-    annotations:
-      type: Object
 
   mounted: () ->
     @$el.style.setProperty '--selected-color', if @annotations.selected_color? then @annotations.selected_color else '#ff9e72'

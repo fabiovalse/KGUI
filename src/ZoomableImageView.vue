@@ -8,7 +8,7 @@
     </div>
     
     <div class="annotation_control" v-if="fullscreen_mode">
-      <button @click="show_hide()"><i :class="'icon-'+get_icon()"></i></button>
+      <button @click="show_hide()"><i :class="annotation_visible !== undefined ? 'icon-hide' : 'icon-show'"></i></button>
     </div>
     
     <div class="opacity_control" v-if="fullscreen_mode && space.geo_bounds !== undefined">
@@ -71,8 +71,6 @@ export default {
     @load_map()
 
   methods:
-    get_icon: () -> if @annotation_visible then 'hide' else 'show'
-
     show_hide: () -> 
       @annotation_visible = not @annotation_visible
       @$el.querySelector('svg').style['display'] = if @annotation_visible then 'inline' else 'none'
@@ -164,10 +162,16 @@ export default {
         ### SVG overlay creation
         ###
         @svg_overlay = @viewer.svgOverlay()
-        OverlayComponent = Vue.extend(ZoomableImageOverlay)
 
-        overlay_component = new OverlayComponent({propsData: {data: @converted_nodes, store: @$store, viewer: @viewer, annotations: @annotations}})
+        OverlayComponent = Vue.extend(ZoomableImageOverlay)
+        overlay_component = new OverlayComponent
+          data:
+            nodes: @converted_nodes
+            store: @$store
+            viewer: @viewer
+            annotations: @annotations
         overlay_component.$mount()
+
         @$el.querySelector('svg g').appendChild(overlay_component.$el)
 
         ### Add CSS mix blend mode style
