@@ -55,6 +55,7 @@ export default {
   watch:
     space: (newSpace) -> @load_map()
     fullscreen: (n, o) -> @refresh(n, o)
+    annotation_visible: () -> @show_hide()
 
   mounted: () ->
     # Compute tilesources through config template according to data
@@ -99,8 +100,6 @@ export default {
           @viewer.viewport.goHome true
 
       @show_hide()
-
-    annotation_visible: () -> @show_hide()
 
     show_hide: () -> 
       svg = @$el.querySelector('svg')
