@@ -1,5 +1,8 @@
 <template>
-  <div id="zoomableimageview" :class="{fullscreen: fullscreen, zoom_cursor: !fullscreen}" :style="{background: background}">
+  <div id="zoomableimageview"
+    :class="{fullscreen: fullscreen, zoom_cursor: !fullscreen}"
+    :style="{background: background}"
+    @keyup.esc="$emit('close')">
     <spaceswitch v-if="fullscreen"></spaceswitch>
     
     <div class="zoom_control" v-if="fullscreen">
