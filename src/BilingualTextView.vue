@@ -1,5 +1,7 @@
 <template>
   <div class="bilingualtextview">
+    <spaceheader></spaceheader>
+
     <table cellspacing="0">
       <tr v-for="(row,i) in bilingualtext">
         <th v-if="i === 0">{{bilingualtext[0][0]}}</th>
@@ -20,6 +22,7 @@
 
 <script lang="coffee">
 import AnnotatedText from './AnnotatedText.vue'
+import SpaceHeader from './SpaceHeader.vue'
 
 export default {
 
@@ -30,14 +33,15 @@ export default {
 
   components:
     annotatedtext: AnnotatedText
+    spaceheader: SpaceHeader
 
 }
 </script>
 
 <style scoped>
   .bilingualtextview {
-    padding-top: 80px;
-    padding-left: 408px;
+    padding-top: 12px;
+    padding-left: var(--left-panel-width);
     height: 100%;
     overflow-y: scroll;
     background: var(--paper-color);
