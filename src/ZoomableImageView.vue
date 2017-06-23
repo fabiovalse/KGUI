@@ -13,35 +13,35 @@ export default {
   render: (createElement) ->
     elements = []
 
+    # Zoom controls +/-
+    elements.push createElement 'div', {
+      class: 'zoom_control hidden'
+    }, [
+      createElement('div', {}, [
+        createElement 'button', {
+          attrs:
+            id: 'openseadragon_zoom_in_control'
+            class: 'in'
+          }, [
+            createElement 'i', {class: 'icon-plus'}
+          ]
+        ]
+      ),
+      createElement('div', {}, [
+        createElement 'button', {
+          attrs:
+            id: 'openseadragon_zoom_out_control'
+            class: 'out'
+          }, [
+            createElement 'i', {class: 'icon-minus'}
+          ]
+        ]
+      )
+    ]
+
     if @fullscreen
       # Space switch
       elements.push createElement 'spaceswitch', {}
-
-      # Zoom controls +/-
-      elements.push createElement 'div', {
-        class: 'zoom_control'
-      }, [
-        createElement('div', {}, [
-          createElement 'button', {
-            attrs:
-              id: 'openseadragon_zoom_in_control'
-              class: 'in'
-            }, [
-              createElement 'i', {class: 'icon-plus'}
-            ]
-          ]
-        ),
-        createElement('div', {}, [
-          createElement 'button', {
-            attrs:
-              id: 'openseadragon_zoom_out_control'
-              class: 'out'
-            }, [
-              createElement 'i', {class: 'icon-minus'}
-            ]
-          ]
-        )
-      ]
 
       # Show/hide annotations
       elements.push createElement 'div', {
@@ -163,10 +163,6 @@ export default {
     openseadragon.tileSources = tilesources
     @viewer = OpenSeadragon openseadragon
 
-    # Remove default zoom controls
-    if not (openseadragon.zoomInButton? and openseadragon.zoomOutButton?)
-      @viewer.controls[0].destroy()
-
     # Set margins according to infobox
     @viewer.viewport.setMargins({left: 20, right: 20, top: 0, bottom: 0})
 
@@ -179,10 +175,12 @@ export default {
       if not old_value and new_value
         @viewer.setMouseNavEnabled true
         @annotation_visible = true
+        @$el.querySelector('.zoom_control').classList.remove('hidden')
 
       # exit fullscreen
       else if old_value and not new_value
         @viewer.setMouseNavEnabled false
+        @$el.querySelector('.zoom_control').classList.add('hidden')
 
         # set initial view
         if @space.geo_bounds?
@@ -305,6 +303,9 @@ export default {
   padding: 0;
   z-index: 4;
   border: 0 !important;
+}
+.hidden {
+  display: none;
 }
 .zoom_cursor {
   cursor: zoom-in;
