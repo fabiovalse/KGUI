@@ -1,27 +1,3 @@
-<template>
-  <div id="zoomableimageview"
-    :class="{fullscreen: fullscreen, zoom_cursor: !fullscreen}"
-    :style="{background: background}"
-    @keyup.esc="$emit('close')">
-    <spaceswitch v-if="fullscreen"></spaceswitch>
-    
-    <div class="zoom_control" v-if="fullscreen">
-      <div><button id="openseadragon_zoom_in_control" class="in"><i class="icon-plus"></i></button></div>
-      <div><button id="openseadragon_zoom_out_control" class="out"><i class="icon-minus"></i></button></div>
-    </div>
-    
-    <div class="annotation_control" v-if="fullscreen">
-      <button @click="annotation_visible = !annotation_visible"><i :class="annotation_visible ? 'icon-hide' : 'icon-show'"></i></button>
-    </div>
-    
-    <div class="opacity_control" v-if="fullscreen && space.geo_bounds !== undefined">
-      <input v-on:mouseover.once="register_opacity_changes()" type="range" class="slider" step="1" min="0" max="10" value="10">
-    </div>
-    
-    <button v-if="fullscreen && closeable" class="close_button" @click.stop="$emit('close')"><i class="icon-x"></i></button>
-  </div>
-</template>
-
 <script lang="coffee">
 import OpenSeadragon from 'openseadragon'
 import SVGOverlay from '../lib/openseadragon-svg-overlay.js'
@@ -34,10 +10,123 @@ import * as d3 from 'd3'
 
 export default {
 
+  render: (createElement) ->
+    elements = []
+
+    if @fullscreen
+      # Space switch
+      elements.push createElement 'spaceswitch', {}
+
+      # Zoom controls +/-
+      elements.push createElement 'div', {
+        class: 'zoom_control'
+      }, [
+        createElement('div', {}, [
+          createElement 'button', {
+            attrs:
+              id: 'openseadragon_zoom_in_control'
+              class: 'in'
+            }, [
+              createElement 'i', {class: 'icon-plus'}
+            ]
+          ]
+        ),
+        createElement('div', {}, [
+          createElement 'button', {
+            attrs:
+              id: 'openseadragon_zoom_out_control'
+              class: 'out'
+            }, [
+              createElement 'i', {class: 'icon-minus'}
+            ]
+          ]
+        )
+      ]
+
+      # Show/hide annotations
+      elements.push createElement 'div', {
+        class: 'annotation_control'
+      }, [
+        createElement('button', {
+          on:
+            click: () => @annotation_visible = not @annotation_visible
+          }, [
+            createElement 'i', {
+              'class': if @annotation_visible then 'icon-hide' else 'icon-show'
+            }
+          ])
+      ]
+
+    if @fullscreen and @space.geo_bounds?
+      # Opacity slider
+      elements.push createElement 'div', {
+        class: 'opacity_control'
+      }, [
+        createElement 'input', {
+          class: 'slider'
+          attrs:
+            type: 'range'
+            step: '1'
+            min: '0'
+            max: '10'
+            value: '10'
+          on:
+            '~mouseover': () => @register_opacity_changes()
+        }
+      ]
+
+    if @fullscreen and @closeable
+      # Top right X close button
+      elements.push createElement 'button', {
+        class: 'close_button'
+        on:
+          'click': (event) => 
+            event.stopPropagation()
+            @$emit('close')
+      }, [
+        createElement 'i', {
+          class: 'icon-x'
+        }
+      ]
+
+    # SVG Overlay
+    if @svg_overlay?
+      OverlayComponent = Vue.extend(ZoomableImageOverlay)
+      overlay_component = new OverlayComponent
+        data:
+          nodes: @converted_nodes
+          store: @$store
+          viewer: @viewer
+          annotations: @annotations
+      overlay_component.$mount()
+      @$el.querySelector('svg g').appendChild(overlay_component.$el)
+      
+      # Add CSS mix blend mode style
+      @$el.querySelector('svg').style['mix-blend-mode'] = 'multiply'
+      
+      @show_hide()
+
+    # Overall "template"
+    return createElement 'div', {
+      attrs:
+        id: "zoomableimageview"
+      'class':
+        fullscreen: @fullscreen
+        zoom_cursor: not @fullscreen
+      style:
+        background: @background
+      on:
+        'keyup': (event) =>
+          if event.key is 'Escape'
+            event.stopPropagation()
+            @$emit('close')
+    }, elements
+
   data: () ->
     initial_pan: undefined
     initial_zoom: undefined
     annotation_visible: true
+    svg_overlay: undefined
     mercator: d3.geoMercator()
       .translate [0.5, 0.5]
       .scale 1/(2*Math.PI)
@@ -176,22 +265,6 @@ export default {
         ###
         @svg_overlay = @viewer.svgOverlay()
 
-        OverlayComponent = Vue.extend(ZoomableImageOverlay)
-        overlay_component = new OverlayComponent
-          data:
-            nodes: @converted_nodes
-            store: @$store
-            viewer: @viewer
-            annotations: @annotations
-        overlay_component.$mount()
-
-        @$el.querySelector('svg g').appendChild(overlay_component.$el)
-
-        ### Add CSS mix blend mode style
-        ###
-        @$el.querySelector('svg').style['mix-blend-mode'] = 'multiply'
-        @show_hide()
-
       ### Console points
       ###
 #      @viewer.addHandler 'canvas-click', (event) =>
@@ -210,6 +283,7 @@ export default {
 
   components:
     spaceswitch: SpaceSwitch
+    zoomableimageoverlay: ZoomableImageOverlay
 
 }
 </script>
