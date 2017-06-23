@@ -325,6 +325,7 @@ export default {
   border-bottom: 1px solid #F2F2F2;
   box-shadow: 0px 1px 4px rgba(0,0,0,0.3);
   color: rgb(178, 178, 178);
+  outline: none;
   cursor: pointer;
 }
 .zoom_control .in:hover, .zoom_control .out:hover {
@@ -354,6 +355,7 @@ export default {
   box-shadow: 0px 1px 4px rgba(0,0,0,0.3);
   color: rgb(178, 178, 178);
   cursor: pointer;
+  outline: none;
   font-size: 14px;
 }
 .annotation_control button:hover {
@@ -377,6 +379,7 @@ export default {
   text-shadow: #000 0px 0px 6px;
   font-size: 15px;
   cursor: pointer;
+  outline: none;
   z-index: 1;
 }
 </style>
