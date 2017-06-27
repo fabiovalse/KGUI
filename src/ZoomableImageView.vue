@@ -6,6 +6,7 @@ import ZoomableImageOverlay from './ZoomableImageOverlay.vue'
 import SpaceSwitch from './SpaceSwitch.vue'
 import config from './config.coffee'
 import Vue from 'vue'
+import _ from 'lodash'
 import * as d3 from 'd3'
 
 export default {
@@ -97,7 +98,7 @@ export default {
           nodes: @converted_nodes
           store: @$store
           viewer: @viewer
-          annotations: @annotations
+          annotations: if @config.annotations? then @config.annotations else {}
       overlay_component.$mount()
       @$el.querySelector('svg g').appendChild(overlay_component.$el)
       
@@ -114,7 +115,7 @@ export default {
         fullscreen: @fullscreen
         zoom_cursor: not @fullscreen
       style:
-        background: @background
+        background: @config.background_color
       on:
         'keyup': (event) =>
           if event.key is 'Escape'
@@ -130,6 +131,31 @@ export default {
     mercator: d3.geoMercator()
       .translate [0.5, 0.5]
       .scale 1/(2*Math.PI)
+    
+    default_config:
+      openseadragon:
+        degrees: 0
+      background_color: 'black'
+    
+    openseadragon_templates:
+      dzi: (d) -> {tileSource: d.url}
+      esri: (d) -> {
+        tileSource:
+          getTileUrl: (z, x, y) -> "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/#{z-8}/#{y}/#{x}"
+          height: (1<<24)*256
+          width:  (1<<24)*256
+          tileSize: 256
+      }
+      gdal2tiles: (d) -> {
+        tileSource:
+          getTileUrl: (level, x, y) ->
+            level -= 8
+            yTiles = 1 << level
+            return d.url + '/' + level + "/" + x + "/" + (yTiles - y - 1) + ".png"
+          width: (1<<20)*256
+          height: (1<<20)*256
+          tileSize: 256
+      }
 
   props:
     fullscreen:
@@ -141,27 +167,27 @@ export default {
 
   computed:
     space: () -> @$store.state.selection.space
-    annotations: () -> if @space.annotations? then JSON.parse(@space.annotations) else {}
-    background: () -> if @space.background_color? then @space.background_color else 'black'
-  
+    config: () ->
+      data_config = JSON.parse @space.config
+
+      # Compute tilesources using specific templates
+      data_config.openseadragon.tileSources = data_config.openseadragon.tileSources.map (ts) => @openseadragon_templates[ts.type](ts)
+
+      # Cascading merging of different configurations
+      # - 'data_config' defines specific properties in the space data
+      # - 'config' defines global properties available to the whole application
+      # - 'default_config' defines the default properties locally in this component
+      # 'data_config' has priority over 'config' that in turn has priority over the 'default_config'
+      return _.merge(@default_config, config, data_config)
+
   watch:
     space: (newSpace) -> @load_map()
     fullscreen: (n, o) -> @refresh(n, o)
     annotation_visible: () -> @show_hide()
 
   mounted: () ->
-    # Compute tilesources through config template according to data
-    tilesources = JSON.parse(@space.tile_source).map (ts) -> config.openseadragon_templates[ts.type](ts)
-
-    # override global config with space config
-    openseadragon = {}
-    Object.assign openseadragon, config.openseadragon
-    if @space.openseadragon?
-      Object.assign openseadragon, JSON.parse @space.openseadragon
-
     # OpenSeadragon viewer creation
-    openseadragon.tileSources = tilesources
-    @viewer = OpenSeadragon openseadragon
+    @viewer = OpenSeadragon @config.openseadragon
 
     # Set margins according to infobox
     @viewer.viewport.setMargins({left: 20, right: 20, top: 0, bottom: 0})
