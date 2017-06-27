@@ -14,9 +14,9 @@
         </div>
         <div class="previews">
           <div v-if="c.id in previews" class="inner_previews">
-            <div v-if="p.vfs_img !== undefined" class="preview" v-for="p in previews[c.id].subspaces" :style="{'max-width': '250px','max-height': '250px'}" @click="open(p)">
+            <div v-if="p.icon === undefined" class="preview" v-for="p in previews[c.id].subspaces" :style="{'max-width': '250px','max-height': '250px'}" @click="open(p)">
               <div class="title">{{p.label}}</div>
-              <div v-if="p.vfs_img !== undefined" class="img"
+              <div v-if="p.icon === undefined" class="img"
                    :style="{background: 'url('+config.main_uri+'/images/depictions/'+p.id+'.jpg)'}"></div>
             </div>
           </div>

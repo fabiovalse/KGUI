@@ -7,7 +7,6 @@
       
       <router-link class="folder_a" v-for="folder in folders" :to="{name: 'goto_space', params: {space: folder.id}}">
         <div class="folder"
-          :class="{vfs_img: folder.vfs_img !== undefined}"
           :style="{
             width: folder.width === 2 ? '384px' : '250px',
             height: folder.height === 2 ? '361px' : '250px'}">
@@ -15,8 +14,8 @@
           <div v-if="folder.icon !== undefined" class="icon">
             <i :class="'icon-' + folder.icon"></i>
           </div>
-          <div v-if="folder.icon == undefined" class="img"
-                :style="{background: 'url('+config.main_uri+'/images/depictions/'+folder.id+'.jpg) #DDD'}"></div>
+          <div v-else class="img"
+               :style="{background: 'url('+config.main_uri+'/images/depictions/'+folder.id+'.jpg) #DDD'}"></div>
         
           <div class="title">
             <div class="main" v-html="kgl(folder.label)"></div>

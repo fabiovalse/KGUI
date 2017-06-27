@@ -1,10 +1,10 @@
 <template>
   <div class="imageview">
-    <img v-if="space.vfs_img !== undefined" :src="config.main_uri+'/images/depictions/'+space.id+'.jpg'" />
     <div v-if="space.icon !== undefined" class="fake_image">
       <div class="icon"><i :class="'icon-'+space.icon"></i></div>
       <div>IMAGE NOT AVAILABLE</div>
     </div>
+    <img v-else :src="config.main_uri+'/images/depictions/'+space.id+'.jpg'" />
   </div>
 </template>
 
