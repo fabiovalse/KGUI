@@ -134,8 +134,42 @@ export default {
     
     default_config:
       openseadragon:
-        degrees: 0
+        id: 'zoomableimageview'
+        prefixUrl: 'https://rawgit.com/fabiovalse/Hub/master/lib/openseadragon/images/'
+        mouseNavEnabled: false
+        springStiffness: 5
+        animationTime: 0
+        zoomInButton: 'openseadragon_zoom_in_control'
+        zoomOutButton: 'openseadragon_zoom_out_control'
+        degrees: 0                      # Initial rotation angle
+        gestureSettingsMouse:
+          flickEnabled: true
+          flickMomentum: 0
+          clickToZoom: false
+          dblClickToZoom: true
+        gestureSettingsTouch:
+          flickEnabled: true
+          flickMomentum: 0
+          clickToZoom: false
+          dblClickToZoom: true
+        gestureSettingsPan:
+          flickEnabled: true
+          flickMomentum: 0
+          clickToZoom: false
+          dblClickToZoom: true
+        gestureSettingsUnknown:
+          flickEnabled: true
+          flickMomentum: 0
+          clickToZoom: false
+          dblClickToZoom: true
       background_color: 'black'
+    
+    class_declaration:
+      rotatable:
+        openseadragon:
+          showRotationControl: true     # Show rotation buttons
+          gestureSettingsTouch:         # Enable touch rotation on tactile devices
+            pinchRotate: true
     
     openseadragon_templates:
       dzi: (d) -> {tileSource: d.url}
@@ -168,17 +202,11 @@ export default {
   computed:
     space: () -> @$store.state.selection.space
     config: () ->
-      data_config = JSON.parse @space.config
+      conf = @load_config @default_config, @space.config, @class_declaration
 
       # Compute tilesources using specific templates
-      data_config.openseadragon.tileSources = data_config.openseadragon.tileSources.map (ts) => @openseadragon_templates[ts.type](ts)
-
-      # Cascading merging of different configurations
-      # - 'data_config' defines specific properties in the space data
-      # - 'config' defines global properties available to the whole application
-      # - 'default_config' defines the default properties locally in this component
-      # 'data_config' has priority over 'config' that in turn has priority over the 'default_config'
-      return _.merge(@default_config, config, data_config)
+      conf.openseadragon.tileSources = conf.openseadragon.tileSources.map (ts) => @openseadragon_templates[ts.type](ts)
+      return conf
 
   watch:
     space: (newSpace) -> @load_map()
