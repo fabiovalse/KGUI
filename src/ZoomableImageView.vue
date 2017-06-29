@@ -299,7 +299,7 @@ export default {
 
       ### Update degrees on rotate
       ###
-      @viewer.addHandler 'rotate', (event) ->
+      @viewer.addHandler 'rotate', (event) =>
         @degrees = event.degrees
 
       @viewer.addHandler 'open', (event) =>
