@@ -4,7 +4,7 @@ import SVGOverlay from '../lib/openseadragon-svg-overlay.js'
 import ZoomifyTileSource from '../lib/zoomifytilesource.js'
 import ZoomableImageOverlay from './ZoomableImageOverlay.vue'
 import SpaceSwitch from './SpaceSwitch.vue'
-import config from './config.coffee'
+import RotationControl from './RotationControl.vue'
 import Vue from 'vue'
 import _ from 'lodash'
 import * as d3 from 'd3'
@@ -90,6 +90,18 @@ export default {
         }
       ]
 
+    #if 'rotatable' of @class_declaration
+    # Rotation Control
+    elements.push createElement 'rotationcontrol', {
+      class: 'rotationcontrol'
+      props:
+        value: @degrees
+      on:
+        input: (value) =>
+          @degrees = value
+          @rotate value
+    }
+
     # SVG Overlay
     if @svg_overlay?
       OverlayComponent = Vue.extend(ZoomableImageOverlay)
@@ -100,10 +112,10 @@ export default {
           viewer: @viewer
           annotations: if @config.annotations? then @config.annotations else {}
       overlay_component.$mount()
-      @$el.querySelector('svg g').appendChild(overlay_component.$el)
+      @$el.querySelector('.openseadragon-container svg g').appendChild(overlay_component.$el)
       
       # Add CSS mix blend mode style
-      @$el.querySelector('svg').style['mix-blend-mode'] = 'multiply'
+      @$el.querySelector('.openseadragon-container svg').style['mix-blend-mode'] = 'multiply'
       
       @show_hide()
 
@@ -128,6 +140,7 @@ export default {
     initial_zoom: undefined
     annotation_visible: true
     svg_overlay: undefined
+    degrees: 0
     mercator: d3.geoMercator()
       .translate [0.5, 0.5]
       .scale 1/(2*Math.PI)
@@ -214,6 +227,8 @@ export default {
     annotation_visible: () -> @show_hide()
 
   mounted: () ->
+    @degrees = @config.openseadragon.degrees
+
     # OpenSeadragon viewer creation
     @viewer = OpenSeadragon @config.openseadragon
 
@@ -242,6 +257,8 @@ export default {
           @fit_bounds()
         else
           @viewer.viewport.goHome true
+        
+        @degrees = @config.openseadragon.degrees
 
       @show_hide()
 
@@ -262,8 +279,9 @@ export default {
         document.querySelector('.slider').oninput = (e) ->
           _this.change_opacity this.value/10
 
-    change_opacity: (value) ->
-      @viewer.world.getItemAt(1).setOpacity value
+    change_opacity: (value) -> @viewer.world.getItemAt(1).setOpacity value
+
+    rotate: (value) -> @viewer.viewport.setRotation(value)
 
     load_map: () ->
       new_zoom = @initial_zoom
@@ -278,6 +296,11 @@ export default {
         @initial_pan = event.center
       @viewer.addHandler 'zoom', (event) =>
         @initial_zoom = event.zoom
+
+      ### Update degrees on rotate
+      ###
+      @viewer.addHandler 'rotate', (event) ->
+        @degrees = event.degrees
 
       @viewer.addHandler 'open', (event) =>
         ### Fit an initial bounding box in the case of geo tiles
@@ -336,6 +359,7 @@ export default {
   components:
     spaceswitch: SpaceSwitch
     zoomableimageoverlay: ZoomableImageOverlay
+    rotationcontrol: RotationControl
 
 }
 </script>
@@ -368,7 +392,7 @@ export default {
 .zoom_control {
   position: absolute;
   bottom: 15px;
-  right: 20px;
+  right: 37px;
   z-index: 2;
 }
 .zoom_control .in, .zoom_control .out {
@@ -397,7 +421,7 @@ export default {
 .annotation_control {
   position: absolute;
   bottom: 80px;
-  right: 20px;
+  right: 37px;
   z-index: 2;
 }
 .annotation_control button {
