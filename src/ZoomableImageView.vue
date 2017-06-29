@@ -90,17 +90,17 @@ export default {
         }
       ]
 
-    #if 'rotatable' of @class_declaration
-    # Rotation Control
-    elements.push createElement 'rotationcontrol', {
-      class: 'rotationcontrol'
-      props:
-        value: @degrees
-      on:
-        input: (value) =>
-          @degrees = value
-          @rotate value
-    }
+    if @fullscreen and @config.compass
+      # Rotation Control
+      elements.push createElement 'rotationcontrol', {
+        class: 'rotationcontrol'
+        props:
+          value: @degrees
+        on:
+          input: (value) =>
+            @degrees = value-@offset
+            @rotate value+@offset
+      }
 
     # SVG Overlay
     if @svg_overlay?
@@ -176,13 +176,15 @@ export default {
           clickToZoom: false
           dblClickToZoom: true
       background_color: 'black'
-    
+      compass: false
+
     class_declaration:
       rotatable:
         openseadragon:
           showRotationControl: true     # Show rotation buttons
           gestureSettingsTouch:         # Enable touch rotation on tactile devices
             pinchRotate: true
+        compass: true
     
     openseadragon_templates:
       dzi: (d) -> {tileSource: d.url}
@@ -227,7 +229,7 @@ export default {
     annotation_visible: () -> @show_hide()
 
   mounted: () ->
-    @degrees = @config.openseadragon.degrees
+    @offset = @config.openseadragon.degrees
 
     # OpenSeadragon viewer creation
     @viewer = OpenSeadragon @config.openseadragon
@@ -259,11 +261,12 @@ export default {
           @viewer.viewport.goHome true
         
         @degrees = @config.openseadragon.degrees
+        @rotate @degrees
 
       @show_hide()
 
     show_hide: () -> 
-      svg = @$el.querySelector('svg')
+      svg = @$el.querySelector('.openseadragon-container svg')
       if svg?
         svg.style['display'] = if @fullscreen and @annotation_visible then 'inline' else 'none'
 
@@ -300,7 +303,7 @@ export default {
       ### Update degrees on rotate
       ###
       @viewer.addHandler 'rotate', (event) =>
-        @degrees = event.degrees
+        @degrees = event.degrees-@offset
 
       @viewer.addHandler 'open', (event) =>
         ### Fit an initial bounding box in the case of geo tiles
