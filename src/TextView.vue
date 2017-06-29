@@ -6,6 +6,7 @@
       <router-link :to="{name: 'goto_space', params: {space: get_folio_id(i)}}">
         <div class="preview" :style="{'background': get_folio_img(i)}"></div>
         <div class="explore"><i class="icon-zoom_in"></i></div>
+        <div class="folio_number">{{get_folio_label(i)}}</div>
       </router-link>
       <div class="text" v-html="page"></div>
     </div>
@@ -29,6 +30,7 @@ export default {
     folii: () -> @$store.state.selection.space.subspaces.sort (a,b) -> a.order - b.order
   methods:
     get_folio_id: (i) -> if @folii[i]? then @folii[i].id else undefined
+    get_folio_label: (i) -> if @folii[i]? then @folii[i].label else undefined
     get_folio_img: (i) -> if @folii[i]? then 'url('+config.main_uri+'/images/depictions/'+@folii[i].id+'.jpg) black' else 'black'
   components:
     spaceheader: SpaceHeader
@@ -43,6 +45,7 @@ export default {
   padding-left: calc(var(--left-panel-width) + 12px);
   overflow-y: scroll;
   background: var(--paper-color);
+  --preview-height: 400px;
 }
 .page:not(:last-child) {
   border-bottom: 1px solid #DDD;
@@ -52,10 +55,11 @@ export default {
 .page {
   display: flex;
   flex-direction: row;
+  position: relative;
 }
 .preview {
   width: 300px;
-  height: 400px;
+  height: var(--preview-height);
   margin-right: 20px;
   background-position-x: center !important;
   background-size: contain !important;
@@ -79,5 +83,12 @@ export default {
   padding-top: 16px;
   text-align: center;
   font-size: 18px;
+}
+.folio_number {
+  color: black;
+  text-decoration: none; 
+  position: absolute;
+  top: calc(var(--preview-height) + 2px);
+  font-size: 14px;
 }
 </style>
