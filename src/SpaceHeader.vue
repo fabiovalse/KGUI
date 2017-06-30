@@ -1,5 +1,5 @@
 <template>
-  <header :class="{overlay: overlay}">
+  <header v-if="!hidden" :class="{overlay: overlay}">
     <div v-if="space.label !== undefined" class="label" v-html="kgl(space.label)"></div>
     <div v-if="space.subtitle !== undefined" class="subtitle" v-html="kgl(space.subtitle)"></div>
     <div v-if="space.description !== undefined" class="description" v-html="kgl(space.description)"></div>
@@ -16,6 +16,7 @@ export default {
       'default': false
   computed:
     space: () -> @$store.state.selection.space
+    hidden: () -> @space.hide_header # FIXME this should use cascading
   methods:
     kgl: (d) -> kgl.parse d, @space
 }
