@@ -4,7 +4,7 @@
 
     <div class="pages">
       <div :class="'page ' + get_grid_template_area(i, pages)" v-for="(page, i) in pages">
-        <div class="turn" v-if="get_folio_id(i).slice(-1) == 'r'"><i class="icon-turn_left"></i></div>
+        <div class="turn" v-if="get_folio_id(i).slice(-1) == 'r'"><i class="icon-turn-left"></i></div>
         <router-link :to="{name: 'goto_space', params: {space: get_folio_id(i)}}">
           <div class="preview" :style="{'background': get_folio_img(i)}"></div>
           <div :class="'label ' + (get_folio_id(i).slice(-1) == 'r' ? 'recto' : 'verso')">{{get_folio_label(i)}}</div>
