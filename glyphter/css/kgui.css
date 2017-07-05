@@ -46,7 +46,7 @@
 .icon-smile-o:before{content:'\005a';}
 .icon-stairs-up:before{content:'\0061';}
 .icon-stairs-down:before{content:'\0062';}
-.icon-open_with:before{content:'\0063';}
+.icon-grid:before{content:'\0063';}
 .icon-print:before{content:'\0064';}
 .icon-toilet:before{content:'\0065';}
 .icon-placemark:before{content:'\0066';}
@@ -71,7 +71,8 @@
 .icon-share:before{content:'\0079';}
 .icon-bus:before{content:'\007a';}
 .icon-folder:before{content:'\0030';}
-.icon-zoom_in:before{content:'\0031';}
-.icon-user_circle:before{content:'\0032';}
-.icon-turn_left:before{content:'\0033';}
+.icon-zoom-in:before{content:'\0031';}
+.icon-user-circle:before{content:'\0032';}
+.icon-turn-left:before{content:'\0033';}
 .icon-book_turn_page:before{content:'\0034';}
+.icon-ic_list_48px:before{content:'\0035';}
