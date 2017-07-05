@@ -3,7 +3,7 @@
     <spaceheader></spaceheader>
 
     <div class="subspaces">
-      <div v-for="s in subspaces" class="subspace">
+      <div v-for="s in sorted_subspaces" class="subspace">
         <div class="label">{{s.label}}</div>
         
         <div class="folders">
@@ -49,9 +49,7 @@ export default {
   computed:
     config: () -> config
     space: () -> @$store.state.selection.space
-
-  watch:
-    subspaces: (new_subspaces) -> @subspaces = new_subspaces#.sort (a,b) -> a.order - b.order 
+    sorted_subspaces: () -> @subspaces.sort (a,b) -> a.order - b.order 
 
   methods:
     kgl: (d) -> kgl.parse d, @space
@@ -66,7 +64,6 @@ export default {
 .presentationview {
   height: 100%;
   overflow-y: scroll;
-  background: #f5f5f5;
   padding-top: 32px; /* FIXME this is because of the breadcrumb, but we need a more intelligent way to do this */
   padding-left: 430px; /* 12px more, needed for folders margin */
   padding-right: 30px;
