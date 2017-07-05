@@ -53,7 +53,6 @@ export default {
   padding: 12px;
   padding-left: calc(var(--left-panel-width) + 12px);
   overflow-y: scroll;
-  background: var(--paper-color);
   --preview-width: 200px;
 }
 
