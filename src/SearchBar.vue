@@ -125,6 +125,10 @@ button {
   .mobile_open .searchbar {
     display: none;
   }
+
+  .innerbar {
+    width: 100%;
+  }
 }
 
 </style>

@@ -105,6 +105,7 @@ export default {
   .mobile_open .header_section {
     position: fixed;
     width: 100%;
+    z-index: 9;
   }
 }
 </style>
