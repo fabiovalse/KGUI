@@ -3,6 +3,7 @@
     <infoview v-if="space.template !== undefined && space.view === 'infoview'" :config="config"></infoview>
     <buildingmapview v-if="space.view === 'buildingmapview'"></buildingmapview>
     <textview v-if="space.view === 'textview'"></textview>
+    <manuscriptview v-if="space.view === 'manuscriptview'"></manuscriptview>
     <bilingualtextview v-if="space.template !== undefined && space.view === 'bilingualtextview'"></bilingualtextview>
     <zoomableimageview v-if="space.view === 'zoomableimageview'" :config="config.openseadragon"></zoomableimageview>
     <foldersview v-if="space.view === 'foldersview'"></foldersview>
@@ -16,6 +17,7 @@
 import MapView from './MapView.vue'
 import BuildingMapView from './BuildingMapView.vue'
 import TextView from './TextView.vue'
+import ManuscriptView from './ManuscriptView.vue'
 import BilingualTextView from './BilingualTextView.vue'
 import FoldersView from './FoldersView.vue'
 import ZoomableImageView from './ZoomableImageView.vue'
@@ -32,6 +34,7 @@ export default {
   components:
     buildingmapview: BuildingMapView
     textview: TextView
+    manuscriptview: ManuscriptView
     bilingualtextview: BilingualTextView
     foldersview: FoldersView
     zoomableimageview: ZoomableImageView
