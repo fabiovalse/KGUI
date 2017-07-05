@@ -2,6 +2,7 @@ import App from './App.vue'
 import config from './config.coffee'
 
 export default {
+  mode: 'history',
   routes: [
     {path: '/', redirect: config.default_local_path}
     {

@@ -96,6 +96,7 @@ export default {
         class: 'rotationcontrol'
         props:
           value: @degrees
+          type: @config.compass
         on:
           input: (value) =>
             @degrees = value-@offset
@@ -184,7 +185,7 @@ export default {
           showRotationControl: true     # Show rotation buttons
           gestureSettingsTouch:         # Enable touch rotation on tactile devices
             pinchRotate: true
-        compass: true
+        compass: 'geometric'
     
     openseadragon_templates:
       dzi: (d) -> {tileSource: d.url}
@@ -217,7 +218,7 @@ export default {
   computed:
     space: () -> @$store.state.selection.space
     config: () ->
-      conf = @load_config @default_config, @space.config, @class_declaration
+      conf = @load_config @default_config, @space.config, @space.classes, @class_declaration
 
       # Compute tilesources using specific templates
       conf.openseadragon.tileSources = conf.openseadragon.tileSources.map (ts) => @openseadragon_templates[ts.type](ts)
@@ -229,6 +230,7 @@ export default {
     annotation_visible: () -> @show_hide()
 
   mounted: () ->
+    console.log @config
     @offset = @config.openseadragon.degrees
 
     # OpenSeadragon viewer creation

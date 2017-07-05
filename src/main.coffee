@@ -19,18 +19,22 @@ window.store = new Vuex.Store(Store)
 
 Vue.mixin({
   methods: 
-    load_config: (component_config, datum_config, component_class_declaration) ->
+    load_config: (component_config, datum_config, datum_classes, component_class_declaration) ->
       datum_config = JSON.parse datum_config
 
       class_declaration = _.merge(component_class_declaration, global_class_declaration)
 
-      # Cascading merging of different configurations
-      # 'datum_config' has priority over 'global_config' that in turn has priority over the 'component_config'
-      conf = _.merge(component_config, global_config, datum_config)
-
-      if conf.classes?
-        for c in conf.classes
+      # Cascading merging of different configurations. Priority:
+      # datum
+      # classes
+      # global
+      # component
+      conf = _.merge(component_config, global_config)
+      if datum_classes?
+        for c in datum_classes
           conf = _.merge(conf, class_declaration[c])
+      
+      conf = _.merge(conf, datum_config)
 
       return conf
 })

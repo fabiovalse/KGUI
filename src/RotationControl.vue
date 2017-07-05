@@ -24,8 +24,8 @@
         <g class="compass" @click="$emit('input', initial_value)">
           <circle class="back" r="20"></circle>
           <g transform="translate(-2, 0)">
-            <path class="red" d="M -3,0 2,-15 7,0 z"/>
-            <path class="white" d="M -3,0 2,15 7,0 z"/>
+            <path :class="{red: type === 'geographic', white: type === 'geometric'}" d="M -3,0 2,-15 7,0 z"/>
+            <path v-if="type === 'geographic'" class="white" d="M -3,0 2,15 7,0 z"/>
           </g>
           <circle class="top" r="4.8"></circle>
           
@@ -39,7 +39,7 @@
 import * as d3 from 'd3'
 
 export default {
-  props: ['value']
+  props: ['value', 'type']
 
   data: () ->
     radius: 40
