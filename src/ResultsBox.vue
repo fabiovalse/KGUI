@@ -88,5 +88,8 @@ export default {
     margin-left: 0px;
     padding-left: 10px;
   }
+  .mobile_open .result {
+    display: none;
+  }
 }
 </style>

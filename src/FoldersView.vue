@@ -1,10 +1,11 @@
 <template>
-  <div class="foldersview">
+  <div class="foldersview" :class="view">
 
     <spaceheader></spaceheader>
+
+    <viewctrl :value="view" @input="view = arguments[0]"></viewctrl>
     
     <div class="folders">
-      
       <router-link class="folder_a" v-for="folder in folders" :to="{name: 'goto_space', params: {space: folder.id}}">
         <div class="folder"
           :style="{
@@ -15,7 +16,7 @@
             <i :class="'icon-' + folder.icon"></i>
           </div>
           <div v-else class="img"
-               :style="{background: 'url('+config.main_uri+'/images/depictions/'+folder.id+'.jpg) #DDD'}"></div>
+              :style="{background: 'url('+config.main_uri+'/images/depictions/'+folder.id+'.jpg) #DDD'}"></div>
         
           <div class="title">
             <div class="main" v-html="kgl(folder.label)"></div>
@@ -30,9 +31,12 @@
 <script lang="coffee">
 import kgl from './infobox_sections/kgl.coffee'
 import SpaceHeader from './SpaceHeader.vue'
+import ViewCtrl from './folders/ViewCtrl.vue'
 import config from './config.coffee'
 
 export default {
+  data: () ->
+    view: 'icons'
   computed:
     folders: () -> @$store.state.selection.space.subspaces.sort (a,b) -> 
       if a.order? and b.order?
@@ -53,6 +57,7 @@ export default {
 
   components:
     spaceheader: SpaceHeader
+    viewctrl: ViewCtrl
 }
 </script>
 
@@ -125,6 +130,14 @@ export default {
   font-weight: 300;
   color: rgba(0,0,0,0.54);
   margin-top: 4px;
+}
+
+/* list view */
+.list .img, .list .icon {
+  display: none;
+}
+.list .folder {
+  height: inherit !important;
 }
 
 @media (max-width: 480px) {
