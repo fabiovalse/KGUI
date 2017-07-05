@@ -4,7 +4,7 @@
 
     <div class="mailing" v-if="space.view === 'manuscriptview'">
       <div class="sender">
-        <div class="img"><i class="icon-user_circle"></i></div>
+        <div class="img"><i class="icon-user-circle"></i></div>
         <div class="info">
           <div class="name">{{space.sender}}</div>
           <div class="place">{{space.sender_place}}</div>
@@ -16,7 +16,7 @@
         <div><i class="icon-email"></i></div>
       </div>
       <div class="recipient">
-        <div class="img"><i class="icon-user_circle"></i></div>
+        <div class="img"><i class="icon-user-circle"></i></div>
         <div class="info">
           <div class="name">{{space.recipient}}</div>
           <div class="place">{{space.recipient_place}}</div>

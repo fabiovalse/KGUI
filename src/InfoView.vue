@@ -10,7 +10,7 @@
         @close="fullscreen = false">
       </zoomableimageview>
       <imageview v-if="with_image"></imageview>
-      <div v-if="with_zoomable" class="explore" @click="to_fullscreen"><i class="icon-zoom_in"></i></div>
+      <div v-if="with_zoomable" class="explore" @click="to_fullscreen"><i class="icon-zoom-in"></i></div>
     </div>
     <div class="details">
       <sections></sections>
