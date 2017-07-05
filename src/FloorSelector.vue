@@ -56,4 +56,13 @@ button {
 }
 
 
+@media (max-width: 480px) {
+
+  .floorselector {
+    bottom: 90px;
+  }
+
+
+}
+
 </style>

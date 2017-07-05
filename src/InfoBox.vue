@@ -63,7 +63,7 @@ export default {
   margin-top: 0px;
 }
 .expand {
-  position: absolute;
+  position: fixed;
   margin-top: 10px;
   display: none;
   text-align: center;
@@ -108,11 +108,14 @@ export default {
 
 @media (max-width: 480px) {
   .infobox {
+    top: 100%;
+    margin-top: -80px;
+    margin-left: -8px;
     padding-top: 0px;
     transition: top 1s;
     -webkit-transition: top 1s;
     -moz-transition: top 1s;
-
+    height: 100%;
     z-index: 1;
   }
   .expand {
@@ -124,6 +127,11 @@ export default {
   }
   .mobile_open .expand {
     z-index: 10;
+  }
+
+  .mobile_open .infobox {
+    top: 80px;
+    max-height: 100%;
   }
 }
 </style>

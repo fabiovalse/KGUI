@@ -267,10 +267,5 @@ sup {
 
   }
 
-  .infobox {
-    top: 100%;
-    margin-top: -80px;
-  }
-
 }
 </style>
