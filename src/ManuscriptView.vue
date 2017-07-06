@@ -4,11 +4,11 @@
 
     <div class="pages">
       <div :class="'page ' + get_grid_template_area(i, pages)" v-for="(page, i) in pages">
-        <div class="turn" v-if="get_folio_id(i).slice(-1) == 'r'"><i class="icon-turn-left"></i></div>
         <router-link :to="{name: 'goto_space', params: {space: get_folio_id(i)}}">
           <div class="preview" :style="{'background': get_folio_img(i)}"></div>
           <div :class="'label ' + (get_folio_id(i).slice(-1) == 'r' ? 'recto' : 'verso')">{{get_folio_label(i)}}</div>
         </router-link>
+        <div class="line" v-if="get_folio_id(i).slice(-1) == 'r'"></div>
       </div>
     </div>
   </div>
@@ -70,11 +70,12 @@ export default {
 }
 
 .pages {
+  --grid-vert-gap: 50px;
   width: calc(var(--preview-width) * 2);
   margin: auto;
   margin-top: 60px;
   display: grid;
-  grid-gap: 50px 1px;
+  grid-gap: var(--grid-vert-gap) 1px;
   grid-template-columns: var(--preview-width) var(--preview-width);
   grid-template-areas: ". rf"
                        "v r"
@@ -109,12 +110,12 @@ export default {
   border-top-left-radius: 20px;
   border-bottom-left-radius: 5px;
 }
-.page .turn {
-  font-size: 35px;
+.page .line {
   position: absolute;
-  top: -32px;
-  left: -18px;
-  color: rgba(0,0,0,0.2);
+  left: calc(var(--preview-width) * -1.5);
+  bottom: calc(var(--grid-vert-gap) / -2);
+  width: calc(var(--preview-width) * 3);
+  border-top: 1px solid rgba(0,0,0,0.2);
 }
 
 .preview {

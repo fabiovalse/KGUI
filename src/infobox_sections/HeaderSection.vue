@@ -7,7 +7,7 @@
         <img :src="kgl_parse(img.icon)" :title="kgl_parse(img.label)">
       </a>
     </div>
-    <div v-if="config.id !== undefined" class="explore"><a :href="get_link(kgl_parse(config.id, data))"><i class="icon-zoom_in"></i></a></div>
+    <div v-if="config.id !== undefined" class="explore"><a :href="get_link(kgl_parse(config.id, data))"><i class="icon-zoom-in"></i></a></div>
   </div>
 </template>
 
