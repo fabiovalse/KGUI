@@ -101,6 +101,7 @@ export default {
     padding-top: 33px;
     height: 30px;
     order:1;
+    padding: 30px 14px 20px 15px;
   }
   .mobile_open .header_section {
     position: fixed;
