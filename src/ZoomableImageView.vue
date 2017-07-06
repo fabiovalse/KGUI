@@ -370,7 +370,6 @@ export default {
 
 <style scoped>
 #zoomableimageview {
-  position: relative !important;
   width: 92%;
   height: 100%;
   margin: auto;
