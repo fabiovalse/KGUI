@@ -230,7 +230,6 @@ export default {
     annotation_visible: () -> @show_hide()
 
   mounted: () ->
-    console.log @config
     @offset = @config.openseadragon.degrees
 
     # OpenSeadragon viewer creation
@@ -371,6 +370,7 @@ export default {
 
 <style scoped>
 #zoomableimageview {
+  position: relative !important;
   width: 92%;
   height: 100%;
   margin: auto;
