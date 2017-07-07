@@ -3,6 +3,7 @@
     <infoview v-if="space.template !== undefined && space.view === 'infoview'" :config="config"></infoview>
     <buildingmapview v-if="space.view === 'buildingmapview'"></buildingmapview>
     <textview v-if="space.view === 'textview'"></textview>
+    <dualview v-if="space.view === 'dualview'"></dualview>
     <manuscriptview v-if="space.view === 'manuscriptview'"></manuscriptview>
     <bilingualtextview v-if="space.template !== undefined && space.view === 'bilingualtextview'"></bilingualtextview>
     <zoomableimageview v-if="space.view === 'zoomableimageview'" :config="config.openseadragon"></zoomableimageview>
@@ -25,6 +26,7 @@ import IframeView from './IframeView.vue'
 import RadicalView from './RadicalView.vue'
 import PresentationView from './PresentationView.vue'
 import InfoView from './InfoView.vue'
+import DualView from './DualView.vue'
 
 export default {
   props: ['config']
@@ -42,6 +44,7 @@ export default {
     radicalview: RadicalView
     presentationview: PresentationView
     infoview: InfoView
+    dualview: DualView
 }
 </script>
 
