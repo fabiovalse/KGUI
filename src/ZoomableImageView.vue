@@ -230,7 +230,6 @@ export default {
     annotation_visible: () -> @show_hide()
 
   mounted: () ->
-    console.log @config
     @offset = @config.openseadragon.degrees
 
     # OpenSeadragon viewer creation
