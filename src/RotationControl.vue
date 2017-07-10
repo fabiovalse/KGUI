@@ -86,7 +86,7 @@ export default {
   right: 10px;
   width: var(--width);
   height: var(--height);
-  z-index: 2;
+  z-index: 5;
   cursor: pointer;
 }
 
