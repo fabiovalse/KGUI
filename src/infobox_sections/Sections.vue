@@ -67,7 +67,4 @@ export default {
 .infobox .sections > :not(:last-child):not(.image_section):not(.header_section) {
   border-bottom: 1px solid #DDD;
 }
-.infoview .sections > :not(:last-child) {
-  border-bottom: 1px solid #DDD;
-}
 </style>

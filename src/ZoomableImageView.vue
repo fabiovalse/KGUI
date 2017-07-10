@@ -121,7 +121,7 @@ export default {
       @show_hide()
 
     # Overall "template"
-    return createElement 'div', {
+    elements.push createElement 'div', {
       attrs:
         id: "zoomableimageview"
       'class':
@@ -134,6 +134,10 @@ export default {
           if event.key is 'Escape'
             event.stopPropagation()
             @$emit('close')
+    }
+
+    return createElement 'div', {
+      class: "zoomableimageview_container"
     }, elements
 
   data: () ->
@@ -225,23 +229,32 @@ export default {
       return conf
 
   watch:
-    space: (newSpace) -> @load_map()
+    space: (newSpace) -> @init()
     fullscreen: (n, o) -> @refresh(n, o)
     annotation_visible: () -> @show_hide()
 
-  mounted: () ->
-    @offset = @config.openseadragon.degrees
-
-    # OpenSeadragon viewer creation
-    @viewer = OpenSeadragon @config.openseadragon
-
-    # Set margins according to infobox
-    @viewer.viewport.setMargins({left: 20, right: 20, top: 0, bottom: 0})
-
-    @load_map()
-    @refresh(@fullscreen)
+  mounted: () -> @init()
 
   methods:
+    init: () ->
+      @offset = @config.openseadragon.degrees
+
+      # Handle new tiled image loading
+      if @viewer? and @viewer.world.getItemCount() > 0
+        @svg_overlay = undefined
+        @initial_zoom = undefined
+        @degrees = @config.openseadragon.degrees
+        @viewer.destroy()
+
+      # OpenSeadragon viewer creation
+      @viewer = OpenSeadragon @config.openseadragon
+
+      # Set margins according to infobox
+      @viewer.viewport.setMargins({left: 20, right: 20, top: 0, bottom: 0})
+
+      @load_map()
+      @refresh(@fullscreen)
+
     refresh: (new_value, old_value) ->
       # go to fullscreen
       if not old_value and new_value
@@ -290,9 +303,6 @@ export default {
     load_map: () ->
       new_zoom = @initial_zoom
       new_pan = @initial_pan
-
-      if @viewer.isOpen()
-        @viewer.open(@space.tile_source)
 
       ### Store every zoom & pan change
       ###
@@ -369,6 +379,11 @@ export default {
 </script>
 
 <style scoped>
+.zoomableimageview_container {
+  width: 100%;
+  height: 100%;
+}
+
 #zoomableimageview {
   width: 92%;
   height: 100%;
@@ -397,7 +412,7 @@ export default {
   position: absolute;
   bottom: 15px;
   right: 37px;
-  z-index: 2;
+  z-index: 5;
 }
 .zoom_control .in, .zoom_control .out {
   width: 30px;
@@ -426,7 +441,7 @@ export default {
   position: absolute;
   bottom: 80px;
   right: 37px;
-  z-index: 2;
+  z-index: 5;
 }
 .annotation_control button {
   width: 30px;
@@ -448,7 +463,7 @@ export default {
   position: absolute;
   top: 10px;
   right: calc((100% - 129px) / 2);
-  z-index: 2;
+  z-index: 5;
 }
 
 .close_button {
@@ -462,7 +477,7 @@ export default {
   font-size: 15px;
   cursor: pointer;
   outline: none;
-  z-index: 1;
+  z-index: 5;
 }
 </style>
 <style>

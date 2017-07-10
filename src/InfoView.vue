@@ -13,7 +13,7 @@
       <div v-if="with_zoomable" class="explore" @click="to_fullscreen"><i class="icon-zoom-in"></i></div>
     </div>
     <div class="details">
-      <sections></sections>
+      <sections :template_type="'info'"></sections>
     </div>
   </div>
 </template>
@@ -56,6 +56,10 @@ export default {
   --preview-height: 400px;
   --preview-margin: 40px;
 }
+.infoview .details .sections > :not(:last-child) {
+  border-bottom: 1px solid #DDD;
+}
+
 .details {
   width: calc(100% - var(--left-panel-width));
 }

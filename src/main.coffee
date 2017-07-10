@@ -17,24 +17,26 @@ Vue.use(VueTouch)
 router = new VueRouter(Router)
 window.store = new Vuex.Store(Store)
 
+custumizer = (a, b) -> if (_.isArray(a)) then b else undefined
+
 Vue.mixin({
   methods: 
     load_config: (component_config, datum_config, datum_classes, component_class_declaration) ->
       datum_config = JSON.parse datum_config
 
-      class_declaration = _.merge(component_class_declaration, global_class_declaration)
+      class_declaration = _.mergeWith(component_class_declaration, global_class_declaration, custumizer)
 
       # Cascading merging of different configurations. Priority:
       # datum
       # classes
       # global
       # component
-      conf = _.merge(component_config, global_config)
+      conf = _.mergeWith(component_config, global_config, custumizer)
       if datum_classes?
         for c in datum_classes
-          conf = _.merge(conf, class_declaration[c])
+          conf = _.mergeWith(conf, class_declaration[c], custumizer)
       
-      conf = _.merge(conf, datum_config)
+      conf = _.mergeWith(conf, datum_config, custumizer)
 
       return conf
 })
