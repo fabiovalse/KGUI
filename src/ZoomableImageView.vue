@@ -260,14 +260,12 @@ export default {
       if not old_value and new_value
         @viewer.setMouseNavEnabled true
         @annotation_visible = true
-        if @$el.querySelector('.zoom_control')?
-          @$el.querySelector('.zoom_control').classList.remove('hidden')
+        @$el.querySelector('.zoom_control').classList.remove('hidden')
 
       # exit fullscreen
       else if old_value and not new_value
         @viewer.setMouseNavEnabled false
-        if @$el.querySelector('.zoom_control')?
-          @$el.querySelector('.zoom_control').classList.add('hidden')
+        @$el.querySelector('.zoom_control').classList.add('hidden')
 
         # set initial view
         if @space.geo_bounds?
