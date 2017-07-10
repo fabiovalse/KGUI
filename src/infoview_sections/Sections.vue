@@ -28,7 +28,7 @@ export default {
     space: () -> @$store.state.selection.space
     default_config: () ->
       info: if @space.template? then [@space.template] else [] # FIXME: template should be eventually moved within the config (cson files)
-      header: ["title", "subtitle", "image", "description"]
+      header: ["title", "subtitle", "description"]
     datum_config: () -> if @space.config? then @space.config else '{}'
     config: () -> @load_config @default_config, @datum_config, undefined, undefined
     template: () ->
