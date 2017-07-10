@@ -24,7 +24,7 @@ export default {
   position: absolute;
   bottom: 15px;
   left: 10px;
-  z-index: 2;
+  z-index: 5;
 }
 .mobile_mode .spaceswitch {    
   left: 420px;    
