@@ -2,6 +2,7 @@
 import config from '../config.coffee'
 import TitleSection from './TitleSection.vue'
 import SubtitleSection from './SubtitleSection.vue'
+import ImageSection from './ImageSection.vue'
 import DescriptionSection from './DescriptionSection.vue'
 import MailingSection from './MailingSection.vue'
 import TextSection from '../infobox_sections/TextSection.vue'
@@ -27,7 +28,7 @@ export default {
     space: () -> @$store.state.selection.space
     default_config: () ->
       info: if @space.template? then [@space.template] else [] # FIXME: template should be eventually moved within the config (cson files)
-      header: ["title", "subtitle", "description"]
+      header: ["title", "subtitle", "image", "description"]
     datum_config: () -> if @space.config? then @space.config else '{}'
     config: () -> @load_config @default_config, @datum_config, undefined, undefined
     template: () ->
@@ -40,6 +41,7 @@ export default {
     textsection: TextSection
     titlesection: TitleSection
     subtitlesection: SubtitleSection
+    imagesection: ImageSection
     descriptionsection: DescriptionSection
     mailingsection: MailingSection
     listsection: ListSection
