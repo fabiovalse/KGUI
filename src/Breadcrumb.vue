@@ -1,7 +1,7 @@
 <template>
   <div class="breadcrumb">
     <template v-for="(item,i) in path">
-      <router-link class="item" :to="{name: 'goto_space', params: {space: item.id}}">{{item.label}}</router-link>
+      <router-link class="item" :to="{name: 'goto_space', params: {space: item.id}}">{{item.short_label || item.label}}</router-link>
       <i v-if="i < path.length-1" class="icon-chevron-right" style="color: #888; font-size: 12px;"></i>
     </template>
 
