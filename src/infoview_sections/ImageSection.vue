@@ -16,6 +16,9 @@ export default {
       type: Object
       required: true
 
+  mounted: () ->
+    @$el.style.setProperty '--img-width', if @config.width? then @config.width else "100%"
+
   computed:
     url: () -> kgl.parse(@config.href, @data, false)
 
@@ -25,9 +28,10 @@ export default {
 <style scoped>
 .imagesection {
   margin-top: 20px;
+  text-align: center;
 }
 .imagesection img {
-  width: 100%;
+  width: var(--img-width);
   border-radius: 2px;
 }
 </style>
