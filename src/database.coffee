@@ -117,7 +117,7 @@ module.exports = {
         cb {path: {nodes: nodes, links: links, weight: weight}, from: nodes[0], to: nodes[nodes.length-1]}
 
   query_node: (str, callback) ->
-    payload = {query: "MATCH (n:Info) WHERE lower(n.label) CONTAINS {str} RETURN n LIMIT 5", params: {str: str.toLowerCase()}}
+    payload = {query: "MATCH (n) WHERE lower(n.label) CONTAINS {str} RETURN n LIMIT 5", params: {str: str.toLowerCase()}}
     @execute payload, callback
 
 }
