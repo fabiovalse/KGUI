@@ -30,11 +30,12 @@ header {
   position: absolute;
   top: 0;
   left: 0;
-  width: calc(var(--left-panel-width) - 2 * var(--margin));
-  z-index: 3;
-  margin: var(--margin);
-  padding: var(--margin);
+  width: calc(var(--left-panel-width) - 6px);
+  height: 100%;
+  padding: calc(var(--margin) * 2);
   box-sizing: border-box;
+  background: #F2F2F2;
+  z-index: 3;
 }
 </style>
 <style>
