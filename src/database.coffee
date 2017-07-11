@@ -60,7 +60,12 @@ module.exports = {
 
   query_family: (id, type, cb) ->
     @execute {query: "MATCH (:Space {id: {id}})-[{type: {type}}]->(parent) RETURN parent", params: {id: id, type: type}}, (data) =>
-      parent = JSON.parse(data.responseText).data[0][0].data
+      row = JSON.parse(data.responseText).data[0]
+      if not row?
+        cb {}
+        return
+
+      parent = row[0].data
       @execute {query: "MATCH (parent {id: {id}})<-[{type: {type}}]-(sibling) RETURN sibling ORDER BY sibling.order", params: {id: parent.id, type: type}}, (data) =>
         siblings = JSON.parse(data.responseText).data.map (d) -> d[0].data
 

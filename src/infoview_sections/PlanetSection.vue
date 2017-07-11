@@ -1,6 +1,6 @@
 <template>
-  <div class="planetsection">
-    <svg v-if="parent !== undefined" :style="{'height': height + 'px'}">
+  <div class="planetsection" v-if="parent !== undefined && siblings !== undefined">
+    <svg :style="{'height': height + 'px'}">
       <g :transform="'translate(' + width/2 + ',' + height/2 + ')'">
         <a :href="'#/' + parent.id">
           <g class="primary">
@@ -69,8 +69,8 @@ export default {
       # avoid keeping old vis
       @parent = undefined
       @siblings = undefined
-      
-      db.query_family id, 'revolves_around', (obj) => 
+
+      db.query_family id, 'revolves_around', (obj) =>
         @parent = obj.parent
         @siblings = obj.siblings
         @height = @width * @y_scaling
