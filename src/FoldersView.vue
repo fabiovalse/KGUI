@@ -112,10 +112,10 @@ export default {
 }
 
 .title {
-  height: 55px;
+  height: 60px;
   pointer-events: none;
   background: #FFF;
-  padding: 24px 24px 24px 16px;
+  padding: 16px 24px 24px 16px;
   border-bottom-right-radius: 2px;
   border-bottom-left-radius: 2px;
 }
