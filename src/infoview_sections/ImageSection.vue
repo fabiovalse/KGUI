@@ -1,6 +1,7 @@
 <template>
-  <div class="imagesection">
+  <div v-if="url" class="imagesection">
     <img :src="url" />
+    <p v-if="caption !== undefined" class="caption">{{caption}}</p>
   </div>
 </template>
 
@@ -17,10 +18,12 @@ export default {
       required: true
 
   mounted: () ->
-    @$el.style.setProperty '--img-width', if @config.width? then @config.width else "100%"
+    if url?
+      @$el.style.setProperty '--img-width', if @config.width? then @config.width else "100%"
 
   computed:
     url: () -> kgl.parse(@config.href, @data, false)
+    caption: () -> kgl.parse(@config.caption, @data)
 
 }
 </script>
@@ -33,5 +36,10 @@ export default {
 .imagesection img {
   width: var(--img-width);
   border-radius: 2px;
+}
+.imagesection .caption {
+  font-weight: 300;
+  border-radius: 2px;
+  padding: 10px;
 }
 </style>
