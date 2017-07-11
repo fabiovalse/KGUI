@@ -4,7 +4,7 @@
       <g :transform="'translate(' + width/2 + ',' + height/2 + ')'">
         <a :href="'#/' + parent.id">
           <g class="primary">
-              <circle r="12" cx="0" cy="0"></circle>
+              <circle r="15" cx="0" cy="0"></circle>
               <text class="halo" dy="0.34em">{{parent.label}}</text>
               <text dy="0.34em">{{parent.label}}</text>
           </g>
@@ -66,6 +66,10 @@ export default {
       ry = @scale(+d.distance_from_primary_km) * @y_scaling
       return -ry * Math.sqrt(2) / 2
     load_data: (id) ->
+      # avoid keeping old vis
+      @parent = undefined
+      @siblings = undefined
+      
       db.query_family id, 'revolves_around', (obj) => 
         @parent = obj.parent
         @siblings = obj.siblings
@@ -75,7 +79,7 @@ export default {
 
 <style scoped>
 .planetsection {
-  padding-top: 10px;
+  padding-top: 22px;
 }
 .planetsection svg {
   width: 100%;
