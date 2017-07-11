@@ -18,7 +18,7 @@ export default {
       required: true
 
   mounted: () ->
-    if url?
+    if @url?
       @$el.style.setProperty '--img-width', if @config.width? then @config.width else "100%"
 
   computed:
