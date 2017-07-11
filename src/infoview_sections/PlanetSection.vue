@@ -9,10 +9,11 @@
               <text dy="0.34em">{{parent.label}}</text>
           </g>
         </a>
-        <g v-for="s in siblings">
+        <g v-for="s in siblings"
+          :class="{selected: space.id == s.id}">
           <ellipse
             class="orbit"
-            :class="{selected: space.id == s.id}"
+            :class="s.type"
             :rx="scale(+s.distance_from_primary_km)"
             :ry="scale(+s.distance_from_primary_km)*y_scaling"
           />
@@ -113,9 +114,13 @@ export default {
   stroke-width: 0.2px;
   fill: none;
 }
-.selected {
+.dwarf_planet.orbit {
+  stroke-dasharray: 1 2;
+}
+.selected .orbit {
   stroke-width: 1.5px;
 }
+
 
 .footer {
   fill: #999;
