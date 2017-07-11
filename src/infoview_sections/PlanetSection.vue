@@ -1,7 +1,7 @@
 <template>
   <div class="planetsection">
     <svg v-if="parent !== undefined" :style="{'height': height + 'px'}">
-      <g :transform="'translate(' + width + ',' + height/2 + ')'">
+      <g :transform="'translate(' + width/2 + ',' + height/2 + ')'">
         <a :href="'#/' + parent.id">
           <g class="primary">
               <circle r="12" cx="0" cy="0"></circle>
@@ -16,10 +16,10 @@
             :ry="(i+d_from_origin)*y_factor"
           />
         </g>
-        <g v-for="(s,i) in siblings" v-if="s.id == space.id" :transform="'translate(' + get_x(i) + ',' + get_y(i) + ')'">
-          <circle class="planet" r="7"></circle>
-          <text class="halo" x="10" y="-10" dy="0.34em">{{s.label.toUpperCase()}}</text>
-          <text x="10" y="-10" dy="0.34em">{{s.label.toUpperCase()}}</text>
+        <g class="planet" v-for="(s,i) in siblings" v-if="s.id == space.id" :transform="'translate(' + get_x(i) + ',' + get_y(i) + ')'">
+          <circle r="7"></circle>
+          <text class="halo" y="-10">{{s.label.toUpperCase()}}</text>
+          <text y="-10">{{s.label.toUpperCase()}}</text>
         </g>
       </g>
     </svg>
@@ -31,13 +31,13 @@ import db from '../database.coffee'
 
 export default {
   data: () ->
-    width: 169
-    height: 0
+    width: undefined
+    height: undefined
     parent: undefined
-    siblings: []
-    x_factor: 11
+    siblings: undefined
+    x_factor: 10
     y_factor: 5
-    d_from_origin: 3
+    d_from_origin: 4
 
   computed:
     space: () -> @$store.state.selection.space
@@ -45,7 +45,9 @@ export default {
   watch:
     space: (newSpace) -> @load_data(newSpace.id)
 
-  mounted: () -> @load_data(@space.id)
+  mounted: () ->
+    @width = @$el.getBoundingClientRect().width
+    @load_data(@space.id)
 
   methods:
     get_x: (i) ->
@@ -58,7 +60,7 @@ export default {
       db.query_family id, 'revolves_around', (obj) => 
         @parent = obj.parent
         @siblings = obj.siblings
-        @height = (@siblings.length+3) * @y_factor * 2 + 18 # margin for label
+        @height = (@siblings.length+3) * @y_factor * 2 + 34 # margin for label
 
 }
 </script>
@@ -79,9 +81,12 @@ export default {
   font-size: 14px;
 }
 
-.planet {
+.planet circle {
   stroke: var(--main-view-background);
   stroke-width: 3px;
+}
+.planet text {
+  text-anchor: middle;
 }
 .halo {
   fill: var(--main-view-background);
