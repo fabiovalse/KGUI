@@ -63,12 +63,8 @@ export default {
 }
 
 .preview {
-  padding: var(--preview-margin) 0px;
   height: var(--preview-height);
-  background: #FFF;
-  margin: 30px 0px 30px 0px;
-  border-radius: 2px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 -1px 0px rgba(0,0,0,0.02);
+  margin: 40px 0px 40px 0px;
 }
 .explore {
   --width: 50px;
@@ -91,10 +87,15 @@ export default {
 }
 </style>
 <style>
+.infoview .details .sections {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .infoview .details .sections > * {
   width: calc(100% - 20px);
   background: #FFF;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
   border-radius: 2px;
 }
 </style>

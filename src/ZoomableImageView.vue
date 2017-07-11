@@ -249,9 +249,6 @@ export default {
       # OpenSeadragon viewer creation
       @viewer = OpenSeadragon @config.openseadragon
 
-      # Set margins according to infobox
-      @viewer.viewport.setMargins({left: 20, right: 20, top: 0, bottom: 0})
-
       @load_map()
       @refresh(@fullscreen)
 
