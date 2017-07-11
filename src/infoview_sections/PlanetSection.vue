@@ -58,7 +58,7 @@ export default {
       db.query_family id, 'revolves_around', (obj) => 
         @parent = obj.parent
         @siblings = obj.siblings
-        @height = (@siblings.length+3) * @y_factor * 2
+        @height = (@siblings.length+3) * @y_factor * 2 + 18 # margin for label
 
 }
 </script>
@@ -72,7 +72,7 @@ export default {
 }
 
 .primary circle {
-  fill: #999;
+  fill: #AAA;
 }
 .primary text {
   text-anchor: middle;
