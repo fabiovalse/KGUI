@@ -1,12 +1,24 @@
 <template>
   <div v-if="nodes.length > 0" class="related_section">
     <titlesubsection v-if="config.title !== undefined" :text="config.title"></titlesubsection>
-    <span class="link" v-for="n in nodes"><a :href="get_link(n.data.id)">{{get_label(n)}}</a></span>
+    <div class="links">
+      <div class="link" v-for="n in nodes">
+        <router-link :to="{name: 'goto_space', params: {space: n.data.id}}">
+          <div v-if="n.data.icon !== undefined" class="icon">
+            <i :class="'icon-' + n.data.icon"></i>
+          </div>
+          <div v-else class="img" :style="{background: 'url('+global_config.main_uri+'/images/depictions/'+n.data.id+'.jpg) #DDD'}">
+          </div>
+          <div>{{get_label(n)}}</div>
+        </router-link>
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="coffee">
 import db from '../database.coffee'
+import global_config from '../config.coffee'
 import kgl from './kgl.coffee'
 import TitleSubSection from './TitleSubSection.vue'
 
@@ -27,6 +39,7 @@ export default {
   
   computed:
     space: () -> @$store.state.selection.space
+    global_config: () -> global_config
   
   watch:
     data: () ->
@@ -53,7 +66,36 @@ export default {
   line-height: 19.5px;
 }
 
-.link:not(:first-of-type)::before {
-  content: ' - ';
+.links {
+  display: flex;
+}
+.link {
+  width: 100px;
+  margin-right: 30px;
+}
+.link a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 40px;
+  text-align: center;
+  font-size: 40px;
+  line-height: 90px;
+  background: #DDD;
+  color: #FAFAFA;
+}
+
+.img {
+  width: 80px;
+  height: 80px;
+  border-radius: 40px;
+  background-position-x: center !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
 }
 </style>
