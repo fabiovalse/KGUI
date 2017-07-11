@@ -5,29 +5,35 @@
         <a :href="'#/' + parent.id">
           <g class="primary">
               <circle r="12" cx="0" cy="0"></circle>
+              <text class="halo" dy="0.34em">{{parent.label}}</text>
               <text dy="0.34em">{{parent.label}}</text>
           </g>
         </a>
-        <g v-for="(s,i) in siblings">
+        <g v-for="s in siblings">
           <ellipse
             class="orbit"
             :class="{selected: space.id == s.id}"
-            :rx="(i+d_from_origin)*x_factor"
-            :ry="(i+d_from_origin)*y_factor"
+            :rx="scale(+s.distance_from_primary_km)"
+            :ry="scale(+s.distance_from_primary_km)*y_scaling"
           />
         </g>
-        <g class="planet" v-for="(s,i) in siblings" v-if="s.id == space.id" :transform="'translate(' + get_x(i) + ',' + get_y(i) + ')'">
+        <g class="planet"
+           v-for="s in siblings"
+           v-if="s.id == space.id"
+           :transform="'translate(' + get_x(s) + ',' + get_y(s) + ')'">
           <circle r="7"></circle>
           <text class="halo" y="-10">{{s.label.toUpperCase()}}</text>
           <text y="-10">{{s.label.toUpperCase()}}</text>
         </g>
       </g>
+      <text class="footer" :x="width" :y="height">not to scale</text>
     </svg>
   </div>
 </template>
 
 <script lang="coffee">
 import db from '../database.coffee'
+import * as d3 from 'd3'
 
 export default {
   data: () ->
@@ -35,12 +41,15 @@ export default {
     height: undefined
     parent: undefined
     siblings: undefined
-    x_factor: 10
-    y_factor: 5
-    d_from_origin: 4
+    y_scaling: 0.6
 
   computed:
     space: () -> @$store.state.selection.space
+    scale: () ->
+      d3.scalePow()
+        .exponent(0.33)
+        .domain [0, (d3.max @siblings, (d) -> +d.distance_from_primary_km )]
+        .range [0, @width/2 - 8] # padding
 
   watch:
     space: (newSpace) -> @load_data(newSpace.id)
@@ -50,18 +59,17 @@ export default {
     @load_data(@space.id)
 
   methods:
-    get_x: (i) ->
-      rx = (i+@d_from_origin) * @x_factor
+    get_x: (d) ->
+      rx = @scale(+d.distance_from_primary_km)
       return rx * Math.sqrt(2) / 2
-    get_y: (i) ->
-      ry = (i+@d_from_origin) * @y_factor
+    get_y: (d) ->
+      ry = @scale(+d.distance_from_primary_km) * @y_scaling
       return -ry * Math.sqrt(2) / 2
     load_data: (id) ->
       db.query_family id, 'revolves_around', (obj) => 
         @parent = obj.parent
         @siblings = obj.siblings
-        @height = (@siblings.length+3) * @y_factor * 2 + 34 # margin for label
-
+        @height = @width * @y_scaling
 }
 </script>
 
@@ -91,16 +99,23 @@ export default {
 .halo {
   fill: var(--main-view-background);
   stroke: var(--main-view-background);
+  stroke-opacity: 0.7;
   stroke-width: 5;
   stroke-linejoin: round;
   vector-effect: non-scaling-stroke;
 }
 .orbit {
   stroke: #000;
-  stroke-width: 0.3px;
+  stroke-width: 0.2px;
   fill: none;
 }
 .selected {
   stroke-width: 1.5px;
+}
+
+.footer {
+  fill: #999;
+  text-anchor: end;
+  font-size: 11px;
 }
 </style>
