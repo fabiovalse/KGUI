@@ -1,7 +1,7 @@
 <template>
   <div v-if="text !== undefined" class="text_section">
     <titlesubsection v-if="config.title !== undefined" :text="config.title"></titlesubsection>
-    <span v-html="text"></span>
+    <div v-html="text"></div>
   </div>
 </template>
 
@@ -33,6 +33,7 @@ export default {
   padding: 20px 24px 20px 24px;
   font-size: 13px;
   line-height: 19.5px;
+  box-sizing: border-box;
 }
 
 @media (max-width: 480px) {

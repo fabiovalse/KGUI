@@ -34,7 +34,6 @@ header {
   height: 100%;
   padding: calc(var(--margin) * 2);
   box-sizing: border-box;
-  background: #F2F2F2;
   z-index: 3;
 }
 </style>

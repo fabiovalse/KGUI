@@ -217,7 +217,7 @@ html, body {
   box-sizing: border-box;
   width: 100%;
   height: 100%;
-  background: #fcfaf6;
+  background: #F2F2F2;
 }
 .vfs_enabled .mainview {
   top: var(--main-bar-height);

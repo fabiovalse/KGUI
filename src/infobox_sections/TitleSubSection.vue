@@ -15,7 +15,7 @@ export default {
 
 <style scoped>
 .title_section {
-  margin: 0px 0px 20px 0px;
+  margin: 10px 0px 20px 0px;
 }
 
 </style>

@@ -27,7 +27,7 @@ export default {
 
 <style scoped>
 .imagesection {
-  margin-top: 20px;
+  padding-top: 20px;
   text-align: center;
 }
 .imagesection img {

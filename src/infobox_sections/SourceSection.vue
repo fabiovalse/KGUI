@@ -27,6 +27,7 @@ export default {
 .source_section {
   font-size: 12px;
   padding: 20px 24px 10px 24px;
+  box-sizing: border-box;
 }
 
 .title {
