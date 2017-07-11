@@ -36,7 +36,7 @@ img {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 100%;
+  width: calc(100% - 20px);
   height: 100%;
   font-weight: bold;
   background: #DDD;
