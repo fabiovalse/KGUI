@@ -182,6 +182,7 @@ html, body {
   --paper-color: rgb(255, 246, 235);
   --left-margined-panel-width: calc(var(--left-panel-width) - 16px - var(--left-panel-scrollbar-width));
   --box-shadow: 2px 2px 7px rgba(0,0,0,0.25);
+  --main-view-background: #F2F2F2;
 }
 .box {
   width: var(--left-margined-panel-width);
@@ -217,7 +218,7 @@ html, body {
   box-sizing: border-box;
   width: 100%;
   height: 100%;
-  background: #F2F2F2;
+  background: var(--main-view-background);
 }
 .vfs_enabled .mainview {
   top: var(--main-bar-height);

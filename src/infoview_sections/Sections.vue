@@ -5,6 +5,7 @@ import SubtitleSection from './SubtitleSection.vue'
 import ImageSection from './ImageSection.vue'
 import DescriptionSection from './DescriptionSection.vue'
 import MailingSection from './MailingSection.vue'
+import PlanetSection from './PlanetSection.vue'
 import TextSection from '../infobox_sections/TextSection.vue'
 import ListSection from '../infobox_sections/ListSection.vue'
 import SourceSection from '../infobox_sections/SourceSection.vue'
@@ -49,6 +50,7 @@ export default {
     separatorsection: SeparatorSection
     relatedsection: RelatedSection
     timesection: TimeSection
+    planetsection: PlanetSection
 
 }
 </script>
