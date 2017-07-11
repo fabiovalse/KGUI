@@ -1,6 +1,6 @@
 <template>
-  <div class="planetsection" v-if="parent !== undefined && siblings !== undefined">
-    <svg :style="{'height': height + 'px'}">
+  <div class="planetsection">
+    <svg v-if="parent !== undefined && siblings !== undefined" :style="{'height': height + 'px'}">
       <g :transform="'translate(' + width/2 + ',' + height/2 + ')'">
         <a :href="'#/' + parent.id">
           <g class="primary">
