@@ -65,9 +65,11 @@ export default {
   height: 100%;
   overflow-y: scroll;
   padding-top: 32px; /* FIXME this is because of the breadcrumb, but we need a more intelligent way to do this */
-  padding-left: 430px; /* 12px more, needed for folders margin */
+  margin-left: calc(var(--left-panel-width));
+  padding-left: 30px;
   padding-right: 30px;
   box-sizing: border-box;
+  background: #FDFDFD;
 }
 
 .subspace {

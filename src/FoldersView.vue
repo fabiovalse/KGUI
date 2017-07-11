@@ -66,8 +66,9 @@ export default {
   height: 100%;
   overflow-y: scroll;
   padding: 24px;
+  margin-left: calc(var(--left-panel-width));
+  background: #FDFDFD;
   box-sizing: border-box;
-  padding-left: calc(var(--left-panel-width) + 30px);
 }
 
 .folders {
