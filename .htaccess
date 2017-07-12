@@ -1,3 +1,12 @@
+# Apache must be properly configured in order for this to work
+# sudo a2enmod rewrite
+#
+# in Apache configuration:
+#
+# <Directory "/var/www">
+#    AllowOverride All
+# </Directory>
+
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
