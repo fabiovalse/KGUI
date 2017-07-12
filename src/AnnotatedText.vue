@@ -8,7 +8,7 @@
 # FIXME this class is almost identical to text section. refactor classes to clean up this
 # FIXME KGL and anchors are not good enough to represent annotations (overlapping)
 
-import kgl from './infobox_sections/kgl.coffee'
+import kgl from './sections/kgl.coffee'
 
 export default {
   props:

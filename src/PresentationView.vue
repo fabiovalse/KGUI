@@ -32,7 +32,7 @@
 </template>
 
 <script lang="coffee">
-import kgl from './infobox_sections/kgl.coffee'
+import kgl from './sections/kgl.coffee'
 import SpaceHeader from './SpaceHeader.vue'
 import db from './database.coffee'
 import config from './config.coffee'

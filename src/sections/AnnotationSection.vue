@@ -19,8 +19,7 @@
 <script lang="coffee">
 import db from '../database.coffee'
 import global_config from '../config.coffee'
-#import kgl from './kgl.coffee'
-import TitleSubSection from '../infobox_sections/TitleSubSection.vue'
+import TitleSubSection from './TitleSubSection.vue'
 
 export default {
   props:

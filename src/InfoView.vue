@@ -24,7 +24,7 @@ import SpaceHeader from './SpaceHeader.vue'
 import ZoomableImageView from './ZoomableImageView.vue'
 import ImageView from './ImageView.vue'
 import IframeView from './IframeView.vue'
-import Sections from './infoview_sections/Sections.vue'
+import Sections from './sections/Sections.vue'
 
 export default {
   props: ['config']

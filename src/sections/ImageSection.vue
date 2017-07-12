@@ -6,7 +6,7 @@
 </template>
 
 <script lang="coffee">
-import kgl from '../infobox_sections/kgl.coffee'
+import kgl from './kgl.coffee'
 
 export default {
   props:

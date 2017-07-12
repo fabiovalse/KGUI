@@ -3,7 +3,7 @@ import config from '../config.coffee'
 import TextSection from './TextSection.vue'
 import BilingualTextSection from './BilingualTextSection.vue'
 import HeaderSection from './HeaderSection.vue'
-import ImageSection from './ImageSection.vue'
+import ImageSection from './InfoboxImageSection.vue'
 import ListSection from './ListSection.vue'
 import SeparatorSection from './SeparatorSection.vue'
 import ChineseTextSection from './ChineseTextSection.vue'
@@ -62,4 +62,9 @@ export default {
 
 }
 
+</style>
+<style>
+.infobox .sections > :not(:last-child):not(.image_section):not(.header_section) {
+  border-bottom: 1px solid #DDD;
+}
 </style>

@@ -5,8 +5,8 @@
 </template>
 
 <script lang="coffee">
-import kgl from './infobox_sections/kgl.coffee'
-import Sections from './infoview_sections/Sections.vue'
+import kgl from './sections/kgl.coffee'
+import Sections from './sections/Sections.vue'
 
 export default {
   props:

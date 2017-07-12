@@ -1,9 +1,9 @@
 <template>
-  <div class="descriptionsection" v-html="text"></div>
+  <div class="titlesection" v-html="text"></div>
 </template>
 
 <script lang="coffee">
-import kgl from '../infobox_sections/kgl.coffee'
+import kgl from './kgl.coffee'
 
 export default {
   props:
@@ -21,11 +21,9 @@ export default {
 </script>
 
 <style scoped>
-.descriptionsection {
-  margin-top: 20px;
-  font-size: 16px;
+.titlesection {
+  font-size: 30px;
   font-weight: 300;
-  line-height: 1.2em;
   color: black;
 }
 </style>

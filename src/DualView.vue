@@ -19,7 +19,7 @@
 <script lang="coffee">
 import SpaceHeader from './SpaceHeader.vue'
 import ZoomableImageView from './ZoomableImageView.vue'
-import kgl from './infobox_sections/kgl.coffee'
+import kgl from './sections/kgl.coffee'
 
 export default {
 

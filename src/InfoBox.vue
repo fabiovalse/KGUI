@@ -12,7 +12,7 @@
 
 <script lang="coffee">
 
-import Sections from './infobox_sections/Sections.vue'
+import Sections from './sections/InfoboxSections.vue'
 import DirectionsInfo from './DirectionsInfo.vue'
 
 export default {

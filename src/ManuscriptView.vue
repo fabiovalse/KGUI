@@ -16,7 +16,7 @@
 
 <script lang="coffee">
 import config from './config.coffee'
-import kgl from './infobox_sections/kgl.coffee'
+import kgl from './sections/kgl.coffee'
 import SpaceHeader from './SpaceHeader.vue'
 
 export default {

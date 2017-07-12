@@ -29,7 +29,7 @@
 </template>
 
 <script lang="coffee">
-import kgl from './infobox_sections/kgl.coffee'
+import kgl from './sections/kgl.coffee'
 import SpaceHeader from './SpaceHeader.vue'
 import ViewCtrl from './folders/ViewCtrl.vue'
 import config from './config.coffee'
