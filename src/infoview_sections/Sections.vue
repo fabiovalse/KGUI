@@ -11,6 +11,7 @@ import ListSection from '../infobox_sections/ListSection.vue'
 import SourceSection from '../infobox_sections/SourceSection.vue'
 import SeparatorSection from '../infobox_sections/SeparatorSection.vue'
 import RelatedSection from '../infobox_sections/RelatedSection.vue'
+import AnnotationSection from './AnnotationSection.vue'
 import TimeSection from '../infobox_sections/TimeSection.vue'
 
 export default {
@@ -51,6 +52,7 @@ export default {
     relatedsection: RelatedSection
     timesection: TimeSection
     planetsection: PlanetSection
+    annotationsection: AnnotationSection
 
 }
 </script>
