@@ -67,12 +67,6 @@ export default {
   flex-direction: column;
   align-items: center;
 }
-.infoview .details .sections > * {
-  width: calc(100% - 20px);
-  background: #FFF;
-  margin-bottom: 15px;
-  border-radius: 2px;
-}
 .infoview .details .sections > *:first-child {
   margin-top: 40px;
 }

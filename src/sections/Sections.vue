@@ -1,5 +1,4 @@
 <script lang="coffee">
-import Vue from 'vue'
 import config from '../config.coffee'
 import TitleSection from './TitleSection.vue'
 import SubtitleSection from './SubtitleSection.vue'
@@ -25,13 +24,10 @@ export default {
   render: (createElement) ->
     children = @template.map (section) =>
       createElement section.t+'section', {
+        class: @get_class(section)
         props:
           data: @space
           config: section
-        on:
-          'open': () =>
-            console.log 'open'
-            Vue.set section, 'fullscreen', true
       }
       
     return createElement 'div', {class: {sections: true}}, children
@@ -49,6 +45,15 @@ export default {
       else
         return []
   
+  methods:
+    get_class: (section) ->
+      {
+        info_section: @template_type is 'info'
+        header_section: @template_type is 'header'
+        boxing: if section.boxing? then section.boxing else @template_type isnt 'header'
+      }
+      
+
   components:
     textsection: TextSection
     titlesection: TitleSection
@@ -69,5 +74,13 @@ export default {
 </script>
 
 <style scoped>
-
+.info_section {
+  width: calc(100% - 20px) !important;
+  margin-bottom: 15px;
+  border-radius: 2px;
+}
+.header_section {}
+.boxing {
+  background: #FFF;
+}
 </style>
