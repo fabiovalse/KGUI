@@ -1,4 +1,5 @@
 <script lang="coffee">
+import Vue from 'vue'
 import config from '../config.coffee'
 import TitleSection from './TitleSection.vue'
 import SubtitleSection from './SubtitleSection.vue'
@@ -13,6 +14,7 @@ import SeparatorSection from './SeparatorSection.vue'
 import RelatedSection from './RelatedSection.vue'
 import AnnotationSection from './AnnotationSection.vue'
 import TimeSection from './TimeSection.vue'
+import ZoomableImageView from './zoomable_image/ZoomableImageView.vue'
 
 export default {
   props:
@@ -22,7 +24,15 @@ export default {
 
   render: (createElement) ->
     children = @template.map (section) =>
-      createElement section.t+'section', {props:{data:@space, config:section}}
+      createElement section.t+'section', {
+        props:
+          data: @space
+          config: section
+        on:
+          'open': () =>
+            console.log 'open'
+            Vue.set section, 'fullscreen', true
+      }
       
     return createElement 'div', {class: {sections: true}}, children
 
@@ -53,6 +63,7 @@ export default {
     timesection: TimeSection
     planetsection: PlanetSection
     annotationsection: AnnotationSection
+    zoomableimagesection: ZoomableImageView
 
 }
 </script>

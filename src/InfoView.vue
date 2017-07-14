@@ -1,18 +1,7 @@
 <template>
   <div class="infoview">
     <spaceheader></spaceheader>
-    
-    <div class="preview">
-      <zoomableimageview v-if="with_zoomable"
-        :fullscreen="fullscreen"
-        :closeable="true"
-        @click.native="to_fullscreen"
-        @close="fullscreen = false">
-      </zoomableimageview>
-      <imageview v-if="with_image"></imageview>
-      <div v-if="with_zoomable" class="explore" @click="to_fullscreen"><i class="icon-zoom-in"></i></div>
-    </div>
-
+    <!-- <div v-if="with_zoomable" class="explore" @click="to_fullscreen"><i class="icon-zoom-in"></i></div> -->
     <div class="details">
       <sections :template_type="'info'"></sections>
     </div>
@@ -21,9 +10,6 @@
 
 <script lang="coffee">
 import SpaceHeader from './SpaceHeader.vue'
-import ZoomableImageView from './ZoomableImageView.vue'
-import ImageView from './ImageView.vue'
-import IframeView from './IframeView.vue'
 import Sections from './sections/Sections.vue'
 
 export default {
@@ -32,16 +18,9 @@ export default {
     fullscreen: false
   computed:
     space: () -> @$store.state.selection.space
-    with_zoomable: () -> @space? and @space.innerview is 'zoomableimageview'
-    with_image: () -> @space? and @space.innerview is 'imageview'
-  methods:
-    to_fullscreen: () -> @fullscreen = true
   components:
-    zoomableimageview: ZoomableImageView
-    iframeview: IframeView
     spaceheader: SpaceHeader
     sections: Sections
-    imageview: ImageView
 }
 </script>
 
@@ -58,14 +37,10 @@ export default {
   --preview-margin: 40px;
 }
 
-.infoview .details, .infoview .preview {
+.details {
   width: calc(100% - var(--left-panel-width));
 }
 
-.preview {
-  height: var(--preview-height);
-  margin: 40px 0px 40px 0px;
-}
 .explore {
   --width: 50px;
   position: relative;
@@ -97,5 +72,8 @@ export default {
   background: #FFF;
   margin-bottom: 15px;
   border-radius: 2px;
+}
+.infoview .details .sections > *:first-child {
+  margin-top: 40px;
 }
 </style>

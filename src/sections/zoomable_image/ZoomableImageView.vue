@@ -1,10 +1,11 @@
 <script lang="coffee">
 import OpenSeadragon from 'openseadragon'
-import SVGOverlay from '../lib/openseadragon-svg-overlay.js'
-import ZoomifyTileSource from '../lib/zoomifytilesource.js'
+import SVGOverlay from '../../../lib/openseadragon-svg-overlay.js'
+import ZoomifyTileSource from '../../../lib/zoomifytilesource.js'
 import ZoomableImageOverlay from './ZoomableImageOverlay.vue'
-import SpaceSwitch from './SpaceSwitch.vue'
+import SpaceSwitch from '../../SpaceSwitch.vue'
 import RotationControl from './RotationControl.vue'
+import kgl from '../kgl.coffee'
 import Vue from 'vue'
 import _ from 'lodash'
 import * as d3 from 'd3'
@@ -82,21 +83,21 @@ export default {
         class: 'close_button'
         on:
           'click': (event) => 
-            event.stopPropagation()
-            @$emit('close')
+            @fullscreen = false
+            @closeable = false
       }, [
         createElement 'i', {
           class: 'icon-x'
         }
       ]
 
-    if @fullscreen and @config.compass
+    if @fullscreen and @conf.compass
       # Rotation Control
       elements.push createElement 'rotationcontrol', {
         class: 'rotationcontrol'
         props:
           value: @degrees
-          type: @config.compass
+          type: @conf.compass
         on:
           input: (value) =>
             @degrees = value-@offset
@@ -111,7 +112,7 @@ export default {
           nodes: @converted_nodes
           store: @$store
           viewer: @viewer
-          annotations: if @config.annotations? then @config.annotations else {}
+          annotations: if @conf.annotations? then @conf.annotations else {}
       overlay_component.$mount()
       @$el.querySelector('.openseadragon-container svg g').appendChild(overlay_component.$el)
       
@@ -128,8 +129,11 @@ export default {
         fullscreen: @fullscreen
         zoom_cursor: not @fullscreen
       style:
-        background: @config.background_color
+        background: @conf.background_color
       on:
+        'click': (event) =>
+          @fullscreen = true
+          @closeable = true
         'keyup': (event) =>
           if event.key is 'Escape'
             event.stopPropagation()
@@ -146,6 +150,8 @@ export default {
     annotation_visible: true
     svg_overlay: undefined
     degrees: 0
+    fullscreen: if @config.fullscreen? then @config.fullscreen else false
+    closeable: false #() -> if @config.closeable? then kgl.parse(@config.closeable, @data) else false
     mercator: d3.geoMercator()
       .translate [0.5, 0.5]
       .scale 1/(2*Math.PI)
@@ -212,16 +218,16 @@ export default {
       }
 
   props:
-    fullscreen:
-      type: Boolean
-      'default': true
-    closeable:
-      type: Boolean
-      'default': false
+    data:
+      type: Object
+      required: true
+    config:
+      type: Object
+      required: true
 
   computed:
     space: () -> @$store.state.selection.space
-    config: () ->
+    conf: () ->
       conf = @load_config @default_config, @space.config, @space.classes, @class_declaration
 
       # Compute tilesources using specific templates
@@ -237,17 +243,17 @@ export default {
 
   methods:
     init: () ->
-      @offset = @config.openseadragon.degrees
+      @offset = @conf.openseadragon.degrees
 
       # Handle new tiled image loading
       if @viewer? and @viewer.world.getItemCount() > 0
         @svg_overlay = undefined
         @initial_zoom = undefined
-        @degrees = @config.openseadragon.degrees
+        @degrees = @conf.openseadragon.degrees
         @viewer.destroy()
 
       # OpenSeadragon viewer creation
-      @viewer = OpenSeadragon @config.openseadragon
+      @viewer = OpenSeadragon @conf.openseadragon
 
       @load_map()
       @refresh(@fullscreen)
@@ -271,7 +277,7 @@ export default {
         else
           @viewer.viewport.goHome true
         
-        @degrees = @config.openseadragon.degrees
+        @degrees = @conf.openseadragon.degrees
         @rotate @degrees
 
       @show_hide()
@@ -378,11 +384,11 @@ export default {
 <style scoped>
 .zoomableimageview_container {
   width: 100%;
-  height: 100%;
+  height: 500px;
 }
 
 #zoomableimageview {
-  width: 92%;
+  width: 100%;
   height: 100%;
   margin: auto;
   border: 1px solid #DDD;

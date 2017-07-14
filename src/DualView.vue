@@ -3,7 +3,7 @@
     <spaceheader></spaceheader>
     
     <div class="first">
-      <zoomableimageview></zoomableimageview>
+      <sections :template_type="'info'"></sections>
     </div>
     <div class="second textview" v-html="text"></div>
 
@@ -18,7 +18,8 @@
 
 <script lang="coffee">
 import SpaceHeader from './SpaceHeader.vue'
-import ZoomableImageView from './ZoomableImageView.vue'
+import ZoomableImageView from './sections/zoomable_image/ZoomableImageView.vue'
+import Sections from './sections/Sections.vue'
 import kgl from './sections/kgl.coffee'
 
 export default {
@@ -33,6 +34,7 @@ export default {
   components:
     zoomableimageview: ZoomableImageView
     spaceheader: SpaceHeader
+    sections: Sections
 
 }
 </script>
@@ -46,6 +48,8 @@ export default {
 
 .first > * {
   position: relative !important;
+  width: 100%;
+  height: 100%;
 }
 
 .first {
