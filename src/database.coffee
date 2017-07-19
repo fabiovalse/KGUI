@@ -71,6 +71,12 @@ module.exports = {
 
         cb {parent: parent, siblings: siblings}
 
+  query_children: (id, type, rec, cb) ->
+    @execute {query: "MATCH (:Space {id: {id}})<-[" + (if rec then '*0.. ' else '') + "{type: {type}}]-(child) RETURN child", params: {id: id, type: type}}, (data) =>
+      children = JSON.parse(data.responseText).data.map (d) -> d[0].data
+
+      cb children
+
 #  query_directions: (context, from_id, to_id) ->
 #    to_id = if to_id? then to_id else '""' # Undefined is replaced by quotes. In this way it is possible to write only a Cypher query using the OPTIONAL MATCH operator.
 #    from_id = if from_id? then from_id else '""'

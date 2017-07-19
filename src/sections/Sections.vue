@@ -14,6 +14,7 @@ import RelatedSection from './RelatedSection.vue'
 import AnnotationSection from './AnnotationSection.vue'
 import TimeSection from './TimeSection.vue'
 import ZoomableImageView from './zoomable_image/ZoomableImageView.vue'
+import PlanetarySystemSection from './PlanetarySystemSection.vue'
 
 export default {
   props:
@@ -69,6 +70,7 @@ export default {
     planetsection: PlanetSection
     annotationsection: AnnotationSection
     zoomableimagesection: ZoomableImageView
+    planetarysystemsection: PlanetarySystemSection
 
 }
 </script>
