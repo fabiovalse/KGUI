@@ -12,23 +12,37 @@
           :r="distance(c.data.distance_from_primary_km)"
         ></circle>
       </g>
-      <g class="celestial_body" v-for="(c,i) in celestial_bodies.children" :transform="get_transform(c,i)">
-        <circle
-          class="halo"
-          :r="radius(c.data.equatorial_radius_km)+3"
-        ></circle>
-        <circle
-          :style="'fill: ' + color(c.data.subtype)"
-          :r="radius(c.data.equatorial_radius_km)"
-          @click="select(c.data.id)"
-        ></circle>
+      <g  v-for="(c,i) in celestial_bodies.children"
+          class="celestial_body"
+          :class="{hover: hover === c}"
+          :transform="get_transform(c,i)"
+          >
+        <g  class="active"
+            @click="select(c.data.id)"
+            @mouseover="hover = c"
+            @mouseout="hover = undefined">
+          <circle
+            class="halo"
+            :r="radius(c.data.equatorial_radius_km)+3"
+          ></circle>
+          <circle
+            class="foreground"
+            :style="'fill: ' + color(c.data.subtype)"
+            :r="radius(c.data.equatorial_radius_km)"
+          ></circle>
+        </g>
         
         <g class="suborbit" v-for="so in c.children">
           <circle
             :r="radius(so.data.distance_from_primary_km)"
           ></circle>
         </g>
-        <g class="subcelestial_body" v-for="(sc,j) in c.children" @click="select(sc.data.id)">
+        <g v-for="(sc,j) in c.children"
+            class="subcelestial_body"
+            :class="{hover: hover === sc}"
+            @click="select(sc.data.id)"
+            @mouseover="hover = sc"
+            @mouseout="hover = undefined">
           <circle
             class="halo"
             :r="radius(sc.data.equatorial_radius_km)+1"
@@ -36,7 +50,8 @@
             :cy="get_cy(sc,j)"
           ></circle>
           <circle
-            :style="'fill: ' + color(sc.data.subtype)"
+            class="foreground"
+            :style="'fill: ' + color(sc.data.type)"
             :r="radius(sc.data.equatorial_radius_km)"
             :cx="get_cx(sc,j)"
             :cy="get_cy(sc,j)"
@@ -49,8 +64,12 @@
         </g>
 
         <text
+          class="celestial_body_label"
+          :class="{hover: hover === c}"
           :y="-radius(c.data.equatorial_radius_km) - 5"
           @click="select(c.data.id)"
+          @mouseover="hover = c"
+          @mouseout="hover = undefined"
         >{{c.id}}</text>
       </g> 
     </g>
@@ -77,13 +96,15 @@ data: () ->
   angles: [60,30,0,-30,-45,20,-10,11,0,-11,0,11,0]
   celestial_body_types: [
     {label: '', value: 'NULL', color: '#ffc252'},
-    {label: 'Terrestrial', value: 'terrestrial', color: '#e5d8bd'},
-    {label: 'Gas giant', value: 'gas_giant', color: 'lightgray'},
-    {label: 'Ice giant', value: 'ice_giant', color: '#b3cde3'},
-    {label: 'Asteroid', value: 'asteroid', color: '#fbb4ae'},
-    {label: 'Plutoid', value: 'plutoid', color: '#decbe4'},
-    {label: 'Satellite', value: 'satellite', color: 'gray'}
+    {label: 'Terrestrial', value: 'terrestrial', color: '#bca87d'},
+    {label: 'Gas giant', value: 'gas_giant', color: '#b7b7b7'},
+    {label: 'Ice giant', value: 'ice_giant', color: '#7eadd4'},
+    {label: 'Asteroid', value: 'asteroid', color: '#e18179'},
+    {label: 'Plutoid', value: 'plutoid', color: '#b283c2'},
+    {label: 'Satellite', value: 'satellite', color: '#f1a720'}
   ]
+
+  hover: undefined
 
 computed:
   space: () -> @$store.state.selection.space
@@ -186,6 +207,17 @@ methods:
 .subcelestial_body text {
   font-size: 11px;
   fill: #606060;
+}
+
+/* hover */
+.celestial_body > .active > .foreground, .subcelestial_body > .foreground {
+  opacity: 0.5;
+}
+.hover.celestial_body_label, .hover.subcelestial_body text {
+  font-weight: bold;
+}
+.hover.celestial_body > .active > .foreground, .hover.subcelestial_body > .foreground {
+  opacity: 1;
 }
 
 .suborbit circle, .orbit circle {
