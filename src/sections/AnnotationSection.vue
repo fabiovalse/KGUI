@@ -3,7 +3,7 @@
     <titlesubsection v-if="config.title !== undefined" :text="config.title"></titlesubsection>
     <div class="links">
       <div class="link" v-for="n in space.nodes">
-        <router-link :to="{name: 'goto_space_target', params: {space: space.id, target: n.id}}">
+        <router-link :to="{name: 'goto_space', params: {space: n.id}}">
           <div v-if="n.icon !== undefined" class="icon">
             <i :class="'icon-' + n.icon"></i>
           </div>
