@@ -50,7 +50,7 @@ module.exports = {
         {label: '**Inclination (degrees)**', value: '{{inclination_degrees}}'}
         {label: '**Axial tilt (degrees)**', value: '{{axial_tilt_degrees}}'}
       ]}
-      {t: 'annotation', title: 'Is Cited by'}
+      {t: 'annotation', title: 'Is Cited in'}
       {t: 'text', title: 'Description', text: '{{description}}'}
     ]
     folio: [
