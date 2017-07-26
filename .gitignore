@@ -3,6 +3,4 @@ node_modules/
 dist/
 data/
 npm-debug.log
-src/config.coffee
 src/theme.css
-webpack.config.js
