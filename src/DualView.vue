@@ -26,8 +26,8 @@ export default {
 
   computed:
     space: () -> @$store.state.selection.space
-    text: () -> 
-      t = @$store.state.selection.space.text
+    text: () ->
+      t = @$store.state.selection.space.text_plaintext
       t = t.replace /\n/g, '</p><p>'
       return '<p>' + kgl.parse(t, @$store.state.selection.space) + '</p>'
 
