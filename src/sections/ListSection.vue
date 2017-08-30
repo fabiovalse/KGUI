@@ -2,9 +2,9 @@
   <div class="list_section">
     <titlesubsection v-if="items.length > 0 && config.title !== undefined" :text="config.title"></titlesubsection>
     <table v-if="items.length > 0">
-      <tr v-for="item in items">
+      <tr v-if="item.value != ''" v-for="item in items">
         <td v-if="item.icon != undefined">
-          <i :class="'icon icon-' + item.icon"></i>
+          <i :class="'icon icon-' + item.icon" :title="item.label"></i>
         </td>
         <td v-else class="value" v-html="item.label"></td>
         <td class="value" v-html="item.value"></td>
