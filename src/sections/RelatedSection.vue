@@ -3,7 +3,17 @@
     <titlesubsection v-if="config.title !== undefined" :text="config.title"></titlesubsection>
     <div class="links">
       <div class="link" v-for="n in nodes">
-        <router-link :to="{name: 'goto_space', params: {space: n.data.id}}">
+        <!-- Space Info -->
+        <router-link v-if="n.data.view !== undefined && n.data.template !== undefined" :to="{name: 'goto_space', params: {space: n.data.id}}">
+          <div v-if="n.data.icon !== undefined" class="icon">
+            <i :class="'icon-' + n.data.icon"></i>
+          </div>
+          <div v-else class="img" :style="{background: 'url('+global_config.main_uri+'/images/depictions/'+n.data.id+'.jpg) #DDD'}">
+          </div>
+          <div>{{get_label(n)}}</div>
+        </router-link>
+        <!-- Info -->
+        <router-link v-if="n.data.template !== undefined" :to="{name: 'goto_target', params: {target: n.data.id}}">
           <div v-if="n.data.icon !== undefined" class="icon">
             <i :class="'icon-' + n.data.icon"></i>
           </div>
