@@ -14,6 +14,7 @@
 
 <script lang="coffee">
 import kgl from './kgl.coffee'
+import global_config from '../config.coffee'
 
 export default {
   props:
@@ -25,7 +26,7 @@ export default {
       required: true
 
   computed:
-    src: () -> kgl.parse(@config.href, @data, false)
+    src: () -> if @config.href? then kgl.parse(@config.href, @data, false) else "#{global_config.main_uri}/images/depictions/#{@data.id}.jpg"
     label: () -> kgl.parse(@config.label, @data, false)
     icon: () -> kgl.parse(@config.icon, @data, false)
     font_family: () -> @config.font
