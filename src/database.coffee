@@ -31,7 +31,7 @@ module.exports = {
             @execute {query: "MATCH path=(:Space)-[*0.. {type: 'subspace'}]->({id: {id}}) WITH nodes(path) AS path ORDER BY length(path) RETURN path[0]", params: {id: id}}, (data) =>
               space.vfs_path = JSON.parse(data.responseText).data.map (d) -> d[0].data
               space.vfs_path.reverse()
-              @execute {query: "MATCH (n:Info)-[]-(a:Annotation)-[]-(s:Space {id: {id}}) RETURN n, a.x, a.y, a;", params: {id: id}}, (data) => # FIXME: only a should be returned
+              @execute {query: "MATCH (n)-[]-(a:Annotation)-[]-(s:Space {id: {id}}) RETURN n, a.x, a.y, a;", params: {id: id}}, (data) => # FIXME: only a should be returned
                 space.nodes = JSON.parse(data.responseText).data.map (d) ->
                   r = d[0].data
                   r.position = [d[1], d[2]]
@@ -43,7 +43,7 @@ module.exports = {
   query_target: (id, cb) ->
     # _this = @
 
-    @execute {query: "OPTIONAL MATCH (target {id: {id}}) OPTIONAL MATCH (target {id: {id}})-[]-(a:Annotation {ghost: false})-[]-(space) OPTIONAL MATCH (target {id: {id}})-[]->(out) WHERE labels(out)='Info' OPTIONAL MATCH (target {id: {id}})<-[]-(in) WHERE labels(in)='Info' RETURN {node: target, position: [a.x, a.y]}, collect(DISTINCT out) AS out, collect(DISTINCT in) AS in, space;", params: {id: id}}, (data) =>
+    @execute {query: "OPTIONAL MATCH (target {id: {id}}) OPTIONAL MATCH (target {id: {id}})-[]-(a:Annotation {ghost: false})-[]-(space) OPTIONAL MATCH (target {id: {id}})-[]->(out) WHERE labels(out)='Info' OPTIONAL MATCH (target {id: {id}})<-[]-(in) WHERE labels(in)='Info' OPTIONAL MATCH (out)-[]-(out_a:Annotation {ghost: false}) RETURN {node: target, position: (CASE a WHEN null THEN [out_a.x, out_a.y] ELSE [a.x, a.y] END)}, collect(DISTINCT out) AS out, collect(DISTINCT in) AS in, space;", params: {id: id}}, (data) =>
       result = JSON.parse(data.responseText).data[0]
       node = result[0].node.data
       node.position = if result[0].position[0] is null then undefined else result[0].position
