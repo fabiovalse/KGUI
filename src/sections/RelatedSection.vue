@@ -79,10 +79,12 @@ export default {
 
 .links {
   display: flex;
+  flex-wrap: wrap;
 }
 .link {
   width: 100px;
-  margin-right: 30px;
+  margin: 0px 30px 15px 0px;
+  text-align: center;
 }
 .link a {
   display: flex;
