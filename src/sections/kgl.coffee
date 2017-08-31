@@ -6,7 +6,7 @@ transform = (value, property) ->
     throw 'undef'
   else if property is 'url'
     return "<a target='blank' href='#{value}'>#{value}</a>"
-  else if property is 'phone'
+  else if property in ['phone', 'tel', 'cel']
     return "<a href='tel:#{value}'>#{value}</a>"
   else if property is 'email'
     return "<a href='mailto:#{value}'>#{value}</a>"
