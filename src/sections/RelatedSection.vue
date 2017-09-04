@@ -12,7 +12,7 @@
             <div v-if="n.data.icon !== undefined" class="icon">
               <i :class="'icon-' + n.data.icon"></i>
             </div>
-            <div v-else class="img" :style="{background: 'url('+global_config.main_uri+'/images/depictions/'+n.data.id+'.jpg) #DDD'}">
+            <div v-else-if="no_image_types.indexOf(style_type) < 0" class="img" :style="{background: 'url('+global_config.main_uri+'/images/depictions/'+n.data.id+'.jpg) #DDD'}">
             </div>
             <div class="label">{{get_label(n)}}</div>
           </router-link>
@@ -22,7 +22,7 @@
             <div v-if="n.data.icon !== undefined" class="icon">
               <i :class="'icon-' + n.data.icon"></i>
             </div>
-            <div v-else class="img" :style="{background: 'url('+global_config.main_uri+'/images/depictions/'+n.data.id+'.jpg) #DDD'}">
+            <div v-else-if="no_image_types.indexOf(style_type) < 0" class="img" :style="{background: 'url('+global_config.main_uri+'/images/depictions/'+n.data.id+'.jpg) #DDD'}">
             </div>
             <div class="label">{{get_label(n)}}</div>
           </router-link>
@@ -49,6 +49,7 @@ export default {
   
   data: () ->
     groups: []
+    no_image_types: ['list']
   
   mounted: () ->
     @refresh()
