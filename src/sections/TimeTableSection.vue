@@ -1,5 +1,5 @@
 <template>    
-  <div class="timetable_section" v-if="data.timetables != undefined">
+  <div v-if="data.timetables != undefined" class="timetable_section">
     <titlesubsection v-if="config.title !== undefined" :text="config.title"></titlesubsection>
     <svg>
       <!-- labels -->
@@ -95,7 +95,7 @@ export default {
       required: true
 
   computed:
-    timetable: () -> JSON.parse(@data.timetables)
+    timetable: () -> if @data.timetables? then JSON.parse(@data.timetables) else []
     time: () -> 
       min = @timetable
         .filter (d) -> d.open?
@@ -126,7 +126,8 @@ export default {
 
   methods:
     init: () -> 
-      document.querySelector('svg').style.height = @time.length*@row_height + 40
+      if @data.timetables?
+        @$el.querySelector('svg').style.height = @time.length*@row_height + 40
     check_open: (d, t) -> d.open <= t and d.close > t
     check_half: (d, t) -> 
       return (d.open%1 != 0 and (t+1)-d.open < 1) or (d.close%1 != 0 and d.close - t < 1)
