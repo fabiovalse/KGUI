@@ -43,20 +43,28 @@ module.exports = {
   query_target: (id, cb) ->
     # _this = @
 
-    @execute {query: "OPTIONAL MATCH (target {id: {id}}) OPTIONAL MATCH (target {id: {id}})-[]-(a:Annotation {ghost: false})-[]-(space) OPTIONAL MATCH (target {id: {id}})-[]->(out) WHERE labels(out)='Info' OPTIONAL MATCH (target {id: {id}})<-[]-(in) WHERE labels(in)='Info' OPTIONAL MATCH (out)-[]-(out_a:Annotation {ghost: false}) RETURN {node: target, position: (CASE a WHEN null THEN [out_a.x, out_a.y] ELSE [a.x, a.y] END)}, collect(DISTINCT out) AS out, collect(DISTINCT in) AS in, space;", params: {id: id}}, (data) =>
-      result = JSON.parse(data.responseText).data[0]
-      node = result[0].node.data
-      node.position = if result[0].position[0] is null then undefined else result[0].position
+    @execute {query: """OPTIONAL MATCH (target {id: {id}})
+      OPTIONAL MATCH (target {id: {id}})-[]-(a:Annotation {ghost: false})-[]-(space)
+      OPTIONAL MATCH (target {id: {id}})-[]->(out)-[]-(out_a:Annotation {ghost: false}) WHERE labels(out)='Info'
+      OPTIONAL MATCH (target {id: {id}})<-[]-(in) WHERE labels(in)='Info'
+      RETURN {node: target, position: (CASE a WHEN null THEN [out_a.x, out_a.y] ELSE [a.x, a.y] END)}, 
+             collect(DISTINCT out) AS out,
+             collect(DISTINCT in) AS in,
+             space;
+      """, params: {id: id}}, (data) =>
+        result = JSON.parse(data.responseText).data[0]
+        node = result[0].node.data
+        node.position = if result[0].position[0] is null then undefined else result[0].position
 
-      node.out = result[1].filter((d) -> d.data?).map (d) -> d.data
-      node.in = result[2].filter((d) -> d.data?).map (d) -> d.data
+        node.out = result[1].filter((d) -> d.data?).map (d) -> d.data
+        node.in = result[2].filter((d) -> d.data?).map (d) -> d.data
 
-      cb node
+        cb node
 
-      # FIXME this logic should be reintegrated elsewhere
-      # Change space if necessary
-      # if result[3]? and (not context.state.selection.space? or result[3].data.id isnt context.state.selection.space.id)
-      #   _this.query_space context, result[3].data.id, '_set_space'
+        # FIXME this logic should be reintegrated elsewhere
+        # Change space if necessary
+        # if result[3]? and (not context.state.selection.space? or result[3].data.id isnt context.state.selection.space.id)
+        #   _this.query_space context, result[3].data.id, '_set_space'
 
   query_family: (id, type, cb) ->
     @execute {query: "MATCH (:Space {id: {id}})-[{type: {type}}]->(parent) RETURN parent", params: {id: id, type: type}}, (data) =>
