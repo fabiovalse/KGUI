@@ -13,6 +13,7 @@ import ActionSection from './ActionSection.vue'
 import CollapsibleBox from '../CollapsibleBox.vue'
 import SourceSection from './SourceSection.vue'
 import TimeTableSection from './TimeTableSection.vue'
+import CiclopiSection from './CiclopiSection.vue'
 
 export default {
   render: (createElement) ->
@@ -40,6 +41,7 @@ export default {
     collapsiblebox: CollapsibleBox
     sourcesection: SourceSection
     timetablesection: TimeTableSection
+    ciclopisection: CiclopiSection
 
 }
 </script>
