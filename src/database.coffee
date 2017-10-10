@@ -130,7 +130,7 @@ module.exports = {
         cb {path: undefined, from: from_node, to: to_node}
     # Execute dijkstra when both from and to exist
     else
-      @execute {query: "MATCH (start:Info), (end:Info) WHERE start.id={from_id} AND end.id={to_id} CALL apoc.algo.dijkstra(start, end, 'related', 'weight') YIELD path, weight UNWIND nodes(path) AS point MATCH (point)-[:body]-(a:Annotation {ghost: false})-[:target]-(space) RETURN collect(DISTINCT {node: point, position: [a.x, a.y], space: space}) AS nodes, rels(path) AS rels, weight", params: {from_id: ids.from, to_id: ids.to}}, (data) =>
+      @execute {query: "MATCH (start:Info), (end:Info) WHERE start.id={from_id} AND end.id={to_id} CALL apoc.algo.dijkstra(start, end, 'related', 'weight') YIELD path, weight UNWIND nodes(path) AS point MATCH (point)-[{type: 'body'}]-(a:Annotation {ghost: false})-[{type: 'target'}]-(space) RETURN collect(DISTINCT {node: point, position: [a.x, a.y], space: space}) AS nodes, rels(path) AS rels, weight", params: {from_id: ids.from, to_id: ids.to}}, (data) =>
         result = JSON.parse(data.responseText)
 
         [nodes, links, weight] = result.data[0]
