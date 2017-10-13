@@ -95,7 +95,16 @@ export default {
       required: true
 
   computed:
-    timetable: () -> if @data.timetables? then JSON.parse(@data.timetables) else []
+    timetable: () -> 
+      # FIXME: Once migration to Arango is terminated this should be only
+      #        if @data.timetables? then @data.timetables else []
+      if @data.timetables?
+        if typeof(@data.timetablesthen) is 'string'
+          return JSON.parse(@data.timetables)
+        else
+          return @data.timetables
+      else
+        return []
     time: () -> 
       min = @timetable
         .filter (d) -> d.open?
