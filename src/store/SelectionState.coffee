@@ -70,18 +70,18 @@ export default {
       if context.getters.mode isnt 'directions'
         # FIXME this should be more smart
         if params.d.view?
-          context.commit 'goto_space', params.d.id
+          context.commit 'goto_space', params.d._key
         else if params.d.template?
-          context.commit 'goto_target', params.d.id
+          context.commit 'goto_target', params.d._key
       else
         ids = {space: context.state.space_id, from: context.state.from_id, to: context.state.to_id}
 
         if params.directions_input?
-          ids[params.directions_input] = params.d.id
+          ids[params.directions_input] = params.d._key
         else if ids.from is '_'
-          ids.from = params.d.id
+          ids.from = params.d._key
         else if ids.to is '_'
-          ids.to = params.d.id
+          ids.to = params.d._key
         # else do nothing
 
         context.commit 'goto_directions', ids

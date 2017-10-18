@@ -1,6 +1,6 @@
 <template>
   <g
-    v-if="data.position !== undefined"
+    v-if="data.x !== undefined && data.y !== undefined"
     class="poi"
     :transform="get_translate()"
     @click="select()"
@@ -34,7 +34,7 @@ export default {
 
   methods:
     select: () -> @$store.dispatch 'select', {d: @data}
-    get_translate: () -> "translate(#{@data.position[0]}, #{@data.position[1]})"
+    get_translate: () -> "translate(#{@data.x}, #{@data.y})"
     get_scale: () -> "scale(#{if @transform? then 1/@transform.k else 1})"
     semantic_zoom: () -> @transform.k < 2.5
 

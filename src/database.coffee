@@ -12,6 +12,19 @@ module.exports = {
       .header 'Authorization', config.db.auth
       .post payload, callback
 
+  execute_arango: (query, bind_vars, count, batch_size, transform_cb, cb) ->
+    post_data = {"query" : query, "bindVars": bind_vars, "count" : count, "batchSize" : batch_size}
+
+    d3.request 'http://campusmap:8529/_db/campusmap/_api/cursor'
+      .header 'Authorization', 'Basic cm9vdDpjMjVhMjAxNw=='
+      .post JSON.stringify(post_data), (data) =>
+        result = JSON.parse(data.responseText).result
+
+        if transform_cb?
+          result = transform_cb result
+        if cb?
+          cb result
+
   query_starting_point: (context, starting_point) ->
     payload = {query: "MATCH (n:Info) WHERE n.id={starting_point} RETURN n;", params: {starting_point: starting_point}}
     @execute payload, (data) ->
@@ -20,51 +33,56 @@ module.exports = {
       context.commit '_set_starting_point', result.data[0][0].data
 
   query_space: (id, cb) ->
-    @execute {query: "MATCH (the_space:Space {id: {id}}) RETURN the_space", params: {id: id}}, (data) =>
-      space = JSON.parse(data.responseText).data[0][0].data
-      @execute {query: "MATCH (the_space:Space {id: {id}})-[{type: 'in_list'}]->(list) MATCH (list)<-[{type: 'in_list'}]-(s) RETURN s ORDER BY s.order", params: {id: id}}, (data) =>
-        space.list = JSON.parse(data.responseText).data.map (d) -> d[0].data
-        @execute {query: "MATCH (the_space:Space {id: {id}})-[{type: 'subspace'}]->(s) RETURN s", params: {id: id}}, (data) =>
-          space.subspaces = JSON.parse(data.responseText).data.map (d) -> d[0].data
-          @execute {query: "MATCH (:Space {id: {id}})-[r {type: 'subspace'}]-() RETURN COUNT(r)", params: {id: id}}, (data) =>
-            space.vfs_enabled = JSON.parse(data.responseText).data[0][0] > 0
-            @execute {query: "MATCH path=(:Space)-[*0.. {type: 'subspace'}]->({id: {id}}) WITH nodes(path) AS path ORDER BY length(path) RETURN path[0]", params: {id: id}}, (data) =>
-              space.vfs_path = JSON.parse(data.responseText).data.map (d) -> d[0].data
-              space.vfs_path.reverse()
-              @execute {query: "MATCH (n)-[]-(a:Annotation)-[]-(s:Space {id: {id}}) RETURN n, a.x, a.y, a;", params: {id: id}}, (data) => # FIXME: only a should be returned
-                space.nodes = JSON.parse(data.responseText).data.map (d) ->
-                  r = d[0].data
-                  r.position = [d[1], d[2]]
-                  r.data = d[3].data
-                  return r
+    transform_cb = (data) -> 
+      if data?
+        obj = {
+          data[0].space...
+          data[0]...
+          id: data[0].space._id
+        }
+        #obj.space.nodes = data[0].nodes
+        return obj
+      return {}
 
-                cb space
+    @execute_arango """
+    LET list = (
+      FOR list, edge IN 1 ANY @id GRAPH 'CampusMap'
+      FILTER edge.type == 'in_list'
+      LET list_items = (
+        FOR v,e IN 1 ANY list GRAPH 'CampusMap'
+        SORT v.order
+        RETURN v
+      )
+      RETURN list_items
+    )
+    LET subspaces = (
+      FOR subspace, edge IN ANY @id GRAPH 'CampusMap'
+      FILTER edge.type == 'subspace'
+      RETURN [subspace, LENGTH(edge) > 0]
+    )
+    LET vfs_path = (
+      FOR vertex, edge IN 0..3 ANY @id GRAPH 'CampusMap'
+      FILTER edge.type == 'subspace'
+      RETURN vertex
+    )
+    LET nodes = (
+      FOR vertex, edge IN ANY @id GRAPH 'CampusMap'
+      FILTER HAS(edge, 'x') AND HAS(edge, 'y')
+      RETURN MERGE(edge, vertex)
+    )
+    RETURN {
+      space: DOCUMENT(@id),
+      list: list[0], 
+      subspaces: subspaces[0][0], 
+      vfs_enabled: subspaces[0][1], 
+      vfs_path: vfs_path, 
+      nodes: nodes
+    }
+    """, {id: 'CampusMap_nodes/'+id}, true, null, transform_cb, cb
 
   query_target: (id, cb) ->
-    # _this = @
-
-    @execute {query: """OPTIONAL MATCH (target {id: {id}})
-      OPTIONAL MATCH (target {id: {id}})-[]-(a:Annotation {ghost: false})-[]-(space)
-      OPTIONAL MATCH (target {id: {id}})-[]->(out)-[]-(out_a:Annotation {ghost: false}) WHERE labels(out)='Info'
-      OPTIONAL MATCH (target {id: {id}})<-[]-(in) WHERE labels(in)='Info'
-      RETURN {node: target, position: (CASE a WHEN null THEN [out_a.x, out_a.y] ELSE [a.x, a.y] END)}, 
-             collect(DISTINCT out) AS out,
-             collect(DISTINCT in) AS in,
-             space;
-      """, params: {id: id}}, (data) =>
-        result = JSON.parse(data.responseText).data[0]
-        node = result[0].node.data
-        node.position = if result[0].position[0] is null then undefined else result[0].position
-
-        node.out = result[1].filter((d) -> d.data?).map (d) -> d.data
-        node.in = result[2].filter((d) -> d.data?).map (d) -> d.data
-
-        cb node
-
-        # FIXME this logic should be reintegrated elsewhere
-        # Change space if necessary
-        # if result[3]? and (not context.state.selection.space? or result[3].data.id isnt context.state.selection.space.id)
-        #   _this.query_space context, result[3].data.id, '_set_space'
+    transform_cb = (data) -> if data? then data[0] else undefined
+    @execute_arango "FOR n IN CampusMap_nodes FILTER n._key == '#{id}' RETURN n", {}, true, null, transform_cb, cb
 
   query_family: (id, type, cb) ->
     @execute {query: "MATCH (:Space {id: {id}})-[{type: {type}}]->(parent) RETURN parent", params: {id: id, type: type}}, (data) =>

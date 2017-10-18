@@ -8,21 +8,21 @@
       <div :class="'links ' + style_type">
         <div class="link" v-for="n in group.nodes">
           <!-- Space Info -->
-          <router-link v-if="n.data.view !== undefined && n.data.template !== undefined" :to="{name: 'goto_space', params: {space: n.data.id}}">
-            <div v-if="n.data.icon !== undefined" class="icon">
-              <i :class="'icon-' + n.data.icon"></i>
+          <router-link v-if="n.view !== undefined && n.template !== undefined" :to="{name: 'goto_space', params: {space: n._key}}">
+            <div v-if="n.icon !== undefined" class="icon">
+              <i :class="'icon-' + n.icon"></i>
             </div>
-            <div v-else-if="no_image_types.indexOf(style_type) < 0" class="img" :style="{background: 'url('+global_config.main_uri+'/images/depictions/'+n.data.id+'.jpg) #DDD'}">
+            <div v-else-if="no_image_types.indexOf(style_type) < 0" class="img" :style="{background: 'url('+global_config.main_uri+'/images/depictions/'+n._key+'.jpg) #DDD'}">
             </div>
             <div class="label">{{get_label(n)}}</div>
           </router-link>
           
           <!-- Info -->
-          <router-link v-if="n.data.template !== undefined" :to="{name: 'goto_target', params: {target: n.data.id}}">
-            <div v-if="n.data.icon !== undefined" class="icon">
-              <i :class="'icon-' + n.data.icon"></i>
+          <router-link v-if="n.template !== undefined" :to="{name: 'goto_target', params: {target: n._key}}">
+            <div v-if="n.icon !== undefined" class="icon">
+              <i :class="'icon-' + n.icon"></i>
             </div>
-            <div v-else-if="no_image_types.indexOf(style_type) < 0" class="img" :style="{background: 'url('+global_config.main_uri+'/images/depictions/'+n.data.id+'.jpg) #DDD'}">
+            <div v-else-if="no_image_types.indexOf(style_type) < 0" class="img" :style="{background: 'url('+global_config.main_uri+'/images/depictions/'+n._key+'.jpg) #DDD'}">
             </div>
             <div class="label">{{get_label(n)}}</div>
           </router-link>
@@ -65,30 +65,29 @@ export default {
   
   methods:
     refresh: () ->
-      db.execute {query: @config.query, params: {current: @data.id}}, (data) =>
-        result = JSON.parse(data.responseText)
-        nodes = result.data.map (d) => {data: d[0].data, new_data: {label: kgl.parse(@config.label, d[0].data)}}
-
+      cb = (data) =>
         if @config.aggregator?
           @aggregations = {}
 
-          nodes.forEach (d) =>
-            if @aggregations.hasOwnProperty(d.data[@config.aggregator])
-              @aggregations[d.data[@config.aggregator]].nodes.push d
+          data.forEach (d) =>
+            if @aggregations.hasOwnProperty(d[@config.aggregator])
+              @aggregations[d[@config.aggregator]].nodes.push d
             else
-              @aggregations[d.data[@config.aggregator]] = {
-                label: if d.data[@config.aggregator] is '' then 'Altro Personale' else d.data[@config.aggregator],
+              @aggregations[d[@config.aggregator]] = {
+                label: if d[@config.aggregator] is '' then 'Altro Personale' else d[@config.aggregator],
                 nodes: [d]
               }
-
+          
           @groups = Object.values(@aggregations)
-        else if nodes.length > 0
-          @groups = [{label: '', nodes: nodes}]
+        else if data.length > 0
+          @groups = [{label: '', nodes: data}]
         else
           @groups = []
 
+      db.execute_arango @config.query, {id: @data._id}, true, null, cb, null
+
     get_link: (id) -> "#/target/#{id}"
-    get_label: (n) -> if n.new_data.label? then n.new_data.label else n.data.label
+    get_label: (n) -> n.label # FIXME: if n.new_data.label? then n.new_data.label else n.data.label
 
   components:
     titlesubsection: TitleSubSection

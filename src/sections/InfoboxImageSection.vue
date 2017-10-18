@@ -26,7 +26,7 @@ export default {
       required: true
 
   computed:
-    src: () -> if @config.href? then kgl.parse(@config.href, @data, false) else "#{global_config.main_uri}/images/depictions/#{@data.id}.jpg"
+    src: () -> if @config.href? then kgl.parse(@config.href, @data, false) else "#{global_config.main_uri}/images/depictions/#{@data._key}.jpg"
     label: () -> kgl.parse(@config.label, @data, false)
     icon: () -> kgl.parse(@config.icon, @data, false)
     font_family: () -> @config.font
