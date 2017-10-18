@@ -61,7 +61,7 @@ module.exports = {
       RETURN [subspace, LENGTH(edge) > 0]
     )
     LET vfs_path = (
-      FOR vertex, edge IN 0..3 ANY @id GRAPH 'CampusMap'
+      FOR vertex, edge IN 0..10 INBOUND @id GRAPH 'CampusMap'
       FILTER edge.type == 'subspace'
       RETURN vertex
     )
@@ -82,7 +82,16 @@ module.exports = {
 
   query_target: (id, cb) ->
     transform_cb = (data) -> if data? then data[0] else undefined
-    @execute_arango "FOR n IN CampusMap_nodes FILTER n._key == '#{id}' RETURN n", {}, true, null, transform_cb, cb
+    @execute_arango """
+    FOR n IN CampusMap_nodes
+      LET position = (
+        FOR v,e IN 1..2 ANY @id GRAPH 'CampusMap'
+        FILTER HAS(e, 'x') AND HAS(e, 'y')
+        RETURN {x: e.x, y: e.y}
+      )
+      FILTER n._key == @key
+      RETURN MERGE(IS_NULL(FIRST(position)) ? {} : FIRST(position), n)
+    """, {key: id, id: 'CampusMap_nodes/'+id}, true, null, transform_cb, cb
 
   query_family: (id, type, cb) ->
     @execute {query: "MATCH (:Space {id: {id}})-[{type: {type}}]->(parent) RETURN parent", params: {id: id, type: type}}, (data) =>
@@ -161,8 +170,13 @@ module.exports = {
 
         cb {path: {nodes: nodes, links: links, weight: weight}, from: nodes[0], to: nodes[nodes.length-1]}
 
-  query_node: (str, callback) ->
-    payload = {query: "MATCH (n) WHERE lower(n.label) CONTAINS {str} RETURN n LIMIT 5", params: {str: str.toLowerCase()}}
-    @execute payload, callback
+  query_node: (str, cb) ->
+    @execute_arango """
+    FOR doc IN CampusMap_nodes
+      FILTER CONTAINS(LOWER(doc.label), @str, false)
+      SORT doc.label
+      LIMIT 5
+      RETURN doc
+    """, {str: str}, true, null, null, cb
 
 }
