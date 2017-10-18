@@ -26,7 +26,6 @@ export default {
     target: () -> @$store.state.selection.target
   methods: # FIXME some methods are unused
     click_directions: () -> @$store.dispatch 'request_directions', {def: true}
-    click_node: (d) -> @$store.dispatch 'select', {id: d.id}
     click: (e) ->
       d3.select(@$el)._groups[0][0].scrollTop = 0
       @$emit 'mobile_open'
