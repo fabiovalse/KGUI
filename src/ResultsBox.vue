@@ -46,13 +46,15 @@ export default {
         @directions_input = directions_input
 
         db.query_node str, ((data) =>
-          
-          result = JSON.parse(data.responseText)
+          @results = data
 
-          @results = result.data.map (n) ->
-            node = n[0].data
-            node.labels = n[0].metadata.labels
-            return node)
+          # result = JSON.parse(data.responseText)
+
+          # @results = result.data.map (n) ->
+          #   node = n[0].data
+          #   node.labels = n[0].metadata.labels
+          #   return node
+          )
       else
         @results = undefined
 
