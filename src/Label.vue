@@ -18,7 +18,7 @@ export default {
 
   methods:
     select: () -> @$store.dispatch 'select', {d: @data}
-    get_translate: () -> "translate(#{@data.position[0]}, #{@data.position[1]}) scale(#{if @transform? then 6/@transform.k else 1})"
+    get_translate: () -> "translate(#{@data.x}, #{@data.y}) scale(#{if @transform? then 6/@transform.k else 1})"
     semantic_zoom: () -> @transform.k > 5
 }
 </script>
