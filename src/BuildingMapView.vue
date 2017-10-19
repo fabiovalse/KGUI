@@ -2,11 +2,18 @@
   <div class="buildingmapview">
     <svg :viewBox="space.viewbox" :style="{background: space.background_color}">
       <g :transform="transform">
-        <floor v-if="check(floor)" v-for="floor in spaces" :data="floor"></floor>
+        <floor v-if="check(floor)" 
+          v-for="floor in spaces"
+          :data="floor"
+        ></floor>
         
         <directionpath></directionpath>
-        <poi v-for="(poi,i) in pois" :data="poi"></poi>
-        <maplabel v-for="(label,i) in labels" :data="label"></maplabel>
+        <poi v-for="(poi,i) in pois" 
+          :data="poi"
+        ></poi>
+        <maplabel v-for="(label,i) in labels" 
+          :data="label"
+        ></maplabel>
         <icon v-for="(icon,i) in icons" :data="icon"></icon>
         <placemark></placemark>
       </g>
@@ -33,14 +40,20 @@ export default {
     icons: () -> if @$store.state.selection.space.nodes? then @$store.state.selection.space.nodes.filter (n) -> n? and n.label in ['Stairs', 'Elevator', 'Toilet'] else []
     spaces: () -> if @$store.state.selection.space? then @$store.state.selection.space.list.filter((d) -> d.urls?).reverse() else undefined
     space: () -> @$store.state.selection.space
+    target: () -> @$store.state.selection.target
+
+  watch: 
+    target: (t) -> 
+      if t? and t.x? and t.y?
+        @center t
 
   mounted: () ->
-    zoom = d3.zoom()
+    @svg = d3.select(@$el).select('svg')
+    @zoom = d3.zoom()
       .scaleExtent(@space.zoom_scale_extent)
       .on 'zoom', () =>
         @$store.commit 'set_transform', d3.event.transform
-
-    d3.select(@$el).select('svg').call zoom
+    @svg.call @zoom
 
   components:
     floor: Floor
@@ -53,6 +66,33 @@ export default {
 
   methods:
     check: (floor) -> floor.order >= @space.order
+
+    center: (d) ->
+      width = @svg.node().getBoundingClientRect().width
+      height = @svg.node().getBoundingClientRect().height
+      k = @$store.state.additional.transform.k
+
+      center = {
+        x: d.x-1200*3/k
+        y: d.y-1000*3/k
+      }
+      transform = @to_bounding_box(width, height, center, width/k, height/k, 0)
+
+      @svg.call(@zoom.transform, transform)
+      @$store.state.additional.transform = transform
+    
+    to_bounding_box: (W, H, center, w, h, margin) ->
+      kw = (W - margin) / w
+      kh = (H - margin) / h
+      
+      k = d3.min [kw, kh]
+
+      x = W/2 - center.x*k
+      y = H/2 - center.y*k
+
+      return d3.zoomIdentity
+        .translate x, y
+        .scale k
 
 }
 </script>
