@@ -38,11 +38,12 @@ export default {
     click_close: () ->
       @$store.commit 'set_mode', undefined
       @$emit 'mobile_open', false
-    click_directions: () -> @$store.commit 'goto_directions', {
-      space: @space.id # FIXME this should be removed
-      from: '_'
-      to: if @target? then @target.id else '_'
-    }
+    click_directions: () -> 
+      @$store.commit 'goto_directions', {
+        space: @space._key # FIXME this should be removed
+        from: '_'
+        to: if @target? then @target._key else '_'
+      }
     click_search: () ->
       @$emit 'search', d3.select('.search').node().value
     change_result: (value) ->
