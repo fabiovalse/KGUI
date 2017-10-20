@@ -84,7 +84,7 @@ export default {
         else
           @groups = []
 
-      db.execute_arango @config.query, {id: @data._id}, true, null, cb, null
+      db.execute_arango @config.query, cb, null, {id: @data._id}
 
     get_link: (id) -> "#/target/#{id}"
     get_label: (n) -> n.label # FIXME: if n.new_data.label? then n.new_data.label else n.data.label

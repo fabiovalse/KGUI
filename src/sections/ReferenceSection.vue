@@ -40,7 +40,7 @@ export default {
       FOR v,e IN 1..2 OUTBOUND @id GRAPH 'CampusMap'
       FILTER e.type == 'in'
       RETURN v
-      """, {id: @data._id}, true, null, null, cb
+      """, cb, null, {id: @data._id}
 
     icon: (template) ->
       switch template
