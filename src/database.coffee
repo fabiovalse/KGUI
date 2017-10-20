@@ -171,12 +171,16 @@ module.exports = {
         cb {path: {nodes: nodes, links: links, weight: weight}, from: nodes[0], to: nodes[nodes.length-1]}
 
   query_node: (str, cb) ->
-    @execute_arango """
-    FOR doc IN CampusMap_nodes
-      FILTER CONTAINS(LOWER(doc.label), @str, false)
-      SORT doc.label
-      LIMIT 5
-      RETURN doc
-    """, {str: str}, true, null, null, cb
+    transform_cb = (data) -> if Array.isArray(data[0]) then data[0] else data
 
+    str = str.split ' '
+      .filter (s) -> s isnt ''
+      .map (s) -> "prefix:#{s}"
+      .join ','
+
+    @execute_arango """
+    LET n1 = (FOR n IN FULLTEXT(CampusMap_nodes, 'label', '#{str}', 5) RETURN n)
+    LET n2 = (FOR n IN FULLTEXT(CampusMap_nodes, 'tel', '#{str}', 5) RETURN n)
+    RETURN UNION(n1,n2)
+    """, {}, true, null, transform_cb, cb
 }
