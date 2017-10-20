@@ -118,6 +118,26 @@ input {
   margin: 12px 0px 0px 30px;
 }
 
+/*  Input placeholder color
+*/
+::-webkit-input-placeholder {
+  color: #D5D5D5;
+}
+:-moz-placeholder {
+   color: #D5D5D5;
+   opacity:  1;
+}
+::-moz-placeholder {
+   color: #D5D5D5;
+   opacity:  1;
+}
+:-ms-input-placeholder {
+   color: #D5D5D5;
+}
+::-ms-input-placeholder {
+   color: #D5D5D5;
+}
+
 @media (max-width: 480px) {
   .mobile_open .searchdirectionsbox {
     display: none;
