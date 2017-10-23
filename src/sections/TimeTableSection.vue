@@ -1,7 +1,7 @@
 <template>    
   <div v-if="data.timetables != undefined" class="timetable_section">
     <titlesubsection v-if="config.title !== undefined" :text="config.title"></titlesubsection>
-    <svg>
+    <svg :style="{height: time.length*row_height+40}">
       <!-- labels -->
       <g class="days" :transform="'translate('+left_margin+','+top_margin+')'">
         <circle
@@ -120,12 +120,6 @@ export default {
       day = new Date().getDay()
       return if day is 0 then 6 else day-1
 
-  watch:
-    data: () -> @init()
-
-  mounted: () -> 
-    @init()
-
   data: () ->
     days: ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato", "Domenica"]
     top_margin: 17
@@ -134,9 +128,6 @@ export default {
     column_width: 40
 
   methods:
-    init: () -> 
-      if @data.timetables?
-        @$el.querySelector('svg').style.height = @time.length*@row_height + 40
     check_open: (d, t) -> d.open <= t and d.close > t
     check_half: (d, t) -> 
       return (d.open%1 != 0 and (t+1)-d.open < 1) or (d.close%1 != 0 and d.close - t < 1)
