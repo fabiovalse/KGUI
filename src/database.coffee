@@ -136,16 +136,30 @@ module.exports = {
       transform_cb = (data) -> data[0]
 
       query = """
-      LET start = (
-        RETURN DOCUMENT(@from)
+      LET start = (RETURN DOCUMENT(@from))
+      LET from = (
+        LET pos = (
+          FOR v,e IN 2 OUTBOUND @from GRAPH 'CampusMap'
+            FILTER HAS(e, 'x') AND HAS(e, 'y')
+          RETURN e
+          )
+        RETURN LENGTH(pos) > 0 ? pos[0]._from : @from
+      )
+      LET to = (
+        LET pos = (
+          FOR v,e IN 2 OUTBOUND @to GRAPH 'CampusMap'
+            FILTER HAS(e, 'x') AND HAS(e, 'y')
+          RETURN e
+        )
+        RETURN LENGTH(pos) > 0 ? pos[0]._from : @to
       )
       LET sp = (
-        FOR v,e IN OUTBOUND SHORTEST_PATH
-        @from TO @to
-        GRAPH 'CampusMap'
-        OPTIONS {weightAttribute: 'weight'}
-        FILTER e.type == 'step'
-        RETURN {v: v, e: e.weight}
+        FOR v,e IN ANY SHORTEST_PATH
+          from[0] TO to[0]
+          GRAPH 'paths'
+          OPTIONS {weightAttribute: 'weight'}
+          FILTER e.type == 'step'
+        RETURN {v: v, w: e.weight}
       )
       LET vertexes = (
         FOR d in sp
@@ -153,14 +167,14 @@ module.exports = {
       )
       LET weights = (
         FOR d in sp
-        RETURN d.e
+        RETURN d.w
       )
       LET path = ( 
         FOR v IN UNION(start, vertexes)
           LET position = (
             FOR space, edge IN 1 ANY v._id GRAPH 'CampusMap'
-            FILTER HAS(edge, 'x') AND HAS(edge, 'y')
-            LIMIT 1
+              FILTER HAS(edge, 'x') AND HAS(edge, 'y')
+              LIMIT 1
             RETURN {x: edge.x, y: edge.y, ghost: edge.ghost}
           )
           RETURN MERGE(v, position[0])
