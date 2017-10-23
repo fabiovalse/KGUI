@@ -12,7 +12,7 @@ module.exports = {
       .header 'Authorization', config.db.auth
       .post payload, callback
 
-  execute_arango: (query, bind_vars, count, batch_size, transform_cb, cb) ->
+  execute_arango: (query, cb, transform_cb, bind_vars, count=false, batch_size=null) ->
     post_data = {"query" : query, "bindVars": bind_vars, "count" : count, "batchSize" : batch_size}
 
     d3.request 'http://campusmap:8529/_db/campusmap/_api/cursor'
@@ -44,7 +44,7 @@ module.exports = {
         return obj
       return {}
 
-    @execute_arango """
+    query = """
     LET list = (
       FOR list, edge IN 1 ANY @id GRAPH 'CampusMap'
       FILTER edge.type == 'in_list'
@@ -78,20 +78,26 @@ module.exports = {
       vfs_path: vfs_path, 
       nodes: nodes
     }
-    """, {id: 'CampusMap_nodes/'+id}, true, null, transform_cb, cb
+    """
+    @execute_arango query, cb, transform_cb, {id: 'CampusMap_nodes/'+id}
 
   query_target: (id, cb) ->
     transform_cb = (data) -> if data? then data[0] else undefined
-    @execute_arango """
+    query = """
     FOR n IN CampusMap_nodes
       LET position = (
         FOR v,e IN 1..2 ANY @id GRAPH 'CampusMap'
         FILTER HAS(e, 'x') AND HAS(e, 'y')
         RETURN {x: e.x, y: e.y}
       )
+      LET floors = (
+        FOR v,e IN ANY @id GRAPH 'CampusMap'
+        RETURN v._key
+      )
       FILTER n._key == @key
-      RETURN MERGE(IS_NULL(FIRST(position)) ? {} : FIRST(position), n)
-    """, {key: id, id: 'CampusMap_nodes/'+id}, true, null, transform_cb, cb
+      RETURN MERGE(IS_NULL(FIRST(position)) ? {} : FIRST(position), n, {floors: floors})
+    """
+    @execute_arango query, cb, transform_cb, {key: id, id: 'CampusMap_nodes/'+id}
 
   query_family: (id, type, cb) ->
     @execute {query: "MATCH (:Space {id: {id}})-[{type: {type}}]->(parent) RETURN parent", params: {id: id, type: type}}, (data) =>
@@ -112,63 +118,56 @@ module.exports = {
 
       cb children
 
-#  query_directions: (context, from_id, to_id) ->
-#    to_id = if to_id? then to_id else '""' # Undefined is replaced by quotes. In this way it is possible to write only a Cypher query using the OPTIONAL MATCH operator.
-#    from_id = if from_id? then from_id else '""'
-#
-#    payload = {query: "OPTIONAL MATCH (start:Info) WHERE start.id={from_id} OPTIONAL MATCH (end:Info) WHERE end.id={to_id} RETURN start, end", params: {from_id: from_id, to_id: to_id}}
-#    @execute payload, (data) ->
-#      result = JSON.parse(data.responseText)
-#
-#      if result.data.length is 0 # If a node has no position, dijkstra fails, result is undefined, then switch to fullmap_mode
-#        context.commit 'set_mode', undefined
-#        return
-#
-#      [start, end] = result.data[0]
-#
-#      if start isnt null
-#        from_node = start.data
-#        from_node.id = from_id
-#      if end isnt null
-#        to_node = end.data
-#        to_node.id = to_id
-#
-#      context.commit '_set_directions_state', {path: undefined, weight: undefined, from: from_node, to: to_node}
-
   query_directions: (ids, cb) ->
     # Retrieve data about from or to
     if ids.from is '_' or ids.to is '_'
-      @execute {query: "OPTIONAL MATCH (start:Info) WHERE start.id={from_id} OPTIONAL MATCH (end:Info) WHERE end.id={to_id} RETURN start, end", params: {from_id: ids.from, to_id: ids.to}}, (data) ->
-        result = JSON.parse(data.responseText)
+      transform_cb = (data) ->
+        data[0].path = undefined
+        return data[0]
 
-        #if result.data.length is 0 # If a node has no position, dijkstra fails, result is undefined, then switch to fullmap_mode
-        #  context.commit 'set_mode', undefined
-        #  return
-
-        [start, end] = result.data[0]
-
-        if start isnt null
-          from_node = start.data
-          from_node.id = ids.from
-        if end isnt null
-          to_node = end.data
-          to_node.id = ids.to
-
-        cb {path: undefined, from: from_node, to: to_node}
-    # Execute dijkstra when both from and to exist
+      query = """
+      LET start = (RETURN DOCUMENT(@from))
+      LET end = (RETURN DOCUMENT(@to))
+      RETURN {from: start[0], to: end[0]}
+      """
+      @execute_arango query, cb, transform_cb, {from: 'CampusMap_nodes/'+ids.from, to: 'CampusMap_nodes/'+ids.to} 
+    # Execute dijkstra only when both from and to exist
     else
-      @execute {query: "MATCH (start:Info), (end:Info) WHERE start.id={from_id} AND end.id={to_id} CALL apoc.algo.dijkstra(start, end, 'related', 'weight') YIELD path, weight UNWIND nodes(path) AS point MATCH (point)-[{type: 'body'}]-(a:Annotation {ghost: false})-[{type: 'target'}]-(space) RETURN collect(DISTINCT {node: point, position: [a.x, a.y], space: space}) AS nodes, rels(path) AS rels, weight", params: {from_id: ids.from, to_id: ids.to}}, (data) =>
-        result = JSON.parse(data.responseText)
+      transform_cb = (data) -> data[0]
 
-        [nodes, links, weight] = result.data[0]
-
-        nodes = nodes.map (d) ->
-          n = d.node.data
-          n.position = d.position
-          n.space = d.space
-          return n
-
-        cb {path: {nodes: nodes, links: links, weight: weight}, from: nodes[0], to: nodes[nodes.length-1]}
+      query = """
+      LET start = (
+        RETURN DOCUMENT(@from)
+      )
+      LET sp = (
+        FOR v,e IN OUTBOUND SHORTEST_PATH
+        @from TO @to
+        GRAPH 'CampusMap'
+        OPTIONS {weightAttribute: 'weight'}
+        FILTER e.type == 'step'
+        RETURN {v: v, e: e.weight}
+      )
+      LET vertexes = (
+        FOR d in sp
+        RETURN d.v
+      )
+      LET weights = (
+        FOR d in sp
+        RETURN d.e
+      )
+      LET path = ( 
+        FOR v IN UNION(start, vertexes)
+          LET position = (
+            FOR space, edge IN 1 ANY v._id GRAPH 'CampusMap'
+            FILTER HAS(edge, 'x') AND HAS(edge, 'y')
+            LIMIT 1
+            RETURN {x: edge.x, y: edge.y, ghost: edge.ghost}
+          )
+          RETURN MERGE(v, position[0])
+      )
+      RETURN {path: path, from: path[0], to: path[LENGTH(path)-1], weight: SUM(weights)}
+      """
+      @execute_arango query, cb, transform_cb, {from: 'CampusMap_nodes/'+ids.from, to: 'CampusMap_nodes/'+ids.to}
 
   query_node: (str, cb) ->
     transform_cb = (data) -> if Array.isArray(data[0]) then data[0] else data
@@ -178,9 +177,10 @@ module.exports = {
       .map (s) -> "prefix:#{s}"
       .join ','
 
-    @execute_arango """
+    query = """
     LET n1 = (FOR n IN FULLTEXT(CampusMap_nodes, 'label', '#{str}', 5) RETURN n)
     LET n2 = (FOR n IN FULLTEXT(CampusMap_nodes, 'tel', '#{str}', 5) RETURN n)
     RETURN UNION(n1,n2)
-    """, {}, true, null, transform_cb, cb
+    """
+    @execute_arango query, cb, transform_cb, {}
 }
