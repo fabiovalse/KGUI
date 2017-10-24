@@ -2,8 +2,8 @@
   <div class="buildingmapview">
     <svg :viewBox="space.viewbox" :style="{background: space.background_color}">
       <g :transform="transform">
-        <floor v-if="check(floor)" 
-          v-for="floor in spaces"
+        <floor v-if="check(i)" 
+          v-for="(floor,i) in floors"
           :data="floor"
         ></floor>
         
@@ -18,7 +18,10 @@
         <placemark></placemark>
       </g>
     </svg>
-    <floorselector></floorselector>
+    <floorselector
+      :current_floor="current_floor"
+      @select="change_floor"
+    ></floorselector>
   </div>
 </template>
 
@@ -32,13 +35,26 @@ import Placemark from './Placemark.vue'
 import Path from './Path.vue'
 
 export default {
-
+  
   computed:
     transform: () -> @$store.state.additional.transform
-    pois: () -> if @$store.state.selection.space.nodes? then @$store.state.selection.space.nodes.filter (n) -> n? and n.template is 'poi' else []
-    labels: () -> if @$store.state.selection.space.nodes? then @$store.state.selection.space.nodes.filter (n) -> n? and n.template is 'room' else []
+    pois: () ->
+      if @$store.state.selection.space.nodes?
+        @$store.state.selection.space.nodes
+          .filter (n) -> n? and n.template is 'poi' 
+          .filter (n) => @current_floor is +n.floor
+      else
+        []
+    labels: () -> 
+      if @$store.state.selection.space.nodes?
+        @$store.state.selection.space.nodes
+          .filter (n) -> n? and n.template is 'room'
+          .filter (n) => @current_floor is +n.floor
+      else
+        []
     icons: () -> if @$store.state.selection.space.nodes? then @$store.state.selection.space.nodes.filter (n) -> n? and n.label in ['Stairs', 'Elevator', 'Toilet'] else []
-    spaces: () -> if @$store.state.selection.space? and @$store.state.selection.space.list? then @$store.state.selection.space.list.filter((d) -> d.urls?).reverse() else undefined
+    floors: () -> if @$store.state.selection.space? and @$store.state.selection.space.floors? then @$store.state.selection.space.floors else undefined
+    current_floor: () -> if @$store.state.selection.space? then @$store.state.selection.space.starting_floor else undefined
     space: () -> @$store.state.selection.space
     target: () -> @$store.state.selection.target
 
@@ -65,7 +81,10 @@ export default {
     directionpath: Path
 
   methods:
-    check: (floor) -> floor.order >= @space.order
+    check: (floor_index) -> floor_index <= @current_floor
+
+    change_floor: (floor_index) ->
+      @current_floor = floor_index
 
     center: (d) ->
       width = @svg.node().getBoundingClientRect().width

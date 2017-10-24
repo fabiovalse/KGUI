@@ -23,7 +23,7 @@ export default {
       state.space_id = id
       
       # reset target and directions if we are leaving the context (spaces not in the same list)
-      if not (state.space? and id in (state.space.list.map (d) -> d.id))
+      if not (state.space? and state.space.list? and id in (state.space.list.map (d) -> d.id)) # FIXME: the list attribute should be discussed
         state.target_id = undefined
         state.from_id = undefined
         state.to_id = undefined

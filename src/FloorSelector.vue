@@ -1,22 +1,29 @@
 <template>
   <div class="floorselector">
-    <button v-for="s in spaces" :class="{selected: s._id === space._id, under: s.order > space.order}" @click="change_space(s._key)">{{s.label}}</button>
+    <button 
+      v-for="(floor, floor_index) in floors" 
+      :class="{selected: floor_index === current_floor, under: floor_index > current_floor}"
+      @click="change_floor(floor_index)"
+    >{{floor.label}}</button>
   </div>
 </template>
 
 <script lang="coffee">
 export default {
+  props: ['current_floor']
+
   computed:
-    spaces: () -> @$store.state.selection.space.list
-    space: () -> @$store.state.selection.space
+    floors: () -> @$store.state.selection.space.floors
   
   methods:
-    change_space: (id) -> @$store.commit 'goto_space', id
+    change_floor: (floor_index) -> @$emit 'select', floor_index
 }
 </script>
 
 <style scoped>
 .floorselector {
+  display: flex;
+  flex-direction: column-reverse;
   cursor: pointer;
   background: white;
   border-radius: 3px;
@@ -57,12 +64,9 @@ button {
 
 
 @media (max-width: 480px) {
-
   .floorselector {
     bottom: 90px;
   }
-
-
 }
 
 </style>

@@ -10,7 +10,7 @@ export default {
     group: ''
   
   mounted: () ->
-    d3.text "#{@data.urls.slice(-1)[0]}", (result) =>
+    d3.text "#{@data.url}", (result) =>
       @group = result
 
 }
