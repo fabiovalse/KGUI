@@ -1,5 +1,5 @@
 <template>
-  <div class="ciclopi_section" v-if="data.id == 'area|ciclopi'">
+  <div class="ciclopi_section" v-if="data._key == 'ciclopi@area.cnr.it'">
     <titlesubsection :text="config.title"></titlesubsection>
     <div class="row" v-if="free_bikes.length > 0">
       <div class="label">{{free_bikes.length}} Pieni</div>

@@ -1,13 +1,13 @@
 <template>
   <div v-if="path !== undefined" class="directionsinfo">
     <div class="title">
-      <b>{{get_time(path.weight*10)}}</b> ({{path.weight*10}} m)
+      <b>{{get_time(weight*10)}}</b> ({{weight*10}} m)
     </div>
-    <div class="info" v-for="(node,i) in path.nodes">
+    <!-- <div class="info" v-for="(node,i) in path">
       <div class="icon"><i :class="get_info(node, i).icon"></i></div>
       <div class="text">{{get_info(node, i).text}}</div>
-      <div class="partial_distance">{{i < path.links.length-1 ? path.links[i].data.weight*10+'m' : ''}}</div>
-    </div>
+      <div class="partial_distance">{{i < path.length-2 ? path.links[i].data.weight*10+'m' : ''}}</div>
+    </div> -->
   </div>
 </template>
 
@@ -19,6 +19,7 @@ export default {
 
   computed:
     path: () -> @$store.state.selection.directions.path
+    weight: () -> @$store.state.selection.directions.weight
 
   methods:
     get_time: (distance) ->
@@ -34,15 +35,15 @@ export default {
       if i is 0
         {icon: 'icon-arrow-up', text: 'Prosegui diritto'}
       # Last step
-      else if i is @path.nodes.length-1
+      else if i is @path.length-1
         {icon: '', text: ''}
       # Intra space steps
-      else if n.space.data.id is @path.nodes[i+1].space.data.id
-        @angle_to_info @get_angle(@path.nodes[i-1].position, n.position, @path.nodes[i+1].position)
+      else if n.space.id is @path[i+1].space.id
+        @angle_to_info @get_angle(@path[i-1].position, n.position, @path[i+1].position)
       # Inter space steps
-      else if n.space.data.id < @path.nodes[i+1].space.data.id # FIXME: handle stairs and elevators
+      else if n.space.id < @path[i+1].space.id # FIXME: handle stairs and elevators
         {icon: 'icon-stairs', text: 'Sali piano'}
-      else if n.space.data.id > @path.nodes[i+1].space.data.id # FIXME: handle stairs and elevators
+      else if n.space.id > @path[i+1].space.id # FIXME: handle stairs and elevators
         {icon: 'icon-stairs', text: 'Scendi piano'}
 
     angle_to_info: (angle) ->
