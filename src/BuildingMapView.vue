@@ -35,7 +35,10 @@ import Placemark from './Placemark.vue'
 import Path from './Path.vue'
 
 export default {
-  
+
+  data: () ->
+    current_floor: @$store.state.selection.space.starting_floor
+
   computed:
     transform: () -> @$store.state.additional.transform
     pois: () ->
@@ -54,7 +57,6 @@ export default {
         []
     icons: () -> if @$store.state.selection.space.nodes? then @$store.state.selection.space.nodes.filter (n) -> n? and n.label in ['Stairs', 'Elevator', 'Toilet'] else []
     floors: () -> if @$store.state.selection.space? and @$store.state.selection.space.floors? then @$store.state.selection.space.floors else undefined
-    current_floor: () -> if @$store.state.selection.space? then @$store.state.selection.space.starting_floor else undefined
     space: () -> @$store.state.selection.space
     target: () -> @$store.state.selection.target
 
