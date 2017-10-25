@@ -84,20 +84,18 @@ module.exports = {
   query_target: (id, cb) ->
     transform_cb = (data) -> if data? then data[0] else undefined
     query = """
-    FOR n IN CampusMap_nodes
-      LET position = (
-        FOR v,e IN 1..2 ANY @id GRAPH 'CampusMap'
+    LET position = (
+      FOR v,e IN 1..2 OUTBOUND @id GRAPH 'CampusMap'
         FILTER HAS(e, 'x') AND HAS(e, 'y')
-        RETURN {x: e.x, y: e.y}
-      )
-      LET floors = (
-        FOR v,e IN ANY @id GRAPH 'CampusMap'
-        RETURN v._key
-      )
-      FILTER n._key == @key
-      RETURN MERGE(IS_NULL(FIRST(position)) ? {} : FIRST(position), n, {floors: floors})
+      RETURN {x: e.x, y: e.y, floor: +e.floor}
+    )
+    LET floors = (
+      FOR p in position
+      RETURN +p.floor
+    )
+    RETURN MERGE(IS_NULL(FIRST(position)) ? {} : FIRST(position), DOCUMENT(@id), {floors: floors})
     """
-    @execute_arango query, cb, transform_cb, {key: id, id: 'CampusMap_nodes/'+id}
+    @execute_arango query, cb, transform_cb, {id: 'CampusMap_nodes/'+id}
 
   query_family: (id, type, cb) ->
     @execute {query: "MATCH (:Space {id: {id}})-[{type: {type}}]->(parent) RETURN parent", params: {id: id, type: type}}, (data) =>
