@@ -63,7 +63,10 @@ export default {
     target: () -> @$store.state.selection.target
 
   watch: 
-    target: (t) -> 
+    target: (t) ->
+      if t? and not(@current_floor in t.floors)
+        @change_floor t.floor
+
       if t? and t.x? and t.y?
         @center t
 
