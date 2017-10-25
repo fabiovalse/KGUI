@@ -6,7 +6,8 @@
           v-for="(floor,i) in floors"
           :data="floor"
         ></floor>
-        
+        <g v-html="text_layer"></g>
+
         <directionpath></directionpath>
         <poi v-for="(poi,i) in pois" 
           :data="poi"
@@ -38,6 +39,7 @@ export default {
 
   data: () ->
     current_floor: @$store.state.selection.space.starting_floor
+    text_layer: ''
 
   computed:
     transform: () -> @$store.state.additional.transform
@@ -72,6 +74,10 @@ export default {
       .on 'zoom', () =>
         @$store.commit 'set_transform', d3.event.transform
     @svg.call @zoom
+
+    # Adding layer containg text for street names
+    d3.text "#{@space.text_layer}", (text_layer) =>
+      @text_layer = text_layer
 
   components:
     floor: Floor
