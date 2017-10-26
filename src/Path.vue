@@ -21,7 +21,7 @@ export default {
 
   computed:
     path: () -> if @$store.state.selection.directions? then @$store.state.selection.directions.path else undefined
-    waypoints: () -> if @$store.state.selection.directions? then @$store.state.selection.directions.path.filter((n) -> not n.template?) else undefined
+    waypoints: () -> if @$store.state.selection.directions? then @$store.state.selection.directions.path.filter((n) => not n.template? and n.floor is @current_floor) else undefined
     transform: () -> @$store.state.additional.transform
 
   methods:
