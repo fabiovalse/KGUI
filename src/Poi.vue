@@ -11,10 +11,10 @@
       </circle>
       <circle v-if="data.icon != undefined" class="foreground" r="60"></circle>
 
-      <rect v-if="data.text != undefined" class="background" width="120" height="120" x="-60" y="-55">
+      <rect v-if="data.text != undefined" class="background" width="120" height="120" x="-60" y="-55" rx="15" ry="15">
         <title>{{data.label}}</title>
       </rect>
-      <rect v-if="data.text != undefined" class="foreground" width="120" height="120" x="-60" y="-60"></rect>
+      <rect v-if="data.text != undefined" class="foreground" width="120" height="120" x="-60" y="-60" rx="15" ry="15"></rect>
 
       <foreignObject x="-50" y="-35" width="100" height="100">
         <i v-if="data.icon != undefined" :class="'icon icon-' + data.icon"></i>
