@@ -6,12 +6,19 @@
     @click="select()"
   >
     <g :transform="get_scale()">
-      <circle class="background" r="60" cy="5">
+      <circle v-if="data.icon != undefined" class="background" r="60" cy="5">
         <title>{{data.label}}</title>
       </circle>
-      <circle class="foreground" r="60"></circle>
+      <circle v-if="data.icon != undefined" class="foreground" r="60"></circle>
+
+      <rect v-if="data.text != undefined" class="background" width="120" height="120" x="-60" y="-55">
+        <title>{{data.label}}</title>
+      </rect>
+      <rect v-if="data.text != undefined" class="foreground" width="120" height="120" x="-60" y="-60"></rect>
+
       <foreignObject x="-50" y="-35" width="100" height="100">
-        <i :class="'icon icon-' + data.icon"></i>
+        <i v-if="data.icon != undefined" :class="'icon icon-' + data.icon"></i>
+        <div v-if="data.text != undefined" class="text">{{data.text}}</div>
       </foreignObject>
       <text class="background label" :class="{hidden: semantic_zoom()}" text-anchor="start" dy="0.35em" x="80">
         {{data.label}}
@@ -42,12 +49,9 @@ export default {
 </script>
 
 <style scoped>
-.target text {
-  font-weight: bold;
-}
-
 .poi {
   cursor: pointer;
+  --circle-text-color: #7b5b5b;
 }
 
 .poi circle.background {
@@ -55,28 +59,45 @@ export default {
   stroke: #777;
   stroke-width: 3px;
 }
-
 .poi circle.foreground {
   fill: #FFF;
   stroke: #DDD;
   stroke-width: 3px;
 }
 
+.poi rect.background {
+  fill: #777;
+  stroke: #777;
+  stroke-width: 3px;
+}
+.poi rect.foreground {
+  fill: #FFF;
+  stroke: #DDD;
+  stroke-width: 3px;
+}
+
 .poi .icon {
-  color: #7b5b5b;
+  color: var(--circle-text-color);
   display: block;
   width: 100px;
   height: 100px;
   font-size: 70px;
   text-align: center;
 }
+.poi .text {
+  font-size: 70px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: -5px;
+  color: var(--circle-text-color);
+}
 
 .poi .label {
   font-size: 90px;
 }
 .poi .background.label {
-  fill: white;
-  stroke: white;
+  fill: FFF;
+  stroke: FFF;
   opacity: 0.2;
   stroke-width: 12;
 }
