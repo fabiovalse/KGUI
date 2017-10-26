@@ -8,7 +8,9 @@
         ></floor>
         <g v-html="text_layer"></g>
 
-        <directionpath></directionpath>
+        <directionpath
+          :current_floor="current_floor"
+        ></directionpath>
         <poi v-for="(poi,i) in pois" 
           :data="poi"
         ></poi>

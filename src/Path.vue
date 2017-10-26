@@ -17,6 +17,7 @@
 
 <script lang="coffee">
 export default {
+  props: ['current_floor']
 
   computed:
     path: () -> if @$store.state.selection.directions? then @$store.state.selection.directions.path else undefined
@@ -25,6 +26,8 @@ export default {
 
   methods:
     get_d: (path) ->
+      path = path.filter (d) => d.floor is @current_floor
+      
       if path.length > 0
         return "M#{path[0].x} #{path[0].y}" + path.slice(1).map((d) -> " L#{d.x} #{d.y}").join('')
       else

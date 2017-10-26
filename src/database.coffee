@@ -170,10 +170,10 @@ module.exports = {
       LET path = ( 
         FOR v IN UNION(start, vertexes)
           LET position = (
-            FOR space, edge IN 1 ANY v._id GRAPH 'CampusMap'
+            FOR space, edge IN 1 OUTBOUND v._id GRAPH 'CampusMap'
               FILTER HAS(edge, 'x') AND HAS(edge, 'y')
               LIMIT 1
-            RETURN {x: edge.x, y: edge.y, ghost: edge.ghost}
+            RETURN edge
           )
           RETURN MERGE(v, position[0])
       )
