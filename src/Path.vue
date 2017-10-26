@@ -24,6 +24,11 @@ export default {
     waypoints: () -> if @$store.state.selection.directions? then @$store.state.selection.directions.path.filter((n) => not n.template? and n.floor is @current_floor) else undefined
     transform: () -> @$store.state.additional.transform
 
+  watch:
+    path: (new_path) -> 
+      if new_path?
+        @$emit 'changed', new_path[0].floor
+
   methods:
     get_d: (path) ->
       path = path.filter (d) => d.floor is @current_floor

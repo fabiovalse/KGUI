@@ -10,6 +10,7 @@
 
         <directionpath
           :current_floor="current_floor"
+          @changed="change_floor"
         ></directionpath>
         <poi v-for="(poi,i) in pois" 
           :data="poi"
