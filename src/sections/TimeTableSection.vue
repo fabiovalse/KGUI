@@ -118,8 +118,6 @@ export default {
           
           return if a > b then a else b
 
-      console.log max
-
       return [min.getHours()..(if max.getMinutes() is 0 then max.getHours() else max.getHours()+1)]
     
     today: () -> 
