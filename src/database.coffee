@@ -134,7 +134,6 @@ module.exports = {
       transform_cb = (data) -> data[0]
 
       query = """
-      LET start = (RETURN DOCUMENT(@from))
       LET from = (
         LET pos = (
           FOR v,e IN 2 OUTBOUND @from GRAPH 'CampusMap'
@@ -156,26 +155,22 @@ module.exports = {
           from[0] TO to[0]
           GRAPH 'paths'
           OPTIONS {weightAttribute: 'weight'}
-          FILTER e.type == 'step'
-        RETURN {v: v, w: e.weight}
-      )
-      LET vertexes = (
-        FOR d in sp
-        RETURN d.v
+        RETURN {e:e, v:v}
       )
       LET weights = (
         FOR d in sp
-        RETURN d.w
+        RETURN d.e.weight
       )
-      LET path = ( 
-        FOR v IN UNION(start, vertexes)
+      LET path = FLATTEN( 
+        FOR item IN sp
           LET position = (
-            FOR space, edge IN 1 OUTBOUND v._id GRAPH 'CampusMap'
+            FOR space, edge IN 1 OUTBOUND item.v._id GRAPH 'CampusMap'
               FILTER HAS(edge, 'x') AND HAS(edge, 'y')
-              LIMIT 1
-            RETURN edge
+            RETURN {x: edge.x, y: edge.y, floor: edge.floor}
           )
-          RETURN MERGE(v, position[0])
+          RETURN LENGTH(position) == 1 
+            ? MERGE(position[0], item.v)
+            : (FOR p in position RETURN MERGE(p, item.v))
       )
       RETURN {path: path, from: path[0], to: path[LENGTH(path)-1], weight: SUM(weights)}
       """

@@ -25,14 +25,14 @@ export default {
     transform: () -> @$store.state.additional.transform
 
   watch:
-    path: (new_path) -> 
+    path: (new_path) ->
       if new_path?
         @$emit 'changed', new_path[0].floor
 
   methods:
     get_d: (path) ->
-      path = path.filter (d) => d.floor is @current_floor
-      
+      path = path.filter (d) => +d.floor is @current_floor
+
       if path.length > 0
         return "M#{path[0].x} #{path[0].y}" + path.slice(1).map((d) -> " L#{d.x} #{d.y}").join('')
       else

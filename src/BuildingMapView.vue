@@ -99,7 +99,7 @@ export default {
     check: (floor_index) -> floor_index <= @current_floor
 
     change_floor: (floor_index) ->
-      @current_floor = floor_index
+      @current_floor = +floor_index
 
     center: (d) ->
       width = @svg.node().getBoundingClientRect().width
