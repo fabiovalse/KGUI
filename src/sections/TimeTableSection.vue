@@ -1,7 +1,7 @@
 <template>    
   <div v-if="data.timetables != undefined" class="timetable_section">
     <titlesubsection v-if="config.title !== undefined" :text="config.title"></titlesubsection>
-    <svg :style="{height: time.length*row_height+40}">
+    <svg :style="{height: timeslots.length*row_height+40}">
       <!-- labels -->
       <g class="days" :transform="'translate('+left_margin+','+top_margin+')'">
         <circle
@@ -20,7 +20,7 @@
         </text>
       </g>
       <g class="hours" :transform="'translate(0,'+top_margin*2+')'">
-        <text class="label" v-for="(d,i) in time"
+        <text class="label" v-for="(d,i) in timeslots"
           x="30"
           :y="i*tick_length"
           dy="0.35em"
@@ -35,10 +35,10 @@
           x1="0"
           y1="0"
           x2="0"
-          :y2="time.length*row_height"
+          :y2="timeslots.length*row_height"
         ></line>
         <line class="tick"
-          v-for="(d,i) in time"
+          v-for="(d,i) in timeslots"
           x1="-5"
           :y1="i*tick_length"
           x2="1"
@@ -48,19 +48,19 @@
 
       <!-- time slots -->
       <g transform="translate(40,35)">
-        <g v-for="(h,i) in time.slice(0,-1)">
+        <g v-for="(h,i) in timeslots.slice(0,-1)">
           <g v-for="(d,j) in timetable">
             <g v-if="check_half(d,h)">
               <rect
                 class="slot"
-                :class="{open: check_open(d,h), close: !check_open(d,h)}"
+                :class="{open: check_open(d,h,0), close: !check_open(d,h,0)}"
                 :x="j*column_width"
                 :y="i*tick_length"
                 :style="{height: (tick_length-2)/2}"
               ></rect>
               <rect
                 class="slot"
-                :class="{open: check_open(d,h+0.3), close: !check_open(d,h+0.3)}"
+                :class="{open: check_open(d,h,30), close: !check_open(d,h,30)}"
                 :x="j*column_width"
                 :y="i*tick_length + (tick_length-2)/2"
                 :style="{height: (tick_length-2)/2}"
@@ -95,30 +95,42 @@ export default {
       required: true
 
   computed:
-    timetable: () -> 
-      # FIXME: Once migration to Arango is terminated this should be only
-      #        if @data.timetables? then @data.timetables else []
-      if @data.timetables?
-        if typeof(@data.timetablesthen) is 'string'
-          return JSON.parse(@data.timetables)
-        else
-          return @data.timetables
-      else
-        return []
-    time: () -> 
+    timetable: () -> if @data.timetables? then @data.timetables else []
+    
+    timeslots: () -> 
       min = @timetable
         .filter (d) -> d.open?
         .map (d) -> d.open
-        .reduce (acc, cur) -> Math.min acc, cur
+        .reduce (acc, cur) => 
+          a = new Date("#{@today_date} #{acc}")
+          b = new Date("#{@today_date} #{cur}")
+          return if a < b then a else b
+
       max = @timetable
         .filter (d) -> d.close?
         .map (d) -> d.close
-        .reduce (acc, cur) -> Math.max acc, cur
-      return [Math.floor(min)..Math.ceil(max)]
-    tick_length: () -> @time.length*@row_height/(@time.length-1)
+        .reduce (acc, cur) =>
+          if Date.parse(acc) is NaN
+            a = new Date("#{@today_date} #{acc}")
+
+          a = acc
+          b = new Date("#{@today_date} #{cur}")
+          
+          return if a > b then a else b
+
+      console.log max
+
+      return [min.getHours()..(if max.getMinutes() is 0 then max.getHours() else max.getHours()+1)]
+    
     today: () -> 
       day = new Date().getDay()
       return if day is 0 then 6 else day-1
+
+    today_date: () -> 
+      today = new Date()
+      return "#{today.getMonth()+1}/#{today.getDate()}/#{today.getFullYear()}"
+
+    tick_length: () -> @timeslots.length*@row_height/(@timeslots.length-1)
 
   data: () ->
     days: ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì", "Sabato", "Domenica"]
@@ -128,9 +140,20 @@ export default {
     column_width: 40
 
   methods:
-    check_open: (d, t) -> d.open <= t and d.close > t
-    check_half: (d, t) -> 
-      return (d.open%1 != 0 and (t+1)-d.open < 1) or (d.close%1 != 0 and d.close - t < 1)
+    check_open: (d, h, m) -> 
+      open = new Date("#{@today_date} #{d.open}")
+      close = new Date("#{@today_date} #{d.close}")
+      bound = new Date("#{@today_date} #{h}:#{m}")
+
+      if m?
+        return open <= bound and close > bound
+      else
+        return open.getHours() <= h and close.getHours() > h
+    check_half: (d, h) -> 
+      open = new Date("#{@today_date} #{d.open}")
+      close = new Date("#{@today_date} #{d.close}")
+
+      return (open.getHours() is h and open.getMinutes() isnt 0) or (close.getHours() is h and close.getMinutes() isnt 0)
 
   components:
     titlesubsection: TitleSubSection
