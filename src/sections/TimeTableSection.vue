@@ -1,6 +1,10 @@
 <template>    
   <div v-if="data.timetables != undefined" class="timetable_section">
-    <titlesubsection v-if="config.title !== undefined" :text="config.title"></titlesubsection>
+    <titlesubsection 
+      v-if="config.title !== undefined"
+      :text="config.title+(is_now_open() ? ' - (Ora aperto)' : ' - (Ora chiuso)')"
+    ></titlesubsection>
+    
     <svg :style="{height: timeslots.length*row_height+40}">
       <!-- labels -->
       <g class="days" :transform="'translate('+left_margin+','+top_margin+')'">
@@ -53,14 +57,14 @@
             <g v-if="check_half(d,h)">
               <rect
                 class="slot"
-                :class="{open: check_open(d,h,0), close: !check_open(d,h,0)}"
+                :class="{open: is_slot_open(d,h,0), close: !is_slot_open(d,h,0)}"
                 :x="j*column_width"
                 :y="i*tick_length"
                 :style="{height: (tick_length-2)/2}"
               ></rect>
               <rect
                 class="slot"
-                :class="{open: check_open(d,h,30), close: !check_open(d,h,30)}"
+                :class="{open: is_slot_open(d,h,30), close: !is_slot_open(d,h,30)}"
                 :x="j*column_width"
                 :y="i*tick_length + (tick_length-2)/2"
                 :style="{height: (tick_length-2)/2}"
@@ -69,7 +73,7 @@
             <g v-else>
               <rect
                 class="slot"
-                :class="{open: check_open(d,h), close: !check_open(d,h)}"
+                :class="{open: is_slot_open(d,h), close: !is_slot_open(d,h)}"
                 :x="j*column_width"
                 :y="i*tick_length"
                 :style="{height: tick_length-2}"
@@ -120,7 +124,9 @@ export default {
 
       return [min.getHours()..(if max.getMinutes() is 0 then max.getHours() else max.getHours()+1)]
     
-    today: () -> 
+    now: () -> @$store.state.time.now
+
+    today: () ->
       day = new Date().getDay()
       return if day is 0 then 6 else day-1
 
@@ -138,7 +144,13 @@ export default {
     column_width: 40
 
   methods:
-    check_open: (d, h, m) -> 
+    is_now_open: () ->
+      day = new Date().getDay()
+      day = if day is 0 then 6 else day-1
+
+      return new Date("#{@today_date} #{@data.timetables[day].open}") <= new Date(@now) <= new Date("#{@today_date} #{@data.timetables[day].close}")
+
+    is_slot_open: (d, h, m) -> 
       open = new Date("#{@today_date} #{d.open}")
       close = new Date("#{@today_date} #{d.close}")
       bound = new Date("#{@today_date} #{h}:#{m}")
@@ -147,6 +159,7 @@ export default {
         return open <= bound and close > bound
       else
         return open.getHours() <= h and close.getHours() > h
+
     check_half: (d, h) -> 
       open = new Date("#{@today_date} #{d.open}")
       close = new Date("#{@today_date} #{d.close}")
