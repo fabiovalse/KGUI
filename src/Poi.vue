@@ -46,6 +46,7 @@ export default {
   computed:
     target: () -> @$store.state.selection.target
     transform: () -> @$store.state.additional.transform
+    now: () -> @$store.state.time.now
     today_date: () -> 
       if @data.timetables?
         today = new Date()
@@ -61,12 +62,11 @@ export default {
     is_open: (d) ->
       # Poi has a timetable
       if d.timetables?
-        now = new Date()
-        day_index = now.getDay()
+        day_index = @now.getDay()
         day_index = if day_index is 0 then 6 else day_index-1
 
         # Closed
-        if d.timetables[day_index].closed? or (now < new Date("#{@today_date} #{d.timetables[day_index].open}") or now > new Date("#{@today_date} #{d.timetables[day_index].close}"))
+        if d.timetables[day_index].closed? or (@now < new Date("#{@today_date} #{d.timetables[day_index].open}") or @now > new Date("#{@today_date} #{d.timetables[day_index].close}"))
           return false
         # Open
         else

@@ -17,6 +17,9 @@ Vue.use(VueTouch)
 router = new VueRouter(Router)
 window.store = new Vuex.Store(Store)
 
+# Starts the interval for the Now store variable
+window.store.dispatch 'start'
+
 custumizer = (a, b) -> if (_.isArray(a)) then b else undefined
 
 Vue.mixin({
