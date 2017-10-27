@@ -6,26 +6,34 @@
     @click="select()"
   >
     <g :transform="get_scale()">
-      <circle v-if="data.icon != undefined" class="background" r="60" cy="5">
-        <title>{{data.label}}</title>
-      </circle>
-      <circle v-if="data.icon != undefined" class="foreground" r="60"></circle>
+      <!-- Circle shaped POI -->
+      <g v-if="data.icon != undefined">
+        <circle v-if="is_open(data) != undefined" :class="{open: is_open(data), closed: !is_open(data)}" r="80"></circle>
+        <circle class="background" r="60" cy="5">
+          <title>{{data.label}}</title>
+        </circle>
+        <circle class="foreground" r="60"></circle>
+      </g>
 
-      <rect v-if="data.text != undefined" class="background" width="120" height="120" x="-60" y="-55" rx="15" ry="15">
-        <title>{{data.label}}</title>
-      </rect>
-      <rect v-if="data.text != undefined" class="foreground" width="120" height="120" x="-60" y="-60" rx="15" ry="15"></rect>
+      <!-- Rect shaped POI -->
+      <g v-if="data.text != undefined">
+        <rect class="background" width="120" height="120" x="-60" y="-55" rx="15" ry="15">
+          <title>{{data.label}}</title>
+        </rect>
+        <rect class="foreground" width="120" height="120" x="-60" y="-60" rx="15" ry="15"></rect>
+      </g>
 
+      <!-- Content -->
       <foreignObject x="-50" y="-35" width="100" height="100">
+        <!-- Icon -->
         <i v-if="data.icon != undefined" :class="'icon icon-' + data.icon"></i>
+        <!-- Text -->
         <div v-if="data.text != undefined" class="text">{{data.text}}</div>
       </foreignObject>
-      <text class="background label" :class="{hidden: semantic_zoom()}" text-anchor="start" dy="0.35em" x="80">
-        {{data.label}}
-      </text>
-      <text class="foreground label" :class="{hidden: semantic_zoom()}" text-anchor="start" dy="0.35em" x="80">
-        {{data.label}}
-      </text>
+      
+      <!-- External label -->
+      <text class="background label" :class="{hidden: semantic_zoom()}" text-anchor="start" dy="0.35em" x="80">{{data.label}}</text>
+      <text class="foreground label" :class="{hidden: semantic_zoom()}" text-anchor="start" dy="0.35em" x="80">{{data.label}}</text>
     </g>
     <title>{{data.label}}</title>
   </g>
@@ -38,12 +46,33 @@ export default {
   computed:
     target: () -> @$store.state.selection.target
     transform: () -> @$store.state.additional.transform
+    today_date: () -> 
+      if @data.timetables?
+        today = new Date()
+        return "#{today.getMonth()+1}/#{today.getDate()}/#{today.getFullYear()}"
+      else
+        return undefined
 
   methods:
     select: () -> @$store.dispatch 'select', {d: @data}
     get_translate: () -> "translate(#{@data.x}, #{@data.y})"
     get_scale: () -> "scale(#{if @transform? then 1/@transform.k else 1})"
     semantic_zoom: () -> @transform.k < 2.5
+    is_open: (d) ->
+      # Poi has a timetable
+      if d.timetables?
+        now = new Date()
+        day_index = now.getDay()
+        day_index = if day_index is 0 then 6 else day_index-1
+
+        # Closed
+        if d.timetables[day_index].closed? or (now < new Date("#{@today_date} #{d.timetables[day_index].open}") or now > new Date("#{@today_date} #{d.timetables[day_index].close}"))
+          return false
+        # Open
+        else
+          return true
+      else
+        return undefined
 
 }
 </script>
@@ -52,6 +81,13 @@ export default {
 .poi {
   cursor: pointer;
   --circle-text-color: #7b5b5b;
+}
+
+.poi .open {
+  fill: #ccebc5;
+}
+.poi .closed {
+  fill: #fbb4ae;
 }
 
 .poi circle.background {
