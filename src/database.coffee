@@ -166,6 +166,7 @@ module.exports = {
           LET position = (
             FOR space, edge IN 1 OUTBOUND item.v._id GRAPH 'CampusMap'
               FILTER HAS(edge, 'x') AND HAS(edge, 'y')
+              SORT edge.floor
             RETURN {x: edge.x, y: edge.y, floor: edge.floor}
           )
           RETURN LENGTH(position) == 1 
