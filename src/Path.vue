@@ -5,6 +5,13 @@
         class="path"
         :d="get_d()"
       />
+      <circle 
+        class="starting_point"
+        :style="{'stroke-width': 20/transform.k}"
+        :r="50/transform.k"
+        :cx="path[0].x"
+        :cy="path[0].y"
+      ></circle>
     </g>
     <g v-for="w in waypoints" :transform="get_transform(w)">
       <circle
@@ -36,9 +43,6 @@ export default {
           .map (d) -> +d.floor
 
         main_floor = new_path.filter (d) -> d.main?
-
-        console.log starting_point_floors
-        console.log main_floor
 
         # Use the main floor if exists
         if main_floor.length is 1
@@ -74,6 +78,11 @@ export default {
 .waypoint {
   fill: white;
   stroke-width: 15px;
+}
+
+.starting_point {
+  fill: #FFF;
+  stroke: #000;
 }
 
 </style>
