@@ -167,7 +167,7 @@ module.exports = {
             FOR space, edge IN 1 OUTBOUND item.v._id GRAPH 'CampusMap'
               FILTER HAS(edge, 'x') AND HAS(edge, 'y')
               SORT edge.floor
-            RETURN {x: edge.x, y: edge.y, floor: edge.floor}
+            RETURN edge
           )
           RETURN LENGTH(position) == 1 
             ? MERGE(position[0], item.v)
