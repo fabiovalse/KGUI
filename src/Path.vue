@@ -22,7 +22,7 @@ export default {
   computed:
     path: () -> 
       if @$store.state.selection.directions? and @$store.state.selection.directions.path?
-        return @$store.state.selection.directions.path.map (d,i) -> {d..., index: i}
+        return @$store.state.selection.directions.path
       else
         return undefined
     waypoints: () -> if @$store.state.selection.directions? then @$store.state.selection.directions.path.filter((n) => not n.template? and n.floor is @current_floor) else undefined
@@ -31,13 +31,20 @@ export default {
   watch:
     path: (new_path) ->
       if new_path?
-        @$emit 'changed', +new_path[0].floor
+        starting_point_floors = new_path
+          .filter (d) -> d._id is new_path[0]._id
+          .map (d) -> +d.floor
+
+        if not @current_floor in starting_point_floors
+          @$emit 'changed', d3.min(starting_point_floors)
 
   methods:
     get_d: () ->
-      path = @path.filter (d) => +d.floor is @current_floor
+      path = @path
+        .map (d,i) -> {d..., index: i}
+        .filter (d) => +d.floor is @current_floor
 
-      if path.length > 0 and path[path.length-1].index - path[0].index is path.length-1
+      if path.length > 0 and not(path.length is 2 and path.length < @path.length and path[0].index isnt path[1].index+1)
         return "M#{path[0].x} #{path[0].y}" + path.slice(1).map((d) -> " L#{d.x} #{d.y}").join('')
       else
         return ''
