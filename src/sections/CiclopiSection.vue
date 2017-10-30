@@ -29,6 +29,7 @@
 </template>
 
 <script lang="coffee">
+import config from '../config.coffee'
 import kgl from './kgl.coffee'
 import TitleSubSection from './TitleSubSection.vue'
 
@@ -47,18 +48,19 @@ export default {
     unavailable_slots: []
 
   mounted: () ->
-    _this = @
-    fetch('http://campusmap:8529/_db/campusmap/_api/simple/all', {
-      method: "PUT"
-      body: JSON.stringify({"collection": "CicloPI"})
-      headers: {Authorization: "Basic cm9vdDpjMjVhMjAxNw=="}
-    })
-    .then (response) -> response.json()
-    .then (data) ->
-      data = data.result[0]
-      _this.free_bikes = Array.from(Array(data.free_bikes).keys()).map (d) -> 1
-      _this.empty_slots = Array.from(Array(data.empty_slots).keys()).map (d) -> 0
-      _this.unavailable_slots = Array.from(Array(data.unavailable_slots).keys()).map (d) -> 2
+    if @data._key == 'ciclopi@area.cnr.it'
+      _this = @
+      fetch('http://campusmap:8529/_db/campusmap/_api/simple/all', {
+        method: "PUT"
+        body: JSON.stringify({"collection": "CicloPI"})
+        headers: {Authorization: config.db.auth}
+      })
+      .then (response) -> response.json()
+      .then (data) ->
+        data = data.result[0]
+        _this.free_bikes = Array.from(Array(data.free_bikes).keys()).map (d) -> 1
+        _this.empty_slots = Array.from(Array(data.empty_slots).keys()).map (d) -> 0
+        _this.unavailable_slots = Array.from(Array(data.unavailable_slots).keys()).map (d) -> 2
 
   components:
     titlesubsection: TitleSubSection
