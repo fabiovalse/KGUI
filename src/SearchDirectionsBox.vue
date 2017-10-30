@@ -154,6 +154,8 @@ input {
 
   .searchdirectionsbox {
     height: 110px;
+    top: 0;
+    left: 0;
   }
 }
 </style>
