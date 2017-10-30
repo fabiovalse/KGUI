@@ -1,7 +1,7 @@
 <template>
   <div v-if="path !== undefined" class="directionsinfo">
     <div class="title">
-      <b>{{get_time(weight*10)}}</b> ({{weight*10}} m)
+      <b>{{get_time(weight*meter_factor)}}</b> ({{get_space(weight*meter_factor)}})
     </div>
     <!-- <div class="info" v-for="(node,i) in path">
       <div class="icon"><i :class="get_info(node, i).icon"></i></div>
@@ -19,6 +19,7 @@ export default {
 
   computed:
     path: () -> @$store.state.selection.directions.path
+    meter_factor: () -> if @$store.state.selection.space? then @$store.state.selection.space.units.m else undefined
     weight: () -> @$store.state.selection.directions.weight
 
   methods:
@@ -29,6 +30,9 @@ export default {
       sec = Math.round((tot_sec/60 % 1)*10) *10
 
       return "#{min}m #{sec}s"
+
+    get_space: (distance) ->
+      return "#{distance.toFixed(1)} m"
 
     get_info: (n,i) -> 
       # First step
