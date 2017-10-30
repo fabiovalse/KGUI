@@ -16,7 +16,7 @@ module.exports = {
     #address: 'http://campusmap:7474/db/data/cypher',
     #address: 'http://wafi.iit.cnr.it:17474/db/data/cypher',
     # ARANGO
-    #address: 'http://wafi.iit.cnr.it:8529/_db/campusmap/_api/cursor'
+    #address: 'http://campusmap:8529/_db/campusmap/_api/cursor'
     address: 'http://wafi.iit.cnr.it:8529/_db/campusmap/_api/cursor'
     auth: 'Basic cmVhZG9ubHk6cmVhZG9ubHk='
   },
