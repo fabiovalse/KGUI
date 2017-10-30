@@ -15,8 +15,8 @@ module.exports = {
   execute_arango: (query, cb, transform_cb, bind_vars, count=false, batch_size=null) ->
     post_data = {"query" : query, "bindVars": bind_vars, "count" : count, "batchSize" : batch_size}
 
-    d3.request 'http://campusmap:8529/_db/campusmap/_api/cursor'
-      .header 'Authorization', 'Basic cm9vdDpjMjVhMjAxNw=='
+    d3.request config.db.address
+      .header 'Authorization', config.db.auth
       .post JSON.stringify(post_data), (data) =>
         result = JSON.parse(data.responseText).result
 
