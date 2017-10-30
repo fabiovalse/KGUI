@@ -35,7 +35,17 @@ export default {
           .filter (d) -> d._id is new_path[0]._id
           .map (d) -> +d.floor
 
-        if not @current_floor in starting_point_floors
+        main_floor = new_path.filter (d) -> d.main?
+
+        console.log starting_point_floors
+        console.log main_floor
+
+        # Use the main floor if exists
+        if main_floor.length is 1
+          @$emit 'changed', main_floor[0].floor
+
+        # Use the lowest floor if the starting point has multiple floors
+        if not(@current_floor of starting_point_floors)
           @$emit 'changed', d3.min(starting_point_floors)
 
   methods:
