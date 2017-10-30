@@ -7,7 +7,7 @@
   >
     <g :transform="get_scale()">
       <!-- Circle shaped POI -->
-      <g v-if="data.icon != undefined">
+      <g v-if="data.shape == 'circle'">
         <circle v-if="is_open(data) != undefined" :class="{open: is_open(data), closed: !is_open(data)}" r="80"></circle>
         <circle class="background" r="60" cy="5">
           <title>{{data.label}}</title>
@@ -16,7 +16,7 @@
       </g>
 
       <!-- Rect shaped POI -->
-      <g v-if="data.text != undefined">
+      <g v-if="data.shape == 'rect'">
         <rect class="background" width="120" height="120" x="-60" y="-55" rx="15" ry="15">
           <title>{{data.label}}</title>
         </rect>
