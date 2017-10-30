@@ -68,7 +68,7 @@ export default {
   watch: 
     target: (t) ->
       # When a new target is selected its floor is set as current
-      if t? and not(@current_floor in t.floors)
+      if t? and t.floors.length > 0 and not(@current_floor in t.floors)
         @change_floor t.floor
       # When a new target is selected the view is centered on the target coordinates
       if t? and t.x? and t.y?
@@ -99,6 +99,7 @@ export default {
     check: (floor_index) -> floor_index <= @current_floor
 
     change_floor: (floor_index) ->
+      console.log floor_index
       @current_floor = +floor_index
 
     center: (d) ->
