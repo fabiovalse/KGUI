@@ -5,7 +5,7 @@
         class="path"
         :d="get_d()"
       />
-      <circle 
+      <circle v-if="current_floor == path[0].floor"
         class="starting_point"
         :style="{'stroke-width': 20/transform.k}"
         :r="50/transform.k"
