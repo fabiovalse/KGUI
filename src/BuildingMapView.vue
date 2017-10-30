@@ -8,9 +8,6 @@
         ></floor>
         <g v-html="text_layer"></g>
 
-        <poi v-for="(poi,i) in pois" 
-          :data="poi"
-        ></poi>
         <maplabel v-for="(label,i) in labels" 
           :data="label"
         ></maplabel>
@@ -19,6 +16,10 @@
           :current_floor="current_floor"
           @changed="change_floor"
         ></directionpath>
+        
+        <poi v-for="(poi,i) in pois" 
+          :data="poi"
+        ></poi>
 
         <icon v-for="(icon,i) in icons" :data="icon"></icon>
         <placemark></placemark>
