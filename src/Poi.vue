@@ -8,23 +8,23 @@
     <g :transform="get_scale()">
       <!-- Circle shaped POI -->
       <g v-if="data.shape == 'circle'">
-        <circle v-if="is_open(data) != undefined" :class="{open: is_open(data), closed: !is_open(data)}" r="80"></circle>
-        <circle class="background" r="60" cy="5">
+        <circle v-if="is_open(data) != undefined" :class="{open: is_open(data), closed: !is_open(data)}" :r="mobile ? 320: 80"></circle>
+        <circle class="background" :r="mobile ? 240: 60" cy="5">
           <title>{{data.label}}</title>
         </circle>
-        <circle class="foreground" r="60"></circle>
+        <circle class="foreground" :r="mobile ? 240: 60"></circle>
       </g>
 
       <!-- Rect shaped POI -->
       <g v-if="data.shape == 'rect'">
-        <rect class="background" width="120" height="120" x="-60" y="-55" rx="15" ry="15">
+        <rect class="background" :width="mobile ? 360 : 120" :height="mobile ? 360 : 120" :x="mobile ? -180 : -60" :y="mobile ? -173 : -55" :rx="mobile ? 45 : 15" :ry="mobile ? 45 : 15">
           <title>{{data.label}}</title>
         </rect>
-        <rect class="foreground" width="120" height="120" x="-60" y="-60" rx="15" ry="15"></rect>
+        <rect class="foreground" :width="mobile ? 360 : 120" :height="mobile ? 360 : 120" :x="mobile ? -180 : -60" :y="mobile ? -180 : -60" :rx="mobile ? 45 : 15" :ry="mobile ? 45 : 15"></rect>
       </g>
 
       <!-- Content -->
-      <foreignObject x="-50" y="-35" width="100" height="100">
+      <foreignObject :x="mobile ? -145 : -50" :y="mobile? -135 : -35" :width="mobile ? 300 : 100" :height="mobile ? 300 : 100">
         <!-- Icon -->
         <i v-if="data.icon != undefined" :class="'icon icon-' + data.icon"></i>
         <!-- Text -->
@@ -32,8 +32,8 @@
       </foreignObject>
       
       <!-- External label -->
-      <text class="background label" :class="{hidden: semantic_zoom()}" text-anchor="start" dy="0.35em" x="80">{{data.label}}</text>
-      <text class="foreground label" :class="{hidden: semantic_zoom()}" text-anchor="start" dy="0.35em" x="80">{{data.label}}</text>
+      <text class="background label" :class="{hidden: semantic_zoom()}" text-anchor="start" dy="0.35em" :x="mobile ? 360 : 80">{{data.label}}</text>
+      <text class="foreground label" :class="{hidden: semantic_zoom()}" text-anchor="start" dy="0.35em" :x="mobile ? 360 : 80">{{data.label}}</text>
     </g>
     <title>{{data.label}}</title>
   </g>
@@ -53,6 +53,7 @@ export default {
         return "#{today.getMonth()+1}/#{today.getDate()}/#{today.getFullYear()}"
       else
         return undefined
+    mobile: () -> @$mq.below('480px')
 
   methods:
     select: () -> @$store.dispatch 'select', {d: @data}
@@ -147,7 +148,15 @@ export default {
 
 @media (max-width: 480px) {
   .poi .label {
-    font-size: 200px;
+    font-size: 240px;
+  }
+
+  .poi .icon {
+    font-size: 280px;
+  }
+
+  .poi .text {
+    font-size: 260px;
   }
 }
 

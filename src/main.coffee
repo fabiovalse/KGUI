@@ -14,6 +14,9 @@ Vue.use(VueRouter)
 import VueTouch from 'vue-touch'
 Vue.use(VueTouch)
 
+import vMediaQuery from 'v-media-query'
+Vue.use(vMediaQuery)
+
 router = new VueRouter(Router)
 window.store = new Vuex.Store(Store)
 
