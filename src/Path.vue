@@ -2,7 +2,11 @@
   <g class="directions_path" v-if="path !== undefined">
     <g>
       <path
-        class="path"
+        class="path bg"
+        :d="get_d()"
+      />
+      <path
+        class="path fg"
         :d="get_d()"
       />
       <circle v-if="current_floor == path[0].floor"
@@ -13,7 +17,7 @@
         :cy="path[0].y"
       ></circle>
     </g>
-    <g v-for="w in waypoints" :transform="get_transform(w)">
+    <g v-for="(w, i) in waypoints" :key="i" :transform="get_transform(w)">
       <circle
         class="waypoint"
         :r="10"
@@ -73,6 +77,11 @@ export default {
   stroke: #00B3FD;
   stroke-width: 7px;
   vector-effect: non-scaling-stroke;
+  stroke-linejoin: round;
+}
+.path.bg {
+  stroke: #417c94;
+  stroke-width: 9px;
 }
 
 .waypoint {
