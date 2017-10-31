@@ -163,15 +163,22 @@ module.exports = {
       )
       LET path = FLATTEN( 
         FOR item IN sp
-          LET position = (
+          LET edges = (
             FOR space, edge IN 1 OUTBOUND item.v._id GRAPH 'CampusMap'
               FILTER HAS(edge, 'x') AND HAS(edge, 'y')
               SORT edge.floor
             RETURN edge
           )
-          RETURN LENGTH(position) == 1 
-            ? MERGE(position[0], item.v)
-            : (FOR p in position RETURN MERGE(p, item.v))
+          LET main = (
+            FOR e IN edges
+              FILTER e.main == true
+            RETURN e
+          )
+          RETURN LENGTH(edges) == 1 
+            ? MERGE(edges[0], item.v)
+            : LENGTH(main) == 1
+              ? main[0]
+              : (FOR e in edges RETURN MERGE(e, item.v))
       )
       RETURN {path: path, from: path[0], to: path[LENGTH(path)-1], weight: SUM(weights)}
       """
