@@ -50,6 +50,7 @@ module.exports = {
       ]}
       {t: 'timetable', title: 'Orari di apertura', value: '{{timetables}}'}
       {t: 'ciclopi', title: 'Stato stalli'}
+      {t: 'related', title: 'Persone', query: "FOR v, e IN ANY @id GRAPH 'CampusMap' FILTER e.type == 'in' SORT v.label RETURN v"}
       {t: 'text', text: '{{about}}', collapsible: true}
     ],
     institute: [
@@ -94,7 +95,7 @@ module.exports = {
         {label: '**Floor**', value: '{{floor}}'}
         {label: '**Entrance**', value: '{{entrance}}'}
       ]}
-      {t: 'related', title: 'People', query: "FOR v, e IN ANY @id GRAPH 'CampusMap' FILTER e.type == 'in' SORT v.label RETURN v"} # "MATCH ({id: {current}})-[{type: 'in'}]-(n) RETURN DISTINCT(n) ORDER BY n.label ASC"}
+      {t: 'related', title: 'Persone', query: "FOR v, e IN ANY @id GRAPH 'CampusMap' FILTER e.type == 'in' SORT v.label RETURN v"} # "MATCH ({id: {current}})-[{type: 'in'}]-(n) RETURN DISTINCT(n) ORDER BY n.label ASC"}
     ]
   }
 }
