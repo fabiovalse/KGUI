@@ -177,7 +177,7 @@ module.exports = {
           RETURN LENGTH(edges) == 1 
             ? MERGE(edges[0], item.v)
             : LENGTH(main) == 1
-              ? main[0]
+              ? MERGE(main[0], item.v)
               : (FOR e in edges RETURN MERGE(e, item.v))
       )
       RETURN {path: path, from: path[0], to: path[LENGTH(path)-1], weight: SUM(weights)}
