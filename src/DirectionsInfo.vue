@@ -3,11 +3,9 @@
     <div class="title">
       <b>{{get_time(weight*meter_factor)}}</b> ({{get_space(weight*meter_factor)}})
     </div>
-    <!-- <div class="info" v-for="(node,i) in path">
-      <div class="icon"><i :class="get_info(node, i).icon"></i></div>
-      <div class="text">{{get_info(node, i).text}}</div>
-      <div class="partial_distance">{{i < path.length-2 ? path.links[i].data.weight*10+'m' : ''}}</div>
-    </div> -->
+    <div class="info" v-for="(node,i) in poi_path" :key="i">
+      <div class="text">{{node.label}}</div>
+    </div>
   </div>
 </template>
 
@@ -19,6 +17,7 @@ export default {
 
   computed:
     path: () -> @$store.state.selection.directions.path
+    poi_path: () -> @path.filter (d) -> not d.waypoint
     meter_factor: () -> if @$store.state.selection.space? then @$store.state.selection.space.units.m else undefined
     weight: () -> @$store.state.selection.directions.weight
 
@@ -33,49 +32,6 @@ export default {
 
     get_space: (distance) ->
       return "#{distance.toFixed(1)} m"
-
-    get_info: (n,i) -> 
-      # First step
-      if i is 0
-        {icon: 'icon-arrow-up', text: 'Prosegui diritto'}
-      # Last step
-      else if i is @path.length-1
-        {icon: '', text: ''}
-      # Intra space steps
-      else if n.space.id is @path[i+1].space.id
-        @angle_to_info @get_angle(@path[i-1].position, n.position, @path[i+1].position)
-      # Inter space steps
-      else if n.space.id < @path[i+1].space.id # FIXME: handle stairs and elevators
-        {icon: 'icon-stairs', text: 'Sali piano'}
-      else if n.space.id > @path[i+1].space.id # FIXME: handle stairs and elevators
-        {icon: 'icon-stairs', text: 'Scendi piano'}
-
-    angle_to_info: (angle) ->
-      if angle > 180
-        {icon: 'icon-arrow-right', text: 'Gira a destra'}
-      else if angle < 180
-        {icon: 'icon-arrow-left', text: 'Gira a sinistra'}
-      else
-        {icon: 'icon-arrow-up', text: 'Prosegui diritto'}
-
-    get_angle: (p0,p1,p2) ->
-      c2 = Math.pow(p0[0] - p2[0], 2) + Math.pow(p0[1] - p2[1], 2)
-      a2 = Math.pow(p0[0] - p1[0], 2) + Math.pow(p0[1] - p1[1], 2)
-      b2 = Math.pow(p2[0] - p1[0], 2) + Math.pow(p2[1] - p1[1], 2)
-
-      a = Math.sqrt a2
-      b = Math.sqrt b2
-
-      val = (a2 + b2 - c2) / (2 * a * b)
-      angle = Math.acos(val)
-
-      v1x = p0[0] - p1[0]
-      v1y = p0[1] - p1[1]
-      v2x = p2[0] - p1[0]
-      v2y = p2[1] - p1[1]
-
-      return (Math.atan2(v1x, v1y) - Math.atan2(v2x, v2y)) * 180 / Math.PI
-
 }
 </script>
 
