@@ -32,8 +32,10 @@
       </foreignObject>
       
       <!-- External label -->
-      <text class="background label" :class="{hidden: semantic_zoom()}" text-anchor="start" dy="0.35em" :x="mobile ? 360 : 80">{{data.label}}</text>
-      <text class="foreground label" :class="{hidden: semantic_zoom()}" text-anchor="start" dy="0.35em" :x="mobile ? 360 : 80">{{data.label}}</text>
+      <g v-if="data.text == undefined">
+        <text class="background label" :class="{hidden: semantic_zoom()}" text-anchor="start" dy="0.35em" :x="mobile ? 360 : 80">{{data.label}}</text>
+        <text class="foreground label" :class="{hidden: semantic_zoom()}" text-anchor="start" dy="0.35em" :x="mobile ? 360 : 80">{{data.label}}</text>
+      </g>
     </g>
     <title>{{data.label}}</title>
   </g>
