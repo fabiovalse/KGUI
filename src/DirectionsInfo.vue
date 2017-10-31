@@ -24,10 +24,10 @@ export default {
 
   methods:
     get_time: (distance) ->
-      tot_sec = distance/@human_walking_speed
+      time = distance/@human_walking_speed
 
-      min = Math.floor tot_sec/60
-      sec = Math.round((tot_sec/60 % 1)*10) *10
+      min = Math.floor(time / 60)
+      sec = Math.floor(time - min * 60)
 
       return "#{min}m #{sec}s"
 
