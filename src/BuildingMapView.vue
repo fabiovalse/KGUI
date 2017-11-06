@@ -21,7 +21,6 @@
           :data="poi"
         ></poi>
 
-        <icon v-for="(icon,i) in icons" :data="icon"></icon>
         <placemark></placemark>
       </g>
     </svg>
@@ -37,7 +36,6 @@ import Floor from './Floor.vue'
 import FloorSelector from './FloorSelector.vue'
 import Poi from './Poi.vue'
 import Label from './Label.vue'
-import Icon from './Icon.vue'
 import Placemark from './Placemark.vue'
 import Path from './Path.vue'
 
@@ -63,7 +61,6 @@ export default {
           .filter (n) => @current_floor is +n.floor
       else
         []
-    icons: () -> if @$store.state.selection.space.nodes? then @$store.state.selection.space.nodes.filter (n) -> n? and n.label in ['Stairs', 'Elevator', 'Toilet'] else []
     floors: () -> if @$store.state.selection.space? and @$store.state.selection.space.floors? then @$store.state.selection.space.floors else undefined
     space: () -> @$store.state.selection.space
     target: () -> @$store.state.selection.target
@@ -97,7 +94,6 @@ export default {
     floorselector: FloorSelector
     poi: Poi
     maplabel: Label
-    icon: Icon
     placemark: Placemark
     directionpath: Path
 
