@@ -166,7 +166,6 @@ module.exports = {
           LET edges = (
             FOR space, edge IN 1 OUTBOUND item.v._id GRAPH 'CampusMap'
               FILTER HAS(edge, 'x') AND HAS(edge, 'y')
-              SORT edge.floor
             RETURN edge
           )
           LET main = (
@@ -178,7 +177,7 @@ module.exports = {
             ? MERGE(edges[0], item.v)
             : LENGTH(main) == 1
               ? MERGE(main[0], item.v)
-              : (FOR e in edges RETURN MERGE(e, item.v))
+              : (FOR e in edges RETURN MERGE(e, item.v, {multifloor: true}))
       )
       RETURN {path: path, from: path[0], to: path[LENGTH(path)-1], weight: SUM(weights)}
       """
