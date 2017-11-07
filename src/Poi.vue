@@ -134,10 +134,10 @@ export default {
   font-size: 20px;
 }
 .poi .background.label {
-  fill: FFF;
-  stroke: FFF;
-  opacity: 0.2;
-  stroke-width: 12;
+  fill: #FFF;
+  stroke: #FFF;
+  opacity: 0.4;
+  stroke-width: 3;
 }
 .poi .foreground.label {
   fill: #333;
