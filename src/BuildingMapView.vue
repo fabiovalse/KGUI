@@ -5,11 +5,13 @@
         <g  v-if="transform_resize != undefined" :transform="transform_resize">
           <floor v-if="check(i)" 
             v-for="(floor,i) in floors"
+            :key="floor.url"
             :data="floor"
           ></floor>
           <g v-html="text_layer"></g>
 
-          <maplabel v-for="(label,i) in labels" 
+          <maplabel v-for="label in labels"
+            :key="label._id"
             :data="label"
             :transform="transform"
             :transform_resize="transform_resize"
@@ -22,7 +24,8 @@
             @changed="change_floor"
           ></directionpath>
           
-          <poi v-for="(poi,i) in pois" 
+          <poi v-for="poi in pois" 
+            :key="poi._id"
             :data="poi"
             :transform="transform"
             :transform_resize="transform_resize"
