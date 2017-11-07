@@ -1,27 +1,36 @@
 <template>
   <div class="buildingmapview">
-    <svg :viewBox="space.viewbox" :style="{background: space.background_color}">
-      <g :transform="transform">
-        <floor v-if="check(i)" 
-          v-for="(floor,i) in floors"
-          :data="floor"
-        ></floor>
-        <g v-html="text_layer"></g>
+    <svg :style="{background: space.background_color}">
+      <g v-if="transform != undefined" :transform="transform">
+        <g  v-if="transform_resize != undefined" :transform="transform_resize">
+          <floor v-if="check(i)" 
+            v-for="(floor,i) in floors"
+            :data="floor"
+          ></floor>
+          <g v-html="text_layer"></g>
 
-        <maplabel v-for="(label,i) in labels" 
-          :data="label"
-        ></maplabel>
+          <maplabel v-for="(label,i) in labels" 
+            :data="label"
+            :transform="transform"
+            :transform_resize="transform_resize"
+          ></maplabel>
 
-        <directionpath
-          :current_floor="current_floor"
-          @changed="change_floor"
-        ></directionpath>
-        
-        <poi v-for="(poi,i) in pois" 
-          :data="poi"
-        ></poi>
+          <directionpath
+            :current_floor="current_floor"
+            @changed="change_floor"
+          ></directionpath>
+          
+          <poi v-for="(poi,i) in pois" 
+            :data="poi"
+            :transform="transform"
+            :transform_resize="transform_resize"
+          ></poi>
 
-        <placemark></placemark>
+          <placemark
+            :transform="transform"
+            :transform_resize="transform_resize"
+          ></placemark>
+        </g>
       </g>
     </svg>
     <floorselector
@@ -44,9 +53,12 @@ export default {
   data: () ->
     current_floor: @$store.state.selection.space.starting_floor
     text_layer: ''
+    width: document.body.getBoundingClientRect().width
+    height: document.body.getBoundingClientRect().height
+    transform: undefined
+    transform_resize: undefined
 
   computed:
-    transform: () -> @$store.state.additional.transform
     pois: () ->
       if @$store.state.selection.space.nodes?
         @$store.state.selection.space.nodes
@@ -64,6 +76,7 @@ export default {
     floors: () -> if @$store.state.selection.space? and @$store.state.selection.space.floors? then @$store.state.selection.space.floors else undefined
     space: () -> @$store.state.selection.space
     target: () -> @$store.state.selection.target
+    viewbox: () -> @$store.state.selection.space.viewbox
 
   watch: 
     target: (t) ->
@@ -78,44 +91,49 @@ export default {
         @center t
 
   mounted: () ->
+    # Add a listener for window resize
+    window.addEventListener 'resize', @update_size
+    @update_size()
+
+    # Initialize transform
+    @transform = d3.zoomIdentity
+
+    # Set a zoom behaviour
     @svg = d3.select(@$el).select('svg')
     @zoom = d3.zoom()
       .scaleExtent(@space.zoom_scale_extent)
       .on 'zoom', () =>
-        @$store.commit 'set_transform', d3.event.transform
+        @transform = d3.event.transform
     @svg.call @zoom
 
     # Adding layer containg text for street names
     d3.text "#{@space.text_layer}", (text_layer) =>
       @text_layer = text_layer
 
-  components:
-    floor: Floor
-    floorselector: FloorSelector
-    poi: Poi
-    maplabel: Label
-    placemark: Placemark
-    directionpath: Path
-
   methods:
+    update_size: () ->
+      @width = document.body.getBoundingClientRect().width
+      @height = document.body.getBoundingClientRect().height
+
+      @transform_resize = d3.zoomIdentity
+        .translate @width/2, @height/2
+        .scale Math.min @width/@viewbox[2], @height/@viewbox[3]
+        .translate -@viewbox[2]/2, -@viewbox[3]/2
+        .translate -@viewbox[0], -@viewbox[1]
+
     check: (floor_index) -> floor_index <= @current_floor
 
     change_floor: (floor_index) ->
       @current_floor = floor_index
 
     center: (d) ->
-      width = @svg.node().getBoundingClientRect().width
-      height = @svg.node().getBoundingClientRect().height
-      k = @$store.state.additional.transform.k
+      # k = @transform.k
 
-      center = {
-        x: d.x-1200*3/k
-        y: d.y-1000*3/k
-      }
-      transform = @to_bounding_box(width, height, center, width/k, height/k, 0)
-
-      @svg.call(@zoom.transform, transform)
-      @$store.state.additional.transform = transform
+      # center = {
+      #   x: @transform.x + d.x/k #d.x-1200*3/k
+      #   y: @transform.y + d.y/k #d.y-1000*3/k
+      # }
+      # @transform = @to_bounding_box(@width, @height, center, @width/k, @height/k, 0)
     
     to_bounding_box: (W, H, center, w, h, margin) ->
       kw = (W - margin) / w
@@ -129,6 +147,14 @@ export default {
       return d3.zoomIdentity
         .translate x, y
         .scale k
+
+  components:
+    floor: Floor
+    floorselector: FloorSelector
+    poi: Poi
+    maplabel: Label
+    placemark: Placemark
+    directionpath: Path
 
 }
 </script>
