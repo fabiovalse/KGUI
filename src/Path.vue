@@ -14,8 +14,8 @@
         v-for="p in floorswitchpoints"
         v-if="floorswitchpoints != undefined && p.floor == current_floor"
         @click="change_floor(p)"
-        :transform="'translate('+p.x+','+p.y+') scale('+(transform != undefined ? 1/transform.k : 1)+')'">
-        <foreignObject x="-50" y="-150" width="5" height="5">
+        :transform="'translate('+p.x+','+p.y+') scale('+(transform != undefined ? 1/k : 1)+')'">
+        <foreignObject x="-12.5" y="-50" width="5" height="5">
           <i v-if="p.floorswitch == 'up'" class="icon icon-arrow-up" title="Sali al piano superiore"></i>
           <i v-if="p.floorswitch == 'down'" class="icon icon-arrow-down" title="Scendi al piano inferiore"></i>
         </foreignObject>
@@ -23,8 +23,8 @@
 
       <circle v-if="current_floor == path[0].floor"
         class="starting_point"
-        :style="{'stroke-width': 20/transform.k}"
-        :r="50/transform.k"
+        :style="{'stroke-width': 20/k}"
+        :r="12.5/k"
         :cx="path[0].x"
         :cy="path[0].y"
       ></circle>
@@ -32,7 +32,7 @@
     <g v-for="(w, i) in waypoints" :key="i" :transform="get_transform(w)">
       <circle
         class="waypoint"
-        :r="10"
+        :r="2.5"
       ></circle>
     </g>
   </g>
@@ -40,7 +40,7 @@
 
 <script lang="coffee">
 export default {
-  props: ['current_floor']
+  props: ['current_floor', 'transform', 'transform_resize']
 
   computed:
     path: () -> 
@@ -85,7 +85,7 @@ export default {
       else
         return undefined
     
-    transform: () -> @$store.state.additional.transform
+    k: () -> @transform.k * @transform_resize.k
 
   watch:
     path: (new_path) ->
@@ -102,7 +102,7 @@ export default {
         return "M#{path[0].x} #{path[0].y}" + path.slice(1).map((d) -> " L#{d.x} #{d.y}").join('')
       else
         return ''
-    get_transform: (w) -> "translate(#{w.x}, #{w.y}) scale(#{if @transform? then 1/@transform.k else 1})"
+    get_transform: (w) -> "translate(#{w.x}, #{w.y}) scale(#{if @transform? then 1/@k else 1})"
     change_floor: (p) ->
       @$emit 'changed', if p.floorswitch is 'up' then p.floor+1 else p.floor-1
 
@@ -138,9 +138,9 @@ export default {
 }
 .floorswitchpoint .icon {
   display: block;
-  width: 100px;
-  height: 100px;
-  font-size: 100px;
+  width: 25px;
+  height: 25px;
+  font-size: 25px;
   text-align: center;
   background: #FFF;
   border-radius: 50px;
