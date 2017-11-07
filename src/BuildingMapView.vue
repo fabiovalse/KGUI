@@ -17,6 +17,8 @@
 
           <directionpath
             :current_floor="current_floor"
+            :transform="transform"
+            :transform_resize="transform_resize"
             @changed="change_floor"
           ></directionpath>
           
