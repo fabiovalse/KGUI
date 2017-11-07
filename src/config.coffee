@@ -10,7 +10,7 @@ module.exports = {
   },
   default_local_path: '/map@area.cnr.it/target/area@area.cnr.it',
   default_space: 'map@area.cnr.it',
-  default_starting_point: '37',
+  default_starting_point: 'entrance@area.cnr.it',
   db: {
     # NEO4j
     #address: 'http://campusmap:7474/db/data/cypher',
