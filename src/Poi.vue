@@ -13,6 +13,7 @@
           <title>{{data.label}}</title>
         </circle>
         <circle class="foreground" r="15"></circle>
+        <markercounter v-if="data.has_counter" :data="data"></markercounter>
       </g>
 
       <!-- Rect shaped POI -->
@@ -42,6 +43,8 @@
 </template>
 
 <script lang="coffee">
+import MarkerCounter from './MarkerCounter.vue'
+
 export default {
   props: ['data', 'transform', 'transform_resize']
 
@@ -75,6 +78,9 @@ export default {
           return true
       else
         return undefined
+
+  components:
+    markercounter: MarkerCounter
 
 }
 </script>
