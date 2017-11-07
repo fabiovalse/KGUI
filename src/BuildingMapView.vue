@@ -127,13 +127,17 @@ export default {
       @current_floor = floor_index
 
     center: (d) ->
-      # k = @transform.k
+      k = @transform.k
 
-      # center = {
-      #   x: @transform.x + d.x/k #d.x-1200*3/k
-      #   y: @transform.y + d.y/k #d.y-1000*3/k
-      # }
-      # @transform = @to_bounding_box(@width, @height, center, @width/k, @height/k, 0)
+      new_center = @transform_resize.apply [d.x, d.y]
+      center = {
+        x: new_center[0]
+        y: new_center[1]
+      }
+
+      @transform = @to_bounding_box(@width, @height, center, @width/k, @height/k, 0)
+      #@svg.call @zoom.transform, @transform
+      @zoom.transform @svg, @transform
     
     to_bounding_box: (W, H, center, w, h, margin) ->
       kw = (W - margin) / w
