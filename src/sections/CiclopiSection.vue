@@ -50,9 +50,9 @@ export default {
   mounted: () ->
     if @data._key == 'ciclopi@area.cnr.it'
       _this = @
-      fetch('http://campusmap:8529/_db/campusmap/_api/simple/all', {
+      fetch('http://wafi.iit.cnr.it:8529/_db/campusmap/_api/simple/all', {
         method: "PUT"
-        body: JSON.stringify({"collection": "CicloPI"})
+        body: JSON.stringify({"collection": "ciclopi"})
         headers: {Authorization: config.db.auth}
       })
       .then (response) -> response.json()

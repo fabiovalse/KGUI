@@ -32,7 +32,7 @@ export default {
       _this = @
       fetch('http://wafi.iit.cnr.it:8529/_db/campusmap/_api/simple/all', {
         method: "PUT"
-        body: JSON.stringify({"collection": "CicloPI"})
+        body: JSON.stringify({"collection": "ciclopi"})
         headers: {Authorization: config.db.auth}
       })
       .then (response) -> response.json()
