@@ -10,12 +10,12 @@
           ></floor>
           <g v-html="text_layer"></g>
 
-          <maplabel v-for="label in labels"
+          <mapmarker v-for="label in labels" 
             :key="label._id"
             :data="label"
             :transform="transform"
             :transform_resize="transform_resize"
-          ></maplabel>
+          ></mapmarker>
 
           <directionpath
             :current_floor="current_floor"
@@ -24,9 +24,9 @@
             @changed="change_floor"
           ></directionpath>
           
-          <mapmarker v-for="marker in markers" 
-            :key="marker._id"
-            :data="marker"
+          <mapmarker v-for="poi in pois" 
+            :key="poi._id"
+            :data="poi"
             :transform="transform"
             :transform_resize="transform_resize"
           ></mapmarker>
@@ -64,7 +64,7 @@ export default {
     transform_resize: undefined
 
   computed:
-    markers: () ->
+    pois: () ->
       if @$store.state.selection.space.nodes?
         @$store.state.selection.space.nodes
           .filter (n) -> n? and n.template is 'poi' 
