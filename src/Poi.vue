@@ -36,6 +36,15 @@
       <g>
         <text class="background label" :class="{hidden: semantic_zoom()}" text-anchor="start" dy="0.35em" x="20">{{data.label}}</text>
         <text class="foreground label" :class="{hidden: semantic_zoom()}" text-anchor="start" dy="0.35em" x="20">{{data.label}}</text>
+        <text
+          v-if="is_open(data) != undefined"
+          class="sublabel"
+          :class="{hidden: semantic_zoom()}"
+          x="20"
+          y="23"
+        >
+          {{is_open(data) ? 'Ora Aperto' : 'Ora Chiuso'}}
+        </text>
       </g>
     </g>
     <title>{{data.label}}</title>
@@ -147,6 +156,10 @@ export default {
 }
 .poi .foreground.label {
   fill: #333;
+}
+.poi .sublabel {
+  font-size: 15px;
+  fill: #404040;
 }
 
 .poi .hidden {
