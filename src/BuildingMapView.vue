@@ -24,12 +24,12 @@
             @changed="change_floor"
           ></directionpath>
           
-          <poi v-for="poi in pois" 
-            :key="poi._id"
-            :data="poi"
+          <mapmarker v-for="marker in markers" 
+            :key="marker._id"
+            :data="marker"
             :transform="transform"
             :transform_resize="transform_resize"
-          ></poi>
+          ></mapmarker>
 
           <placemark
             :transform="transform"
@@ -48,7 +48,7 @@
 <script lang="coffee">
 import Floor from './Floor.vue'
 import FloorSelector from './FloorSelector.vue'
-import Poi from './Poi.vue'
+import Marker from './Marker.vue'
 import Label from './Label.vue'
 import Placemark from './Placemark.vue'
 import Path from './Path.vue'
@@ -64,7 +64,7 @@ export default {
     transform_resize: undefined
 
   computed:
-    pois: () ->
+    markers: () ->
       if @$store.state.selection.space.nodes?
         @$store.state.selection.space.nodes
           .filter (n) -> n? and n.template is 'poi' 
@@ -160,7 +160,7 @@ export default {
   components:
     floor: Floor
     floorselector: FloorSelector
-    poi: Poi
+    mapmarker: Marker
     maplabel: Label
     placemark: Placemark
     directionpath: Path
