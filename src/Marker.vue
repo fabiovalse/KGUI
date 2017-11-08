@@ -15,7 +15,6 @@
         <circle class="foreground" r="15"></circle>
         <markercounter v-if="data.has_counter" :data="data"></markercounter>
       </g>
-
       <!-- Rect shaped Marker -->
       <g v-if="data.shape == 'rect'">
         <rect class="background" width="30" height="30" x="-15" y="-13" rx="3" ry="3">
@@ -24,28 +23,22 @@
         <rect class="foreground" width="30" height="30" x="-15" y="-15" rx="3" ry="3"></rect>
       </g>
 
-      <!-- Content -->
+      <!-- Icon -->
       <foreignObject x="-12.5" y="-8.5" width="25" height="25">
-        <!-- Icon -->
         <i v-if="data.icon != undefined" :class="'icon icon-' + data.icon"></i>
-        <!-- Text -->
-        <div v-if="data.text != undefined" class="text">{{data.text}}</div>
       </foreignObject>
+      <!-- Text -->
+      <g v-if="data.text != undefined && semantic_zoom(data)" :class="{text: data.shape == undefined, text_on_shape: data.shape != undefined}">
+        <text dy="0.35em">{{data.text}}</text>
+      </g>
       
       <!-- External label -->
-      <g>
-        <text class="background label" :class="{hidden: semantic_zoom()}" text-anchor="start" dy="0.35em" :y="is_open(data) != undefined ? -7 : 0" x="22">{{data.label}}</text>
-        <text class="foreground label" :class="{hidden: semantic_zoom()}" text-anchor="start" dy="0.35em" :y="is_open(data) != undefined ? -7 : 0" x="22">{{data.label}}</text>
-        
-        <text
-          v-if="is_open(data) != undefined"
-          class="sublabel"
-          :class="{hidden: semantic_zoom()}"
-          x="22"
-          y="16"
-        >
-          {{is_open(data) ? 'Ora Aperto' : 'Ora Chiuso'}}
-        </text>
+      <g v-if="data.text == undefined && semantic_zoom(data)">
+        <!-- Main label -->
+        <text class="background label" text-anchor="start" dy="0.35em" :y="is_open(data) != undefined ? -7 : 0" x="22">{{data.label}}</text>
+        <text class="foreground label" text-anchor="start" dy="0.35em" :y="is_open(data) != undefined ? -7 : 0" x="22">{{data.label}}</text>
+        <!-- Sublabel -->
+        <text v-if="is_open(data) != undefined" class="sublabel" x="22" y="16">{{is_open(data) ? 'Ora Aperto' : 'Ora Chiuso'}}</text>
       </g>
     </g>
     <title>{{data.label}}</title>
@@ -73,7 +66,20 @@ export default {
     select: () -> @$store.dispatch 'select', {d: @data}
     get_translate: () -> "translate(#{@data.x}, #{@data.y})"
     get_scale: () -> "scale(#{if @transform? then 1/(@transform.k*@transform_resize.k) else 1})"
-    semantic_zoom: () -> @transform.k < 2.5
+    
+    semantic_zoom: (d) ->
+      # Shape and text
+      if d.shape? and d.text?
+        true
+      # External labels
+      else if d.shape? and not(d.text?)
+        @transform.k > 2.5
+      # Only text (pois)
+      else if d.template is 'poi' and not(d.shape?) and d.text?
+        true
+      # Only text (rooms)
+      else if not(d.shape?) and d.text?
+        @transform.k > 5
     is_open: (d) ->
       # Marker has a timetable
       if d.timetables?
@@ -98,7 +104,7 @@ export default {
 <style scoped>
 .marker {
   cursor: pointer;
-  --circle-text-color: #7b5b5b;
+  --shape-content-color: #7b5b5b;
 }
 
 .marker .open {
@@ -131,7 +137,7 @@ export default {
 }
 
 .marker .icon {
-  color: var(--circle-text-color);
+  color: var(--shape-content-color);
   display: block;
   width: 25px;
   height: 25px;
@@ -141,9 +147,13 @@ export default {
 .marker .text {
   font-size: 18px;
   font-weight: bold;
-  text-align: center;
-  margin-top: -1px;
-  color: var(--circle-text-color);
+  fill: rgba(0,0,0,0.45);
+  text-anchor: middle;
+}
+.marker .text_on_shape {
+  fill: var(--shape-content-color);
+  font-weight: bold;
+  text-anchor: middle;
 }
 
 .marker .label {
@@ -161,10 +171,6 @@ export default {
 .marker .sublabel {
   font-size: 15px;
   fill: #404040;
-}
-
-.marker .hidden {
-  display: none;
 }
 
 </style>
