@@ -49,7 +49,7 @@ module.exports = {
         {label: 'Capacità', value: '{{capacity}}', icon: 'group'}
       ]}
       {t: 'timetable', title: 'Orari di apertura', value: '{{timetables}}'}
-      {t: 'ciclopi', title: 'Stato stalli'}
+      {t: 'ciclopi'}
       {t: 'related', title: 'Persone', query: "FOR v, e IN ANY @id GRAPH 'CampusMap' FILTER e.type == 'in' SORT v.label RETURN v"}
       {t: 'text', text: '{{about}}', collapsible: true}
     ],
