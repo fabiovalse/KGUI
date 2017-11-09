@@ -96,12 +96,27 @@ export default {
 
       # Average bike availability
       query = """
-      FOR doc IN ciclopi_history
-      COLLECT
-        hour = DATE_HOUR(doc._start)
-      AGGREGATE
-        free_bikes = AVERAGE(doc.free_bikes)
-      RETURN {hour, free_bikes}
+      FOR h IN (0..23)
+        LET S = DATE_TIMESTAMP(2017,11,9,h)
+        LET E = DATE_TIMESTAMP(2017,11,9,h+1)
+        
+        LET bin = (
+          FOR d in ciclopi_history
+            LET start = DATE_TIMESTAMP(d._start)
+            LET end = DATE_TIMESTAMP(d._end)
+        
+            FILTER start <= E AND end >= S
+            RETURN {free_bikes: d.free_bikes, duration: (MIN([E,end])-MAX([S,start]))}
+        )
+        LET total_duration = (
+          FOR record IN bin
+            RETURN record.duration
+        )
+        LET weighted_sum = (
+          FOR record IN bin
+            RETURN record.free_bikes*record.duration
+        )
+        RETURN {hour: h, free_bikes: SUM(weighted_sum)/SUM(total_duration)}
       """
 
       cb = (data) =>
