@@ -65,7 +65,7 @@ export default {
     empty_slots: []
     unavailable_slots: []
     free_bikes_hour_average: []
-    axis_length: 330
+    axis_length: 325
     ticks: [0..24]
     max_bar_height: 100
 
