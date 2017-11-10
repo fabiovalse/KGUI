@@ -1,10 +1,10 @@
 <template>
   <g class="markercounter"
     v-if="free_bikes != undefined"
-    transform="translate(15, -15)"
+    transform="translate(10.5, -10.5)"
   >
     <circle
-      r="10"
+      r="8"
     ></circle>
     <text dy="0.35em">{{free_bikes}}</text>
   </g>
@@ -55,7 +55,7 @@ export default {
 .markercounter text {
   text-anchor: middle;
   font-weight: bold;
-  font-size: 13px;
+  font-size: 10px;
   fill: #FFF;
 }
 </style>

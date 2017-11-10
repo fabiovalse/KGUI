@@ -7,38 +7,40 @@
   >
     <g :transform="get_scale()">
       <!-- Circle shaped Marker -->
-      <g v-if="data.shape == 'circle'">
-        <circle v-if="is_open(data) != undefined" :class="{open: is_open(data), closed: !is_open(data)}" r="20"></circle>
-        <circle class="background" r="15" cy="1">
+      <g v-if="data.shape == 'circle'" :class="data.layer != undefined ? data.layer : ''">
+        <circle v-if="is_open(data) != undefined" :class="{open: is_open(data), closed: !is_open(data)}" r="17"></circle>
+        <circle class="background" r="12" cy="1">
           <title>{{data.label}}</title>
         </circle>
-        <circle class="foreground" r="15"></circle>
+        <circle class="foreground" r="12"></circle>
         <markercounter v-if="data.has_counter" :data="data"></markercounter>
       </g>
       <!-- Rect shaped Marker -->
-      <g v-if="data.shape == 'rect'">
-        <rect class="background" width="30" height="30" x="-15" y="-13" rx="3" ry="3">
+      <g v-if="data.shape == 'rect'" :class="data.layer != undefined ? data.layer : ''">
+        <rect class="background" width="24" height="24" x="-12" y="-12" rx="3" ry="3">
           <title>{{data.label}}</title>
         </rect>
-        <rect class="foreground" width="30" height="30" x="-15" y="-15" rx="3" ry="3"></rect>
+        <rect class="foreground" width="24" height="24" x="-12" y="-13" rx="3" ry="3"></rect>
       </g>
 
       <!-- Icon -->
-      <foreignObject x="-12.5" y="-8.5" width="25" height="25">
+      <foreignObject x="-10" y="-7" width="20" height="20" :class="data.layer != undefined ? data.layer : ''">
         <i v-if="data.icon != undefined" :class="'icon icon-' + data.icon"></i>
       </foreignObject>
       <!-- Text -->
-      <g v-if="data.text != undefined && semantic_zoom(data)" :class="{text: data.shape == undefined, text_on_shape: data.shape != undefined}">
-        <text dy="0.35em">{{data.text}}</text>
+      <g :class="data.layer != undefined ? data.layer : ''">
+        <g v-if="data.text != undefined && semantic_zoom(data)" :class="{text: data.shape == undefined, text_on_shape: data.shape != undefined}">
+          <text dy="0.35em">{{data.text}}</text>
+        </g>
       </g>
-      
+
       <!-- External label -->
       <g v-if="data.text == undefined && semantic_zoom(data)">
         <!-- Main label -->
-        <text class="background label" text-anchor="start" dy="0.35em" :y="is_open(data) != undefined ? -7 : 0" x="22">{{data.label}}</text>
-        <text class="foreground label" text-anchor="start" dy="0.35em" :y="is_open(data) != undefined ? -7 : 0" x="22">{{data.label}}</text>
+        <text class="background label" text-anchor="start" dy="0.35em" :y="is_open(data) != undefined ? -7 : 0" x="17">{{data.label}}</text>
+        <text class="foreground label" text-anchor="start" dy="0.35em" :y="is_open(data) != undefined ? -7 : 0" x="17">{{data.label}}</text>
         <!-- Sublabel -->
-        <text v-if="is_open(data) != undefined" class="sublabel" x="22" y="16">{{is_open(data) ? 'Ora Aperto' : 'Ora Chiuso'}}</text>
+        <text v-if="is_open(data) != undefined" class="sublabel" x="17" y="13">{{is_open(data) ? 'Ora Aperto' : 'Ora Chiuso'}}</text>
       </g>
     </g>
     <title>{{data.label}}</title>
@@ -104,7 +106,6 @@ export default {
 <style scoped>
 .marker {
   cursor: pointer;
-  --shape-content-color: #7b5b5b;
 }
 
 .marker .open {
@@ -120,9 +121,9 @@ export default {
   stroke-width: 1px;
 }
 .marker circle.foreground {
-  fill: #FFF;
-  stroke: #DDD;
-  stroke-width: 1px;
+  fill: #7b5b5b;
+  stroke: #FFF;
+  stroke-width: 1.5px;
 }
 
 .marker rect.background {
@@ -131,17 +132,17 @@ export default {
   stroke-width: 1px;
 }
 .marker rect.foreground {
-  fill: #FFF;
-  stroke: #DDD;
-  stroke-width: 1px;
+  fill: #7b5b5b;
+  stroke: #FFF;
+  stroke-width: 1.5px;
 }
 
 .marker .icon {
-  color: var(--shape-content-color);
+  color: #FFF;
   display: block;
-  width: 25px;
-  height: 25px;
-  font-size: 18px;
+  width: 20px;
+  height: 20px;
+  font-size: 14px;
   text-align: center;
 }
 .marker .text {
@@ -151,13 +152,13 @@ export default {
   text-anchor: middle;
 }
 .marker .text_on_shape {
-  fill: var(--shape-content-color);
+  fill: #FFF;
   font-weight: bold;
   text-anchor: middle;
 }
 
 .marker .label {
-  font-size: 20px;
+  font-size: 16px;
 }
 .marker .background.label {
   fill: #FFF;
@@ -169,8 +170,38 @@ export default {
   fill: #333;
 }
 .marker .sublabel {
-  font-size: 15px;
+  font-size: 12.5px;
   fill: #404040;
 }
 
+/* Specific marker classes
+*/
+.marker .food_and_drinks .icon, .marker .mobility .icon, .marker .emergency .icon, .marker .commercial .icon {
+  color: #FFF;
+}
+.marker .food_and_drinks .foreground, .marker .mobility .foreground, .marker .emergency .foreground, .marker .commercial .foreground {
+  stroke: #FFF;
+  stroke-width: 1.5px;
+}
+
+.marker .food_and_drinks .foreground {
+  fill: #F57F17;
+}
+.marker .mobility .foreground {
+  fill: #00B0FF;
+}
+.marker .emergency .foreground {
+  fill: #DB4437;
+}
+.marker .commercial .foreground {
+  fill: #6b7DE3;
+}
+
+.marker .entrance .foreground {
+  fill: #f5f5f5;
+  stroke: #0d5784; 
+}
+.marker .entrance > * {
+  fill: #0d5784;
+}
 </style>
