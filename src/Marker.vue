@@ -13,7 +13,6 @@
           <title>{{data.label}}</title>
         </circle>
         <circle class="foreground" r="12"></circle>
-        <markercounter v-if="data.has_counter" :data="data"></markercounter>
       </g>
       <!-- Rect shaped Marker -->
       <g v-if="data.shape == 'rect'" :class="data.layer != undefined ? data.layer : ''">
@@ -42,6 +41,9 @@
         <!-- Sublabel -->
         <text v-if="is_open(data) != undefined" class="sublabel" x="17" y="13">{{is_open(data) ? 'Ora Aperto' : 'Ora Chiuso'}}</text>
       </g>
+
+      <!-- Marker Counter -->
+      <markercounter v-if="data.has_counter" :data="data"></markercounter>
     </g>
     <title>{{data.label}}</title>
   </g>

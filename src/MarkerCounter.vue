@@ -1,12 +1,12 @@
 <template>
   <g class="markercounter"
-    v-if="free_bikes != undefined"
-    transform="translate(10.5, -10.5)"
+    v-if="count != undefined"
+    transform="translate(11.5, -11.5)"
   >
     <circle
       r="8"
     ></circle>
-    <text dy="0.35em">{{free_bikes}}</text>
+    <text dy="0.35em">{{count}}</text>
   </g>
 </template>
 
@@ -17,7 +17,7 @@ export default {
   props: ['data']
 
   data: () ->
-    free_bikes: undefined
+    count: undefined
     interval_id: undefined
 
   mounted: () ->
@@ -29,16 +29,21 @@ export default {
 
   methods:
     tick: () ->
-      _this = @
-      fetch('http://wafi.iit.cnr.it:8529/_db/campusmap/_api/simple/all', {
-        method: "PUT"
-        body: JSON.stringify({"collection": "ciclopi"})
-        headers: {Authorization: config.db.auth}
-      })
-      .then (response) -> response.json()
-      .then (data) ->
-        data = data.result[0]
-        _this.free_bikes = data.free_bikes
+
+      # FIXME this should not be hardcoded
+      if @data._key is 'ciclopi@area.cnr.it'
+        _this = @
+        fetch('http://wafi.iit.cnr.it:8529/_db/campusmap/_api/simple/all', {
+          method: "PUT"
+          body: JSON.stringify({"collection": "ciclopi"})
+          headers: {Authorization: config.db.auth}
+        })
+        .then (response) -> response.json()
+        .then (data) ->
+          data = data.result[0]
+          _this.count = data.free_bikes
+      else
+        @count = 99
 
     start: () -> 
       @interval_id = setInterval (() => @tick()), 1000 * 30
