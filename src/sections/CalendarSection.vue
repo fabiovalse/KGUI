@@ -11,10 +11,10 @@
           {{new Date(event.day).getDate()}}
         </div>
       </div>
-      <div class="info">
+      <a class="info" :href="event.link" target="_blank">
         <div class="label">{{event.label}}</div>
         <div class="hours">@{{event.from}} - {{event.to}}</div>
-      </div>
+      </a>
     </div>
   </div>
 </template>
@@ -115,13 +115,12 @@ export default {
   width: var(--info-width);
   margin-left: 12px;
   padding: 3px;
+  color: #000;
+  text-decoration: none;
 }
-.event.today .info {
-  background: #ccebc5;
-  border-right: 3px solid #a5e297;
-}
-.event.future .info {
-  background: #F2F2F2;
+.event .info:hover {
+  background: #F8F8F8;
+  cursor: pointer;
 }
 .event .info .label {
   font-weight: bold;
@@ -130,6 +129,10 @@ export default {
 .event .info .hours {
   color: #808080;
   font-size: 13px;
+}
+.event.today .info {
+  background: #ccebc5;
+  border-right: 3px solid #a5e297;
 }
 .event.past .info .label, .event.past .info .hours {
   color: #DDD;
