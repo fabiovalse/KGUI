@@ -15,6 +15,7 @@ import SourceSection from './SourceSection.vue'
 import TimeTableSection from './TimeTableSection.vue'
 import CiclopiSection from './CiclopiSection.vue'
 import ReferenceSection from './ReferenceSection.vue'
+import CalendarSection from './CalendarSection.vue'
 
 export default {
   render: (createElement) ->
@@ -44,6 +45,7 @@ export default {
     timetablesection: TimeTableSection
     ciclopisection: CiclopiSection
     referencesection: ReferenceSection
+    calendarsection: CalendarSection
 
 }
 </script>
