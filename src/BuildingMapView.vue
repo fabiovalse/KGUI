@@ -42,6 +42,7 @@
       :current_floor="current_floor"
       @select="change_floor"
     ></floorselector>
+    <weatherpanel></weatherpanel>
   </div>
 </template>
 
@@ -52,6 +53,7 @@ import Marker from './Marker.vue'
 import Label from './Label.vue'
 import Placemark from './Placemark.vue'
 import Path from './Path.vue'
+import WeatherPanel from './WeatherPanel.vue'
 
 export default {
 
@@ -164,6 +166,7 @@ export default {
     maplabel: Label
     placemark: Placemark
     directionpath: Path
+    weatherpanel: WeatherPanel
 
 }
 </script>
@@ -182,6 +185,12 @@ svg {
 .floorselector {
   position: absolute;
   bottom: 10px;
+  right: 10px;
+}
+
+.weatherpanel {
+  position: absolute;
+  top: 10px;
   right: 10px;
 }
 
