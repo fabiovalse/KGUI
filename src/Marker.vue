@@ -109,10 +109,10 @@ export default {
 }
 
 .marker .open {
-  fill: #ccebc5;
+  fill: #a5e297;
 }
 .marker .closed {
-  fill: #fbb4ae;
+  fill: #f76558;
 }
 
 .marker circle.background {
