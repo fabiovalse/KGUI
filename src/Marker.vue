@@ -5,10 +5,10 @@
     :transform="get_translate()"
     @click="select()"
   >
-    <g :transform="get_scale()">
+    <g :transform="get_scale()" :class="{open: is_open(data), closed: !is_open(data)}">
       <!-- Circle shaped Marker -->
       <g v-if="data.shape == 'circle'" :class="data.layer != undefined ? data.layer : ''">
-        <circle v-if="is_open(data) != undefined" :class="{open: is_open(data), closed: !is_open(data)}" r="17"></circle>
+        <circle v-if="is_open(data) != undefined" r="17"></circle>
         <circle class="background" r="12" cy="1">
           <title>{{data.label}}</title>
         </circle>
@@ -108,11 +108,11 @@ export default {
   cursor: pointer;
 }
 
-.marker .open {
-  fill: #a5e297;
+.marker .open, .marker .open .sublabel {
+  fill: #238e0a;
 }
-.marker .closed {
-  fill: #f76558;
+.marker .closed, .marker .closed .sublabel {
+  fill: #b7382e;
 }
 
 .marker circle.background {
@@ -171,7 +171,6 @@ export default {
 }
 .marker .sublabel {
   font-size: 12.5px;
-  fill: #404040;
 }
 
 /* Specific marker classes
