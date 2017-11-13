@@ -24,6 +24,9 @@ export default {
   computed:
     mode: () -> @$store.getters.mode
     target: () -> @$store.state.selection.target
+  watch:
+    target: (new_target) ->
+      @$el.scrollTop = 0
   methods: # FIXME some methods are unused
     click_directions: () -> @$store.dispatch 'request_directions', {def: true}
     click: (e) ->
