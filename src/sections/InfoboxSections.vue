@@ -21,9 +21,9 @@ export default {
   render: (createElement) ->
     children = @template.map (section) => 
       if section.collapsible
-        createElement 'collapsiblebox', {}, [createElement section.t+'section', {props:{data:@target, config:section}}]
+        createElement 'collapsiblebox', {}, [createElement section.t+'section', {props:{data:@target, config:section}, key: @target._key}]
       else
-        createElement section.t+'section', {props:{data:@target, config:section}}
+        createElement section.t+'section', {props:{data:@target, config:section}, key: @target._key}
       
     return createElement 'div', {class: {sections: true}}, children
   computed:
