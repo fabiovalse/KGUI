@@ -67,6 +67,7 @@ export default {
 
 .temperature .current {
   font-size: 30px;
+  text-align: center;
 }
 .temperature .max, .temperature .min {
   font-size: 13px;
