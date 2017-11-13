@@ -49,10 +49,10 @@ module.exports = {
         {label: 'Capacità', value: '{{capacity}}', icon: 'group'}
       ]}
       {t: 'timetable', title: 'Orari di apertura', value: '{{timetables}}'}
+      {t: 'text', text: '{{about}}', collapsible: true}
       {t: 'ciclopi'}
       {t: 'calendar', title: 'Calendario eventi'}
       {t: 'related', title: 'Persone', query: "FOR v, e IN ANY @id GRAPH 'CampusMap' FILTER e.type == 'in' SORT v.label RETURN v"}
-      {t: 'text', text: '{{about}}', collapsible: true}
     ],
     institute: [
       {t: 'image'}
