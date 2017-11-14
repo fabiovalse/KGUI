@@ -5,21 +5,27 @@
     :transform="get_translate()"
     @click="select()"
   >
-    <g :transform="get_scale()" :class="{open: is_open(data), closed: !is_open(data)}">
+    <g :transform="get_scale()" :class="{open: open, closed: !open}">
       <!-- Circle shaped Marker -->
-      <g v-if="data.shape == 'circle'" :class="data.layer != undefined ? data.layer : ''">
-        <circle v-if="is_open(data) != undefined" r="17"></circle>
-        <circle class="background" r="12" cy="1">
+      <g
+        v-if="data.shape == 'circle'"
+        :class="data.layer != undefined ? data.layer : ''"
+      >
+        <circle v-if="open != undefined" :r="radius+3"></circle>
+        <circle class="background" :r="radius" cy="1">
           <title>{{data.label}}</title>
         </circle>
-        <circle class="foreground" r="12"></circle>
+        <circle class="foreground" :r="radius"></circle>
       </g>
       <!-- Rect shaped Marker -->
-      <g v-if="data.shape == 'rect'" :class="data.layer != undefined ? data.layer : ''">
-        <rect class="background" width="24" height="24" x="-12" y="-12" rx="3" ry="3">
+      <g
+        v-if="data.shape == 'rect'"
+        :class="data.layer != undefined ? data.layer : ''"
+      >
+        <rect class="background" :width="side" :height="side" :x="-side/2" :y="-side/2" rx="3" ry="3">
           <title>{{data.label}}</title>
         </rect>
-        <rect class="foreground" width="24" height="24" x="-12" y="-13" rx="3" ry="3"></rect>
+        <rect class="foreground" :width="side" :height="side" :x="-side/2" :y="-side/2-1" rx="3" ry="3"></rect>
       </g>
 
       <!-- Icon -->
@@ -36,10 +42,11 @@
       <!-- External label -->
       <g v-if="data.text == undefined && semantic_zoom(data)">
         <!-- Main label -->
-        <text class="background label" text-anchor="start" dy="0.35em" :y="is_open(data) != undefined ? -7 : 0" x="17">{{data.label}}</text>
-        <text class="foreground label" text-anchor="start" dy="0.35em" :y="is_open(data) != undefined ? -7 : 0" x="17">{{data.label}}</text>
+        <text class="background label" text-anchor="start" dy="0.35em" :y="open != undefined ? -7 : 0" x="17">{{data.label}}</text>
+        <text class="foreground label" text-anchor="start" dy="0.35em" :y="open != undefined ? -7 : 0" x="17">{{data.label}}</text>
         <!-- Sublabel -->
-        <text v-if="is_open(data) != undefined" class="sublabel" x="17" y="13">{{is_open(data) ? 'Ora Aperto' : 'Ora Chiuso'}}</text>
+        <text v-if="open != undefined" class="background sublabel" x="17" y="13">{{open ? 'Ora Aperto' : 'Ora Chiuso'}}</text>
+        <text v-if="open != undefined" class="foreground sublabel" x="17" y="13">{{open ? 'Ora Aperto' : 'Ora Chiuso'}}</text>
       </g>
 
       <!-- Marker Counter -->
@@ -55,6 +62,10 @@ import MarkerCounter from './MarkerCounter.vue'
 export default {
   props: ['data', 'transform', 'transform_resize']
 
+  data: () ->
+    side: 24
+    radius: 12
+
   computed:
     target: () -> @$store.state.selection.target
     now: () -> @$store.state.time.now
@@ -65,6 +76,20 @@ export default {
       else
         return undefined
     mobile: () -> @$mq.below('480px')
+    open: () ->
+      # Marker has a timetable
+      if @data.timetables?
+        day_index = @now.getDay()
+        day_index = if day_index is 0 then 6 else day_index-1
+
+        # Closed
+        if @data.timetables[day_index].closed? or (@now < new Date("#{@today_date} #{@data.timetables[day_index].open}") or @now > new Date("#{@today_date} #{@data.timetables[day_index].close}"))
+          return false
+        # Open
+        else
+          return true
+      else
+        return undefined
 
   methods:
     select: () -> @$store.dispatch 'select', {d: @data}
@@ -84,20 +109,6 @@ export default {
       # Only text (rooms)
       else if not(d.shape?) and d.text?
         @transform.k > 5
-    is_open: (d) ->
-      # Marker has a timetable
-      if d.timetables?
-        day_index = @now.getDay()
-        day_index = if day_index is 0 then 6 else day_index-1
-
-        # Closed
-        if d.timetables[day_index].closed? or (@now < new Date("#{@today_date} #{d.timetables[day_index].open}") or @now > new Date("#{@today_date} #{d.timetables[day_index].close}"))
-          return false
-        # Open
-        else
-          return true
-      else
-        return undefined
 
   components:
     markercounter: MarkerCounter
@@ -110,10 +121,16 @@ export default {
   cursor: pointer;
 }
 
-.marker .open, .marker .open .sublabel {
+.marker .background.sublabel {
+  fill: none;
+  stroke: #FFF;
+  stroke-width: 2px;
+  opacity: 0.4;
+}
+.marker .open, .marker .open .foreground.sublabel {
   fill: #238e0a;
 }
-.marker .closed, .marker .closed .sublabel {
+.marker .closed, .marker .closed .foreground.sublabel {
   fill: #b7382e;
 }
 
