@@ -11,7 +11,7 @@
         v-if="data.shape == 'circle'"
         :class="data.layer != undefined ? data.layer : ''"
       >
-        <circle v-if="open != undefined" :r="radius+3"></circle>
+        <circle class="status" v-if="open != undefined" :r="radius+3"></circle>
         <circle class="background" :r="radius" cy="1">
           <title>{{data.label}}</title>
         </circle>
@@ -42,11 +42,18 @@
       <!-- External label -->
       <g v-if="data.text == undefined && semantic_zoom(data)">
         <!-- Main label -->
-        <text class="background label" text-anchor="start" dy="0.35em" :y="open != undefined ? -7 : 0" x="17">{{data.label}}</text>
-        <text class="foreground label" text-anchor="start" dy="0.35em" :y="open != undefined ? -7 : 0" x="17">{{data.label}}</text>
+        <maplabel
+          :text="data.label"
+          :transform="'translate(17,' + (open != undefined ? -7 : 0) + ')'"
+        ></maplabel>
         <!-- Sublabel -->
-        <text v-if="open != undefined" class="background sublabel" x="17" y="13">{{open ? 'Ora Aperto' : 'Ora Chiuso'}}</text>
-        <text v-if="open != undefined" class="foreground sublabel" x="17" y="13">{{open ? 'Ora Aperto' : 'Ora Chiuso'}}</text>
+        <maplabel
+          v-if="open != undefined"
+          :text="open ? 'Ora Aperto' : 'Ora Chiuso'"
+          :open="open"
+          cls="sublabel"
+          transform="translate(17, 13)"
+        ></maplabel>
       </g>
 
       <!-- Marker Counter -->
@@ -57,6 +64,7 @@
 </template>
 
 <script lang="coffee">
+import Label from './Label.vue'
 import MarkerCounter from './MarkerCounter.vue'
 
 export default {
@@ -112,6 +120,7 @@ export default {
 
   components:
     markercounter: MarkerCounter
+    maplabel: Label
 
 }
 </script>
@@ -121,16 +130,10 @@ export default {
   cursor: pointer;
 }
 
-.marker .background.sublabel {
-  fill: none;
-  stroke: #FFF;
-  stroke-width: 2px;
-  opacity: 0.4;
-}
-.marker .open, .marker .open .foreground.sublabel {
+.marker .open .status {
   fill: #238e0a;
 }
-.marker .closed, .marker .closed .foreground.sublabel {
+.marker .closed .status {
   fill: #b7382e;
 }
 
@@ -174,22 +177,6 @@ export default {
   fill: #FFF;
   font-weight: bold;
   text-anchor: middle;
-}
-
-.marker .label {
-  font-size: 16px;
-}
-.marker .background.label {
-  fill: #FFF;
-  stroke: #FFF;
-  opacity: 0.4;
-  stroke-width: 3;
-}
-.marker .foreground.label {
-  fill: #333;
-}
-.marker .sublabel {
-  font-size: 12.5px;
 }
 
 /* Specific marker classes
