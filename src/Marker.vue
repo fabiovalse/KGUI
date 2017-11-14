@@ -48,8 +48,7 @@
         <!-- Sublabel -->
         <maplabel
           v-if="open != undefined"
-          :text="open ? 'Ora Aperto' : 'Ora Chiuso'"
-          :open="open"
+          :status="open"
           cls="sublabel"
           transform="translate(17, 13)"
         ></maplabel>
@@ -61,7 +60,7 @@
       <!-- Marker Status -->
       <circle
         class="status"
-        :class="{open: open, closed: !open}"
+        :class="open"
         v-if="open != undefined"
         r="4"
         :cx="10"
@@ -99,12 +98,20 @@ export default {
         day_index = @now.getDay()
         day_index = if day_index is 0 then 6 else day_index-1
 
+        open = new Date("#{@today_date} #{@data.timetables[day_index].open}")
+        close = new Date("#{@today_date} #{@data.timetables[day_index].close}")
+
+        diff = (close - @now) / (36*100000)
+
+        # Is closing soon
+        if diff > 0 and diff <= 0.5
+          return 'closing_soon'
         # Closed
-        if @data.timetables[day_index].closed? or (@now < new Date("#{@today_date} #{@data.timetables[day_index].open}") or @now > new Date("#{@today_date} #{@data.timetables[day_index].close}"))
-          return false
+        else if @data.timetables[day_index].closed? or (@now < open) or @now > close
+          return 'closed'
         # Open
         else
-          return true
+          return 'open'
       else
         return undefined
 
@@ -149,6 +156,10 @@ export default {
 .marker .closed.status {
   fill: #b7382e;
 }
+.marker .closing_soon.status {
+  fill: #eadb3f;
+}
+
 
 .marker circle.background {
   fill: #777;

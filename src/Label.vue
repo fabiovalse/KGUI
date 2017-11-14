@@ -4,22 +4,34 @@
       <text 
         v-if="halo == undefined"
         class="halo"
+        :class="status"
         dy="0.35em"
-        :class="{open: open != undefined && open, closed: open != undefined && !open}"
-      >{{text}}</text>
+      >{{label}}</text>
       <text
-        class="text"
+        :class="status"
         dy="0.35em"
-        :class="{open: open != undefined && open, closed: open != undefined && !open}"
-      >{{text}}</text>
+      >{{label}}</text>
     </g>
   </g>
 </template>
 
 <script lang="coffee">
 export default {
-  props: ['text', 'halo', 'cls', 'open']
+  props: ['text', 'halo', 'cls', 'status']
   
+  computed:
+    label: () ->
+      if @text?
+        return @text
+      else
+        return @get_text()
+
+  methods:
+    get_text: () ->
+      switch @status
+        when 'open' then 'Ora Aperto'
+        when 'closed' then 'Ora Chiuso'
+        when 'closing_soon' then 'Chiuderà presto'
 }
 </script>
 
@@ -40,6 +52,9 @@ export default {
 }
 .closed {
   fill: #b7382e;
+}
+.closing_soon {
+  fill: #eadb3f;
 }
 
 </style>
