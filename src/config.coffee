@@ -70,6 +70,7 @@ module.exports = {
     group: [
       {t: 'image'}
       {t: 'header', title: '{{label}}', subtitle: '{{type}}'}
+      {t: 'reference'}
       {t: 'list', items: [
         {label: 'Sito Web', value: '{{url}}', icon: 'url'}
       ]}
