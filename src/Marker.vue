@@ -5,13 +5,12 @@
     :transform="get_translate()"
     @click="select()"
   >
-    <g :transform="get_scale()" :class="{open: open, closed: !open}">
+    <g :transform="get_scale()">
       <!-- Circle shaped Marker -->
       <g
         v-if="data.shape == 'circle'"
         :class="data.layer != undefined ? data.layer : ''"
       >
-        <circle class="status" v-if="open != undefined" :r="radius+3"></circle>
         <circle class="background" :r="radius" cy="1">
           <title>{{data.label}}</title>
         </circle>
@@ -58,6 +57,16 @@
 
       <!-- Marker Counter -->
       <markercounter v-if="data.has_counter" :data="data"></markercounter>
+
+      <!-- Marker Status -->
+      <circle
+        class="status"
+        :class="{open: open, closed: !open}"
+        v-if="open != undefined"
+        r="4"
+        :cx="10"
+        :cy="8"
+      ></circle>
     </g>
     <title>{{data.label}}</title>
   </g>
@@ -130,10 +139,14 @@ export default {
   cursor: pointer;
 }
 
-.marker .open .status {
+.marker .status {
+  stroke: #FFF;
+  stroke-opacity: 0.5;
+}
+.marker .open.status {
   fill: #238e0a;
 }
-.marker .closed .status {
+.marker .closed.status {
   fill: #b7382e;
 }
 
