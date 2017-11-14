@@ -157,7 +157,7 @@ export default {
   fill: #b7382e;
 }
 .marker .closing_soon.status {
-  fill: #eadb3f;
+  fill: #dcc21c;
 }
 
 

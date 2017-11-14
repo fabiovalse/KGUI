@@ -54,7 +54,7 @@ export default {
   fill: #b7382e;
 }
 .closing_soon {
-  fill: #eadb3f;
+  fill: #dcc21c;
 }
 
 </style>
