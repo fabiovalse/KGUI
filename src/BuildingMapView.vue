@@ -50,7 +50,6 @@
 import Floor from './Floor.vue'
 import FloorSelector from './FloorSelector.vue'
 import Marker from './Marker.vue'
-import Label from './Label.vue'
 import Placemark from './Placemark.vue'
 import Path from './Path.vue'
 import WeatherPanel from './WeatherPanel.vue'
@@ -163,7 +162,6 @@ export default {
     floor: Floor
     floorselector: FloorSelector
     mapmarker: Marker
-    maplabel: Label
     placemark: Placemark
     directionpath: Path
     weatherpanel: WeatherPanel
