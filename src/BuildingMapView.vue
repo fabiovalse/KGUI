@@ -42,11 +42,12 @@
       :current_floor="current_floor"
       @select="change_floor"
     ></floorselector>
-    <weatherpanel></weatherpanel>
+    <weatherpanel v-if="config.weather"></weatherpanel>
   </div>
 </template>
 
 <script lang="coffee">
+import config from './config.coffee'
 import Floor from './Floor.vue'
 import FloorSelector from './FloorSelector.vue'
 import Marker from './Marker.vue'
@@ -83,6 +84,7 @@ export default {
     space: () -> @$store.state.selection.space
     target: () -> @$store.state.selection.target
     viewbox: () -> @$store.state.selection.space.viewbox
+    config: () -> config
 
   watch: 
     target: (t) ->
