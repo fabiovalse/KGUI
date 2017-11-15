@@ -8,7 +8,7 @@
         dy="0.35em"
       >{{label}}</text>
       <text
-        :class="status"
+        :class="status != undefined ? status.id : ''"
         dy="0.35em"
       >{{label}}</text>
     </g>
