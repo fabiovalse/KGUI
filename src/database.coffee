@@ -46,27 +46,27 @@ module.exports = {
 
     query = """
     LET list = (
-      FOR list, edge IN 1 ANY @id GRAPH 'CampusMap'
+      FOR list, edge IN 1 ANY @id GRAPH 'graph'
       FILTER edge.type == 'in_list'
       LET list_items = (
-        FOR v,e IN 1 ANY list GRAPH 'CampusMap'
+        FOR v,e IN 1 ANY list GRAPH 'graph'
         SORT v.order
         RETURN v
       )
       RETURN list_items
     )
     LET subspaces = (
-      FOR subspace, edge IN ANY @id GRAPH 'CampusMap'
+      FOR subspace, edge IN ANY @id GRAPH 'graph'
       FILTER edge.type == 'subspace'
       RETURN [subspace, LENGTH(edge) > 0]
     )
     LET vfs_path = (
-      FOR vertex, edge IN 0..10 INBOUND @id GRAPH 'CampusMap'
+      FOR vertex, edge IN 0..10 INBOUND @id GRAPH 'graph'
       FILTER edge.type == 'subspace'
       RETURN vertex
     )
     LET nodes = (
-      FOR vertex, edge IN ANY @id GRAPH 'CampusMap'
+      FOR vertex, edge IN ANY @id GRAPH 'graph'
       FILTER HAS(edge, 'x') AND HAS(edge, 'y')
       RETURN MERGE(edge, vertex)
     )
@@ -79,13 +79,13 @@ module.exports = {
       nodes: nodes
     }
     """
-    @execute_arango query, cb, transform_cb, {id: 'CampusMap_nodes/'+id}
+    @execute_arango query, cb, transform_cb, {id: 'nodes/'+id}
 
   query_target: (id, cb) ->
     transform_cb = (data) -> if data? then data[0] else undefined
     query = """
     LET position = (
-      FOR v,e IN 1..2 OUTBOUND @id GRAPH 'CampusMap'
+      FOR v,e IN 1..2 OUTBOUND @id GRAPH 'graph'
         FILTER HAS(e, 'x') AND HAS(e, 'y')
       RETURN {x: e.x, y: e.y, floor: +e.floor}
     )
@@ -95,7 +95,7 @@ module.exports = {
     )
     RETURN MERGE(IS_NULL(FIRST(position)) ? {} : FIRST(position), DOCUMENT(@id), {floors: floors})
     """
-    @execute_arango query, cb, transform_cb, {id: 'CampusMap_nodes/'+id}
+    @execute_arango query, cb, transform_cb, {id: 'nodes/'+id}
 
   query_family: (id, type, cb) ->
     @execute {query: "MATCH (:Space {id: {id}})-[{type: {type}}]->(parent) RETURN parent", params: {id: id, type: type}}, (data) =>
@@ -128,7 +128,7 @@ module.exports = {
       LET end = (RETURN DOCUMENT(@to))
       RETURN {from: start[0], to: end[0]}
       """
-      @execute_arango query, cb, transform_cb, {from: 'CampusMap_nodes/'+ids.from, to: 'CampusMap_nodes/'+ids.to} 
+      @execute_arango query, cb, transform_cb, {from: 'nodes/'+ids.from, to: 'nodes/'+ids.to} 
     # Execute dijkstra only when both from and to exist
     else
       transform_cb = (data) -> data[0]
@@ -136,7 +136,7 @@ module.exports = {
       query = """
       LET from = (
         LET pos = (
-          FOR v,e IN 2 OUTBOUND @from GRAPH 'CampusMap'
+          FOR v,e IN 2 OUTBOUND @from GRAPH 'graph'
             FILTER HAS(e, 'x') AND HAS(e, 'y')
           RETURN e
           )
@@ -144,7 +144,7 @@ module.exports = {
       )
       LET to = (
         LET pos = (
-          FOR v,e IN 2 OUTBOUND @to GRAPH 'CampusMap'
+          FOR v,e IN 2 OUTBOUND @to GRAPH 'graph'
             FILTER HAS(e, 'x') AND HAS(e, 'y')
           RETURN e
         )
@@ -164,7 +164,7 @@ module.exports = {
       LET path = FLATTEN( 
         FOR item IN sp
           LET edges = (
-            FOR space, edge IN 1 OUTBOUND item.v._id GRAPH 'CampusMap'
+            FOR space, edge IN 1 OUTBOUND item.v._id GRAPH 'graph'
               FILTER HAS(edge, 'x') AND HAS(edge, 'y')
             RETURN edge
           )
@@ -181,7 +181,7 @@ module.exports = {
       )
       RETURN {path: path, from: path[0], to: path[LENGTH(path)-1], weight: SUM(weights)}
       """
-      @execute_arango query, cb, transform_cb, {from: 'CampusMap_nodes/'+ids.from, to: 'CampusMap_nodes/'+ids.to}
+      @execute_arango query, cb, transform_cb, {from: 'nodes/'+ids.from, to: 'nodes/'+ids.to}
 
   query_node: (str, cb) ->
     transform_cb = (data) -> if Array.isArray(data[0]) then data[0] else data
@@ -192,8 +192,8 @@ module.exports = {
       .join ','
 
     query = """
-    LET n1 = (FOR n IN FULLTEXT(CampusMap_nodes, 'label', '#{str}', 5) RETURN n)
-    LET n2 = (FOR n IN FULLTEXT(CampusMap_nodes, 'tel', '#{str}', 5) RETURN n)
+    LET n1 = (FOR n IN FULLTEXT(nodes, 'label', '#{str}', 5) RETURN n)
+    LET n2 = (FOR n IN FULLTEXT(nodes, 'tel', '#{str}', 5) RETURN n)
     RETURN UNION(n1,n2)
     """
     @execute_arango query, cb, transform_cb, {}
