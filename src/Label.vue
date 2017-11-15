@@ -24,14 +24,8 @@ export default {
       if @text?
         return @text
       else
-        return @get_text()
+        return @status.label
 
-  methods:
-    get_text: () ->
-      switch @status
-        when 'open' then 'Ora Aperto'
-        when 'closed' then 'Ora Chiuso'
-        when 'closing_soon' then 'Chiuderà presto'
 }
 </script>
 

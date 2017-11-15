@@ -43,12 +43,12 @@
         <!-- Main label -->
         <maplabel
           :text="data.label"
-          :transform="'translate(17,' + (open != undefined ? -7 : 0) + ')'"
+          :transform="'translate(17,' + (status != undefined ? -7 : 0) + ')'"
         ></maplabel>
         <!-- Sublabel -->
         <maplabel
-          v-if="open != undefined"
-          :status="open"
+          v-if="status != undefined"
+          :status="status"
           cls="sublabel"
           transform="translate(17, 13)"
         ></maplabel>
@@ -60,8 +60,8 @@
       <!-- Marker Status -->
       <circle
         class="status"
-        :class="open"
-        v-if="open != undefined"
+        :class="status.id"
+        v-if="status != undefined"
         r="6"
         :cx="10"
         :cy="8"
@@ -92,26 +92,31 @@ export default {
       else
         return undefined
     mobile: () -> @$mq.below('480px')
-    open: () ->
+    status: () ->
       # Marker has a timetable
       if @data.timetables?
         day_index = @now.getDay()
         day_index = if day_index is 0 then 6 else day_index-1
 
-        open = new Date("#{@today_date} #{@data.timetables[day_index].open}")
-        close = new Date("#{@today_date} #{@data.timetables[day_index].close}")
+        opening_time = new Date("#{@today_date} #{@data.timetables[day_index].open}")
+        closing_time = new Date("#{@today_date} #{@data.timetables[day_index].close}")
 
-        diff = (close - @now) / (36*100000)
+        # Closing soon
+        diff = (closing_time - @now) / (36*100000)
+        if 0 < diff <= 0.5
+          return {id: 'closing_soon', label: 'Chiude tra '+Math.round((closing_time - @now) / (60*1000))+' minuti'}
 
-        # Is closing soon
-        if diff > 0 and diff <= 0.5
-          return 'closing_soon'
+        # Opening soon
+        diff = (opening_time - @now) / (36*100000)
+        if 0 < diff <= 0.5
+          return {id: 'opening_soon', label: 'Apre tra '+Math.round((opening_time - @now) / (60*1000))+' minuti'}
+
         # Closed
-        else if @data.timetables[day_index].closed? or (@now < open) or @now > close
-          return 'closed'
+        if @data.timetables[day_index].closed? or not(opening_time < @now < closing_time)
+          return {id: 'closed', label: 'Ora chiuso'}
         # Open
         else
-          return 'open'
+          return {id: 'open', label: 'Ora aperto'}
       else
         return undefined
 
