@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "d3": "^4.9.1",
+    "lodash": "^4.17.4",
     "openseadragon": "^2.2.1",
     "showdown": "^1.6.0",
     "v-media-query": "^1.0.3",
