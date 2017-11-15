@@ -47,6 +47,8 @@ export default {
       
       if diff > 0 and diff <= 10
         return 'coming_soon'
+      else if diff < 0 and diff >= -20
+        return 'recently_past'
       else if diff < 0
         return 'past'
       else
@@ -88,12 +90,14 @@ export default {
   font-size: 15px;
 }
 
-.bus.past {
-  display: none;
+.bus.recently_past {
   color: #DDD;
 }
-.bus.past .name {
+.bus.recently_past .name {
   border: 1px solid #DDD;
+}
+.bus.past {
+  display: none;
 }
 
 .bus.coming_soon {
