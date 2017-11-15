@@ -48,13 +48,13 @@ export default {
 }
 
 .open {
-  fill: #238e0a;
+  fill: #164e08;
 }
 .closed {
   fill: #b7382e;
 }
 .closing_soon {
-  fill: #dcc21c;
+  fill: #754c00;
 }
 
 </style>

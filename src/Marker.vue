@@ -151,13 +151,13 @@ export default {
   stroke-opacity: 0.5;
 }
 .marker .open.status {
-  fill: #238e0a;
+  fill: #378a24;
 }
 .marker .closed.status {
   fill: #b7382e;
 }
 .marker .closing_soon.status {
-  fill: #dcc21c;
+  fill: #c18f00;
 }
 
 
