@@ -14,6 +14,7 @@ import CollapsibleBox from '../CollapsibleBox.vue'
 import SourceSection from './SourceSection.vue'
 import TimeTableSection from './TimeTableSection.vue'
 import CiclopiSection from './CiclopiSection.vue'
+import BusStopSection from './BusStopSection.vue'
 import ReferenceSection from './ReferenceSection.vue'
 import CalendarSection from './CalendarSection.vue'
 
@@ -46,6 +47,7 @@ export default {
     ciclopisection: CiclopiSection
     referencesection: ReferenceSection
     calendarsection: CalendarSection
+    busstopsection: BusStopSection
 
 }
 </script>
