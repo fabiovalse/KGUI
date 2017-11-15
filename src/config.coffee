@@ -22,6 +22,7 @@ module.exports = {
   },
   global_class_declaration: {},
   global_config: {},
+  weather: true,
   templates: {
     area: [
       {t: 'image'}
