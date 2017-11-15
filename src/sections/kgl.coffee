@@ -10,6 +10,12 @@ transform = (value, property) ->
     return "<a href='tel:#{value}'>#{value}</a>"
   else if property is 'email'
     return "<a href='mailto:#{value}'>#{value}</a>"
+  else if property is 'institute'
+    return "<a href='#/target/#{value.id}'>#{value.label}</a>"
+  else if property is 'group'
+    return "<a href='#/target/#{value.id}'>#{value.label}</a>"
+  else if property is 'room'
+    return "<a href='#/target/#{value.id}'>#{value.label}</a>"
   else
     return value
 
@@ -22,12 +28,15 @@ export default {
       result = regex.exec kgl
 
       # Handling arrays
-      if result isnt null and typeof data[result[1]] is 'object'
+      if result isnt null and data[result[1]].length?
         kgl = data[result[1]].map (d) => transform d, result[1]
 
         if markdown_enabled
           kgl = kgl.map (d) -> converter.makeHtml(d)[3...-4]
 
+      else if result isnt null and typeof data[result[1]] is 'object'
+        kgl = transform data[result[1]], result[1]
+      
       else
         # {{property}} syntax
         kgl = kgl.replace /{{(.+?)}}/g, (_, property) =>

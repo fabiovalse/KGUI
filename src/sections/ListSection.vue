@@ -28,11 +28,15 @@ export default {
   
   computed:
     items: () ->
-      list = @config.items.map (item) => {
-        label: kgl.parse(item.label, @data)
-        value: @to_html(kgl.parse(item.value, @data))
-        icon: item.icon
-      }
+      list = @config.items.map (item) => 
+        x = {
+          label: kgl.parse(item.label, @data)
+          value: @to_html(kgl.parse(item.value, @data))
+          icon: item.icon
+        }
+        console.log x
+        console.log ""
+        return x
 
       # keep defined pairs only
       return list.filter (d) -> d.label? and d.value?

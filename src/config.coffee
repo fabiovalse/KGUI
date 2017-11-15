@@ -83,6 +83,9 @@ module.exports = {
       {t: 'header', title: '{{label}}', subtitle: '{{position_plaintext}}'}
       {t: 'reference'}
       {t: 'list', items: [
+        {label: 'Istituto', value: '{{institute}}', icon: 'building'}
+        {label: 'Gruppo', value: '{{group}}', icon: 'group'}
+        {label: 'Stanza', value: '{{room}}', icon: 'placemark'}
         {label: 'Telefono', value: '{{tel}}', icon: 'phone'}
         {label: 'Cellulare', value: '{{cel}}', icon: 'mobile'}
         {label: 'Fax', value: '{{fax}}', icon: 'fax'}
