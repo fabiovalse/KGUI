@@ -27,16 +27,17 @@ export default {
       regex = /{{(.+?)}}/g
       result = regex.exec kgl
 
-      # Handling arrays
-      if result isnt null and data[result[1]].length?
-        kgl = data[result[1]].map (d) => transform d, result[1]
+      # Handling objects and arrays
+      if result isnt null and typeof data[result[1]] is 'object'
+        # arrays
+        if data[result[1]].length?
+          kgl = data[result[1]].map (d) => transform d, result[1]
 
-        if markdown_enabled
-          kgl = kgl.map (d) -> converter.makeHtml(d)[3...-4]
-
-      else if result isnt null and typeof data[result[1]] is 'object'
-        kgl = transform data[result[1]], result[1]
-      
+          if markdown_enabled
+            kgl = kgl.map (d) -> converter.makeHtml(d)[3...-4]
+        # object
+        else
+          kgl = transform data[result[1]], result[1]
       else
         # {{property}} syntax
         kgl = kgl.replace /{{(.+?)}}/g, (_, property) =>
