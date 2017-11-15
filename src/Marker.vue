@@ -62,7 +62,7 @@
         class="status"
         :class="open"
         v-if="open != undefined"
-        r="4"
+        r="6"
         :cx="10"
         :cy="8"
       ></circle>
