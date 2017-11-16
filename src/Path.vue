@@ -10,21 +10,10 @@
         :d="get_d()"
       />
 
-      <g class="floorswitchpoint"
-        v-for="p in floorswitchpoints"
-        v-if="floorswitchpoints != undefined && p.floor == current_floor"
-        @click="change_floor(p)"
-        :transform="'translate('+p.x+','+p.y+') scale('+(transform != undefined ? 1/k : 1)+')'">
-        <foreignObject x="-12.5" y="-50" width="5" height="5">
-          <i v-if="p.floorswitch == 'up'" class="icon icon-arrow-up" title="Sali al piano superiore"></i>
-          <i v-if="p.floorswitch == 'down'" class="icon icon-arrow-down" title="Scendi al piano inferiore"></i>
-        </foreignObject>
-      </g>
-
       <circle v-if="current_floor == path[0].floor"
         class="starting_point"
-        :style="{'stroke-width': 20/k}"
-        :r="12.5/k"
+        :style="{'stroke-width': 5/k}"
+        :r="10/k"
         :cx="path[0].x"
         :cy="path[0].y"
       ></circle>
@@ -69,22 +58,6 @@ export default {
         else if @current_floor not in starting_point_floors
           return d3.min(starting_point_floors)
     
-    floorswitchpoints: () -> 
-      if @$store.state.selection.directions? and @$store.state.selection.directions.path?
-        path = @$store.state.selection.directions.path.filter (d) -> d.multifloor?
-
-        return path.map (d,i) ->
-          if path[i+1]?
-            if d.floor < path[i+1].floor
-              d.floorswitch = 'up'
-              path[i+1].floorswitch = 'down'
-            else
-              d.floorswitch = 'down'
-              path[i+1].floorswitch = 'up'
-          return d
-      else
-        return undefined
-    
     k: () -> @transform.k * @transform_resize.k
 
   watch:
@@ -102,9 +75,7 @@ export default {
         return "M#{path[0].x} #{path[0].y}" + path.slice(1).map((d) -> " L#{d.x} #{d.y}").join('')
       else
         return ''
-    get_transform: (w) -> "translate(#{w.x}, #{w.y}) scale(#{if @transform? then 1/@k else 1})"
-    change_floor: (p) ->
-      @$emit 'changed', if p.floorswitch is 'up' then p.floor+1 else p.floor-1
+    get_transform: (w) -> "translate(#{w.x}, #{w.y}) scale(#{if @transform? then 1/@k else 1})"  
 
 }
 </script>
@@ -125,24 +96,5 @@ export default {
 .waypoint {
   fill: #FFF;
   stroke-width: 15px;
-}
-
-.starting_point {
-  fill: #FFF;
-  stroke: #000;
-}
-
-.floorswitchpoint {
-  cursor: pointer;
-  fill: #FFF;
-}
-.floorswitchpoint .icon {
-  display: block;
-  width: 25px;
-  height: 25px;
-  font-size: 25px;
-  text-align: center;
-  background: #FFF;
-  border-radius: 50px;
 }
 </style>

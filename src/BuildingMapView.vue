@@ -31,6 +31,13 @@
             :transform_resize="transform_resize"
           ></mapmarker>
 
+          <directionspoints
+            :transform="transform"
+            :transform_resize="transform_resize"
+            :current_floor="current_floor"
+            @changed="change_floor"
+          ></directionspoints>
+
           <placemark
             :transform="transform"
             :transform_resize="transform_resize"
@@ -53,6 +60,7 @@ import FloorSelector from './FloorSelector.vue'
 import Marker from './Marker.vue'
 import Placemark from './Placemark.vue'
 import Path from './Path.vue'
+import DirectionsPoints from './DirectionsPoints.vue'
 import WeatherPanel from './WeatherPanel.vue'
 
 export default {
@@ -167,6 +175,7 @@ export default {
     placemark: Placemark
     directionpath: Path
     weatherpanel: WeatherPanel
+    directionspoints: DirectionsPoints
 
 }
 </script>

@@ -14,10 +14,10 @@
 
 <script lang="coffee">
 export default {
-  props: ['transform', 'transform_resize']
+  props: ['transform', 'transform_resize', 'directions_target']
 
   computed:
-    target: () -> @$store.state.selection.target
+    target: () -> if @directions_target? then @directions_target else @$store.state.selection.target
 
   methods:
     get_translate: () -> "translate(#{@target.x}, #{@target.y})"
