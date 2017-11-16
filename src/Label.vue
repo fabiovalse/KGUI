@@ -50,5 +50,8 @@ export default {
 .closing_soon {
   fill: #754c00;
 }
+.opening_soon {
+  fill: #b7382e;
+}
 
 </style>

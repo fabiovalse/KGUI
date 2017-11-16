@@ -121,7 +121,11 @@ export default {
         return undefined
 
   methods:
-    select: () -> @$store.dispatch 'select', {d: @data}
+    select: () ->
+      if @data.layer is 'directions'
+        @$emit 'changed', if @data.floorswitch is 'up' then @data.floor+1 else @data.floor-1
+      else
+        @$store.dispatch 'select', {d: @data}
     get_translate: () -> "translate(#{@data.x}, #{@data.y})"
     get_scale: () -> "scale(#{if @transform? then 1/(@transform.k*@transform_resize.k) else 1})"
     
@@ -163,6 +167,9 @@ export default {
 }
 .marker .closing_soon.status {
   fill: #c18f00;
+}
+.marker .opening_soon.status {
+  fill: #b7382e;
 }
 
 
@@ -206,6 +213,15 @@ export default {
   fill: #FFF;
   font-weight: bold;
   text-anchor: middle;
+}
+
+/* Directions class
+*/
+.marker .directions .icon {
+  color: #000;
+  background: #FFF;
+  font-size: 20px;
+  border-radius: 10px;
 }
 
 /* Specific marker classes
