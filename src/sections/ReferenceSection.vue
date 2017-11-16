@@ -37,7 +37,7 @@ export default {
         @nodes = data
 
       db.execute_arango """
-      FOR v,e IN 1..2 OUTBOUND @id GRAPH 'CampusMap'
+      FOR v,e IN 1..2 OUTBOUND @id GRAPH 'graph'
       FILTER e.type == 'in'
       RETURN v
       """, cb, null, {id: @data._id}
