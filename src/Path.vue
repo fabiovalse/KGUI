@@ -18,12 +18,12 @@
         :cy="path[0].y"
       ></circle>
     </g>
-    <g v-for="(w, i) in waypoints" :key="i" :transform="get_transform(w)">
+    <!-- <g v-for="(w, i) in waypoints" :key="i" :transform="get_transform(w)">
       <circle
         class="waypoint"
         :r="2.5"
       ></circle>
-    </g>
+    </g> -->
   </g>
 </template>
 
