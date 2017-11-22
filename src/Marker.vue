@@ -1,6 +1,6 @@
 <template>
   <g
-    v-if="data.x !== undefined && data.y !== undefined"
+    v-if="data.x !== undefined && data.y !== undefined && visible"
     class="marker"
     :transform="get_translate()"
     @click="select()"
@@ -33,13 +33,13 @@
       </foreignObject>
       <!-- Text -->
       <g :class="data.layer != undefined ? data.layer : ''">
-        <g v-if="data.text != undefined && semantic_zoom(data)" :class="{text: data.shape == undefined, text_on_shape: data.shape != undefined}">
+        <g v-if="data.text != undefined" :class="{text: data.shape == undefined, text_on_shape: data.shape != undefined}">
           <text dy="0.35em">{{data.text}}</text>
         </g>
       </g>
 
       <!-- External label -->
-      <g v-if="data.text == undefined && semantic_zoom(data)">
+      <g v-if="data.text == undefined && label_visible">
         <!-- Main label -->
         <maplabel
           :text="data.label"
@@ -119,6 +119,13 @@ export default {
           return {id: 'open', label: 'Ora aperto'}
       else
         return undefined
+    visible: () ->
+      if @data.template is 'room' # FIXME
+        @transform.k > 8
+      else
+        @transform.k > 1
+    label_visible: () ->
+      @transform.k > 4
 
   methods:
     select: () ->
@@ -128,20 +135,6 @@ export default {
         @$store.dispatch 'select', {d: @data}
     get_translate: () -> "translate(#{@data.x}, #{@data.y})"
     get_scale: () -> "scale(#{if @transform? then 1/(@transform.k*@transform_resize.k) else 1})"
-    
-    semantic_zoom: (d) ->
-      # Shape and text
-      if d.shape? and d.text?
-        true
-      # External labels
-      else if d.shape? and not(d.text?)
-        @transform.k > 2.5
-      # Only text (pois)
-      else if d.template is 'poi' and not(d.shape?) and d.text?
-        true
-      # Only text (rooms)
-      else if not(d.shape?) and d.text?
-        @transform.k > 5
 
   components:
     markercounter: MarkerCounter
