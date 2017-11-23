@@ -6,7 +6,7 @@
       :class="check_time(event)"
     >
       <div class="date">
-        <div class="month">{{(new Date().toLocaleString('it-it', {month: "short"})).toUpperCase()}}</div>  
+        <div class="month">{{(new Date(event.day).toLocaleString('it-it', {month: "short"})).toUpperCase()}}</div>  
         <div class="day">
           {{new Date(event.day).getDate()}}
         </div>
@@ -41,7 +41,7 @@ export default {
       query = """
       LET today = DATE_NOW()
       FOR doc IN events
-        FILTER doc.room == @key AND DATE_YEAR(today) == DATE_YEAR(doc.day) AND DATE_MONTH(today) == DATE_MONTH(doc.day)
+        FILTER doc.room == @key AND ABS(DATE_DIFF(today, doc.day, 'd')) < 16
         SORT doc.day
         RETURN doc
       """
@@ -54,8 +54,8 @@ export default {
 
   methods:
     check_time: (event) ->
-      today = new Date().getDate()
-      event_date = new Date(event.day).getDate()
+      today = new Date()
+      event_date = new Date(event.day)
       
       if event_date < today
         return 'past'
