@@ -4,7 +4,7 @@
       <text 
         v-if="halo == undefined"
         class="halo"
-        :class="status"
+        :class="status != undefined ? status : ''"
         dy="0.35em"
       >{{label}}</text>
       <text
@@ -23,8 +23,10 @@ export default {
     label: () ->
       if @text?
         return @text
-      else
+      else if @status?
         return @status.label
+      else
+        ''
 
 }
 </script>
