@@ -229,4 +229,17 @@ module.exports = {
     RETURN UNION(n1,n2,n3)
     """
     @execute_arango query, cb, transform_cb, {}
+
+  query_events: (cb) ->
+    transform_cb = (data) -> if Array.isArray(data[0]) then data[0] else data
+
+    query = """
+    LET today = DATE_NOW()
+      FOR doc IN events
+        FILTER ABS(DATE_DIFF(today, doc.day, 'd')) < 30
+        SORT doc.day
+        RETURN doc
+    """
+    @execute_arango query, cb, transform_cb, {}
+    
 }

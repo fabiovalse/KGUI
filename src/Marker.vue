@@ -117,6 +117,16 @@ export default {
         # Open
         else
           return {id: 'open', label: 'Ora aperto'}
+      else if @data.events?
+        status = {id: 'open', label: 'Disponibile'}
+        @data.events.forEach (e) =>
+          start_time = new Date(e._start)
+          end_time = new Date(e._end)
+          if start_time < @now < end_time
+            status = {id: 'closed', label: "In corso: #{e.label.slice(0,20)}"}
+            return
+            
+        return status
       else
         return undefined
     visible: () ->

@@ -28,6 +28,19 @@ export default {
       if params.default_starting_point?
         db.query_starting_point context, params.default_starting_point, (starting_point) ->
           context.commit '_set_starting_point', starting_point[0]
+      
+      # FIXME horrible hack
+      update_events = () ->
+        db.query_events (data) ->
+          if context.rootState.selection.space?
+            context.rootState.selection.space.nodes.forEach (n) ->
+              data.forEach (d) ->
+                if d.room == n._key
+                  if not n.events?
+                    n.events = []
+                  n.events.push d
+      setInterval update_events, 1000 * 60
+      setTimeout update_events, 1000 * 3
 
     request_previews: (context, id) ->
       db.query_space context, id, '_set_previews'
