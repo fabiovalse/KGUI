@@ -225,7 +225,8 @@ module.exports = {
     query = """
     LET n1 = (FOR n IN FULLTEXT(nodes, 'label', '#{str}', 5) RETURN n)
     LET n2 = (FOR n IN FULLTEXT(nodes, 'tel', '#{str}', 5) RETURN n)
-    RETURN UNION(n1,n2)
+    LET n3 = (FOR n IN FULLTEXT(nodes, 'tags', '#{str}', 5) RETURN n)
+    RETURN UNION(n1,n2,n3)
     """
     @execute_arango query, cb, transform_cb, {}
 }
