@@ -26,11 +26,8 @@ export default {
   actions:
     init: (context, params) ->
       if params.default_starting_point?
-        db.query_starting_point context, params.default_starting_point
-
-      if params.default_space?
-        #db.query_nodes context, params.default_space # Could be useless
-        db.query_space context, params.default_space, '_set_space'
+        db.query_starting_point context, params.default_starting_point, (starting_point) ->
+          context.commit '_set_starting_point', starting_point[0]
 
     request_previews: (context, id) ->
       db.query_space context, id, '_set_previews'

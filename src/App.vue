@@ -84,7 +84,7 @@ export default {
     vfs_enabled: () -> @space? and @space.vfs_enabled
 
   mounted: () ->
-    # @$store.dispatch 'init', {default_starting_point: config.default_starting_point, default_space: config.default_space}
+    @$store.dispatch 'init', {default_starting_point: config.default_starting_point}
     @route_changed @$route # ROUTER -> STORE
 
   watch:

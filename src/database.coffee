@@ -25,12 +25,8 @@ module.exports = {
         if cb?
           cb result
 
-  query_starting_point: (context, starting_point) ->
-    payload = {query: "MATCH (n:Info) WHERE n.id={starting_point} RETURN n;", params: {starting_point: starting_point}}
-    @execute payload, (data) ->
-      result = JSON.parse(data.responseText)
-
-      context.commit '_set_starting_point', result.data[0][0].data
+  query_starting_point: (context, starting_point, cb) ->
+    @execute_arango "RETURN DOCUMENT('nodes/#{starting_point}')", cb, null, {}
 
   query_space: (id, cb) ->
     transform_cb = (data) -> 
