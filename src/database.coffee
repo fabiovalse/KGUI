@@ -127,7 +127,42 @@ module.exports = {
       @execute_arango query, cb, transform_cb, {from: 'nodes/'+ids.from, to: 'nodes/'+ids.to} 
     # Execute dijkstra only when both from and to exist
     else
-      transform_cb = (data) -> data[0]
+      transform_cb = (data) -> 
+        path = data[0].path
+
+        starting_floor = path[0].floor
+        ending_floor = path[path.length-1].floor
+
+        path = path
+          .map (d,i) -> {d..., index: i}
+        path
+          .sort (a,b) ->
+            if a.multifloor and b.multifloor
+              if ending_floor-starting_floor > 0
+                return a.floor - b.floor
+              else
+                return b.floor - a.floor
+            else
+              return a.index - b.index
+
+        data[0].path = path.map (d,i) ->
+          if path[i+1]?
+            if d.floor < path[i+1].floor
+              d.floorswitch = 'up'
+              d.icon = 'arrow-up'
+              
+              path[i+1].floorswitch = 'down'
+              path[i+1].icon = 'arrow-down'
+            else
+              d.floorswitch = 'down'
+              d.icon = 'arrow-down'
+
+              path[i+1].floorswitch = 'up'
+              path[i+1].icon = 'arrow-up'
+          d.layer = 'directions'
+          return d
+
+        return data[0]
 
       query = """
       LET from = (

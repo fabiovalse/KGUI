@@ -47,24 +47,24 @@ export default {
     ending_point: () -> if @$store.state.selection.directions? and @$store.state.selection.directions.path? then @$store.state.selection.directions.path[@$store.state.selection.directions.path.length-1] else undefined
     floorswitchpoints: () -> 
       if @$store.state.selection.directions? and @$store.state.selection.directions.path?
-        path = @$store.state.selection.directions.path.filter (d) -> d.multifloor?
+        return @$store.state.selection.directions.path.filter (d) -> d.multifloor?
 
-        return path.map (d,i) ->
-          if path[i+1]?
-            if d.floor < path[i+1].floor
-              d.floorswitch = 'up'
-              d.icon = 'arrow-up'
+        # return path.map (d,i) ->
+        #   if path[i+1]?
+        #     if d.floor < path[i+1].floor
+        #       d.floorswitch = 'up'
+        #       d.icon = 'arrow-up'
               
-              path[i+1].floorswitch = 'down'
-              path[i+1].icon = 'arrow-down'
-            else
-              d.floorswitch = 'down'
-              d.icon = 'arrow-down'
+        #       path[i+1].floorswitch = 'down'
+        #       path[i+1].icon = 'arrow-down'
+        #     else
+        #       d.floorswitch = 'down'
+        #       d.icon = 'arrow-down'
 
-              path[i+1].floorswitch = 'up'
-              path[i+1].icon = 'arrow-up'
-          d.layer = 'directions'
-          return d
+        #       path[i+1].floorswitch = 'up'
+        #       path[i+1].icon = 'arrow-up'
+        #   d.layer = 'directions'
+        #   return d
       else
         return undefined
 
