@@ -2,8 +2,8 @@
   <g class="directions_points" v-if="$store.state.selection.directions != undefined">
     <circle v-if="starting_point != undefined && current_floor == starting_point.floor"
       class="starting_point"
-      :style="{'stroke-width': 30/transform.k}"
-      :r="90/transform.k"
+      :style="{'stroke-width': 25/transform.k}"
+      :r="60/transform.k"
       :cx="starting_point.x"
       :cy="starting_point.y"
     ></circle>
@@ -19,11 +19,11 @@
     <g v-if="ending_point != undefined && current_floor == ending_point.floor">
       <g class="ending_point" :transform="'translate(' + ending_point.x + ', ' + ending_point.y + ')'">
         <circle
-          :style="{'stroke-width': 30/transform.k}"
-          :r="90/transform.k"
+          :style="{'stroke-width': 25/transform.k}"
+          :r="60/transform.k"
         ></circle>
         <circle
-          :r="30/transform.k"
+          :r="20/transform.k"
         ></circle>
       </g>
       <placemark
