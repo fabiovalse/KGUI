@@ -55,7 +55,7 @@ export default {
 
 <style scoped>
 .markercounter circle {
-  fill: #B44646;
+  fill: #466DB4;
 }
 .markercounter text {
   text-anchor: middle;
