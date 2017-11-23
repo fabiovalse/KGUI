@@ -53,8 +53,8 @@ export default {
   height: 150px;
   border-radius: 50%;
   background-repeat: no-repeat;
-  background-position: 50% 20%;
-  background-size: unset;
+  background-position: 50% 50%;
+  background-size: 100%;
 }
 
 .fake_image {
