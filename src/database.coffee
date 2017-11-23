@@ -146,7 +146,7 @@ module.exports = {
               return a.index - b.index
 
         data[0].path = path.map (d,i) ->
-          if path[i+1]?
+          if path[i+1]? and d.multifloor
             if d.floor < path[i+1].floor
               d.floorswitch = 'up'
               d.icon = 'arrow-up'
