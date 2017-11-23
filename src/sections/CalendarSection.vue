@@ -57,12 +57,12 @@ export default {
       today = new Date()
       event_date = new Date(event.day)
       
+      if event_date.getDate() is today.getDate()
+        return 'today'
       if event_date < today
         return 'past'
       else if event_date > today
         return 'future'
-      else
-        return 'today'
 
   components:
     titlesubsection: TitleSubSection
