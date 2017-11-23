@@ -33,6 +33,7 @@ export default {
     mode: () -> @$store.state.selection.mode
     space: () -> @$store.state.selection.space
     target: () -> @$store.state.selection.target
+    starting_point: () -> @$store.state.additional.starting_point
 
   methods:
     click_close: () ->
@@ -41,7 +42,7 @@ export default {
     click_directions: () -> 
       @$store.commit 'goto_directions', {
         space: @space._key # FIXME this should be removed
-        from: '_'
+        from: if @starting_point? then @starting_point._key else '_'
         to: if @target? then @target._key else '_'
       }
     click_search: () ->
