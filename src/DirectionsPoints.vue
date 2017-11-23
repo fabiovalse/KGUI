@@ -48,23 +48,6 @@ export default {
     floorswitchpoints: () -> 
       if @$store.state.selection.directions? and @$store.state.selection.directions.path?
         return @$store.state.selection.directions.path.filter (d) -> d.multifloor?
-
-        # return path.map (d,i) ->
-        #   if path[i+1]?
-        #     if d.floor < path[i+1].floor
-        #       d.floorswitch = 'up'
-        #       d.icon = 'arrow-up'
-              
-        #       path[i+1].floorswitch = 'down'
-        #       path[i+1].icon = 'arrow-down'
-        #     else
-        #       d.floorswitch = 'down'
-        #       d.icon = 'arrow-down'
-
-        #       path[i+1].floorswitch = 'up'
-        #       path[i+1].icon = 'arrow-up'
-        #   d.layer = 'directions'
-        #   return d
       else
         return undefined
 
