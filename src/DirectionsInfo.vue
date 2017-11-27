@@ -38,6 +38,7 @@
             <text
               x="20"
               y="6"
+              @click="select_ending_point(node)"
             >{{node.label}}</text>
           </g>
         </g>
@@ -93,6 +94,10 @@ export default {
 
     get_space: (distance) ->
       return "#{distance.toFixed(1)} m"
+
+    select_ending_point: (d) ->
+      @$store.commit 'goto_target', d._key
+
 }
 </script>
 
@@ -100,6 +105,7 @@ export default {
 .directionsinfo {
   padding: 15px;
   margin-top: 40px;
+  font-size: 14px;
 }
 
 .title {
@@ -129,6 +135,9 @@ export default {
   fill: #FFF;
   stroke: #000;
   stroke-width: 3px;
+}
+.path .ending_point text {
+  cursor: pointer;
 }
 .path .intermediate_point {
   fill: rgba(0,0,0,0.54);
