@@ -6,6 +6,7 @@ export default {
   state:    
     nodes: undefined
     previews: undefined
+    events: []
 
     transform: d3.zoomTransform(1)
     starting_point: undefined
@@ -33,6 +34,9 @@ export default {
       update_events = () ->
         db.query_events (data) ->
           if context.rootState.selection.space?
+            context.rootState.additional.events = data.filter (d) ->
+              d.day is "#{context.rootState.time.now.getFullYear()}-#{context.rootState.time.now.getMonth()+1}-#{context.rootState.time.now.getDate()}"
+
             context.rootState.selection.space.nodes.forEach (n) ->
               data.forEach (d) ->
                 if d.room == n._key

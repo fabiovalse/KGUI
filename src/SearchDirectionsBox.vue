@@ -25,10 +25,20 @@
         <button v-if="current_input == 'to'" @click="search_to"><i class="icon-search"></i></button>
       </div>
     </div>
+    <div class="events" v-if="events != [] && to == null">
+      <div class="title">Eventi di oggi:</div>
+      <div class="event" v-for="event in events">
+        <router-link :to="{name: 'goto_directions', params: {space: space._key, from: from._key, to: event.room}}">
+          <span class="info">{{event.from}}-{{event.to}}</span>
+          <span class="main">{{event.label}}</span>
+        </router-link>
+      </div>
+    </div>
   </div>
 </template>
 
 <script lang="coffee">
+
 export default {
 
   data: () ->
@@ -37,7 +47,9 @@ export default {
   computed:
     from: () -> @$store.state.selection.directions.from
     to: () -> @$store.state.selection.directions.to
-  
+    events: () -> @$store.state.additional.events
+    space: () -> @$store.state.selection.space
+
   methods:
     close: () -> @$store.commit 'clear'
     
@@ -136,6 +148,35 @@ input {
 }
 ::-ms-input-placeholder {
    color: #D5D5D5;
+}
+
+.events {
+  width: 100%;
+  background: #FFF;
+  margin-top: 22px;
+  padding: 12px 24px;
+  box-sizing: border-box;
+}
+.events .title {
+  font-size: 14px;
+  padding-bottom: 10px;
+}
+.events .event {
+  font-size: 12px;
+  font-weight: bold;
+  padding: 10px;
+  cursor: pointer;
+}
+.events .event a {
+  text-decoration: none;
+  color: #000;
+}
+.events .event:hover {
+  background: #F2F2F2;
+}
+.events .event .main {}
+.events .event .info {
+  color: #8C8C8C;
 }
 
 @media (max-width: 480px) {
