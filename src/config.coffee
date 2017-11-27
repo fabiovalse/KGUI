@@ -55,6 +55,7 @@ module.exports = {
       {t: 'busstop'}
       {t: 'calendar', title: 'Calendario eventi'}
       {t: 'related', title: 'Persone', query: "FOR v, e IN ANY @id GRAPH 'graph' FILTER e.type == 'in' SORT v.label RETURN v"}
+      {t: 'related', title: 'Altri Servizi', type: 'list', query: "FOR v, e IN ANY @id GRAPH 'graph' FILTER e.type == 'related_to' SORT v.label RETURN v"}
     ],
     institute: [
       {t: 'image'}
