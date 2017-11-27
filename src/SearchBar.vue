@@ -4,7 +4,7 @@
       <input
         class="search"
         type="text"
-        placeholder="Search"
+        placeholder="Cerca"
         @input="click_search"
         @keyup.down="change_result(1)"
         @keyup.up="change_result(-1)"
