@@ -26,7 +26,7 @@
       </div>
     </div>
     <div class="events" v-if="events != [] && to == null">
-      <div class="title">Eventi di oggi:</div>
+      <div class="title">Raggiungi uno degli eventi in corso oggi:</div>
       <div class="event" v-for="event in events">
         <router-link :to="{name: 'goto_directions', params: {space: space._key, from: from._key, to: event.room}}">
           <span class="info">{{event.from}}-{{event.to}}</span>
@@ -154,7 +154,7 @@ input {
   width: 100%;
   background: #FFF;
   margin-top: 22px;
-  padding: 12px 24px;
+  padding: 24px;
   box-sizing: border-box;
 }
 .events .title {
