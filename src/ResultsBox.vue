@@ -79,6 +79,12 @@ export default {
   background: #FFF;
   border-collapse: collapse;
   width: var(--left-margined-panel-width);
+  table-layout: fixed;
+}
+.resultsbox td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .result {
@@ -100,7 +106,7 @@ export default {
   color: rgb(178, 178, 178);
 }
 .result .label {
-  width: calc(var(--left-panel-width) - 60px);
+  width: calc(var(--left-margined-panel-width) - 80px);
   font-size: 12px;
   border-bottom: 1px solid rgb(230, 230, 230);
   padding-right: 12px;
