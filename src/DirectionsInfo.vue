@@ -1,7 +1,8 @@
 <template>
   <div v-if="path !== undefined" class="directionsinfo">
     <div class="title">
-      <b>{{get_time(weight*meter_factor)}}</b> ({{get_space(weight*meter_factor)}})
+      <div>{{get_time(weight*meter_factor)}}</div>
+      <div>{{get_space(weight*meter_factor)}}</div>
     </div>
     <svg class="path" :style="{height: svg_height}">
       <g transform="translate(10,0)">
@@ -88,7 +89,7 @@ export default {
       min = Math.floor(time / 60)
       sec = Math.floor(time - min * 60)
 
-      return "#{min}m #{sec}s"
+      return "#{min} min #{sec} sec"
 
     get_space: (distance) ->
       return "#{distance.toFixed(1)} m"
@@ -102,8 +103,13 @@ export default {
 }
 
 .title {
-  font-size: 20px;
+  font-size: 15px;
+  font-weight: 400;
   margin-bottom: 20px;
+}
+.title div:nth-child(2) {
+  font-size: 13px;
+  color: rgba(0,0,0,0.54);
 }
 
 .path {
