@@ -1,49 +1,64 @@
 <template>
-  <div v-if="path !== undefined" class="directionsinfo">
-    <div class="title">
-      <div>{{get_time(weight*meter_factor)}}</div>
-      <div>{{get_space(weight*meter_factor)}}</div>
+  <div class="directionsinfo">
+    <!-- Directions path information -->
+    <div v-if="path !== undefined">
+      <div class="title">
+        <div>{{get_time(weight*meter_factor)}}</div>
+        <div>{{get_space(weight*meter_factor)}}</div>
+      </div>
+      <svg class="path" :style="{height: svg_height}">
+        <g transform="translate(10,0)">
+          <g>
+            <line
+              x1="0"
+              :y1="y_start"
+              x2="0"
+              :y2="y_start+(poi_path.length-1)*y_tick"
+            ></line>
+          </g>
+          <g v-for="(node,i) in poi_path" :key="i" :transform="'translate(0,' + (y_start+i*y_tick) + ')'">
+            <g v-if="i == 0">
+              <circle
+                class="starting_point"
+                r="6"
+              ></circle>
+              <text
+                x="20"
+                y="6"
+              >{{node.label}}</text>
+            </g>
+            <g v-else-if="i < poi_path.length-1">
+              <text
+                class="intermediate_point"
+                x="30"
+                y="6"
+              >{{node.label}}</text>
+            </g>
+            <g v-else class="ending_point">
+              <circle r="6"></circle>
+              <circle r="1"></circle>
+              <text
+                x="20"
+                y="6"
+                @click="select_ending_point(node)"
+              >{{node.label}}</text>
+            </g>
+          </g>
+        </g>
+      </svg>
     </div>
-    <svg class="path" :style="{height: svg_height}">
-      <g transform="translate(10,0)">
-        <g>
-          <line
-            x1="0"
-            :y1="y_start"
-            x2="0"
-            :y2="y_start+(poi_path.length-1)*y_tick"
-          ></line>
-        </g>
-        <g v-for="(node,i) in poi_path" :key="i" :transform="'translate(0,' + (y_start+i*y_tick) + ')'">
-          <g v-if="i == 0">
-            <circle
-              class="starting_point"
-              r="6"
-            ></circle>
-            <text
-              x="20"
-              y="6"
-            >{{node.label}}</text>
-          </g>
-          <g v-else-if="i < poi_path.length-1">
-            <text
-              class="intermediate_point"
-              x="30"
-              y="6"
-            >{{node.label}}</text>
-          </g>
-          <g v-else class="ending_point">
-            <circle r="6"></circle>
-            <circle r="1"></circle>
-            <text
-              x="20"
-              y="6"
-              @click="select_ending_point(node)"
-            >{{node.label}}</text>
-          </g>
-        </g>
-      </g>
-    </svg>
+
+    <!-- Events of today -->
+    <div class="events" v-if="events != [] && to == null">
+      <div class="title">Raggiungi un evento:</div>
+      <div class="event" v-for="event in events">
+        <router-link :to="{name: 'goto_directions', params: {space: space._key, from: from._key, to: event.room}}">
+          <span class="info">{{event.from}}-{{event.to}}</span>
+          <span class="main">{{event.label}}</span>
+          <span class="info">({{event.room.split('@')[0]}})</span>
+        </router-link>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -57,6 +72,10 @@ export default {
 
   computed:
     path: () -> @$store.state.selection.directions.path
+    events: () -> @$store.state.additional.events
+    space: () -> @$store.state.selection.space
+    from: () -> @$store.state.selection.directions.from
+    to: () -> @$store.state.selection.directions.to
     poi_path: () ->
       path = @path
         .filter (d) -> not d.waypoint
@@ -111,7 +130,7 @@ export default {
 .title {
   font-size: 15px;
   font-weight: 400;
-  margin-bottom: 20px;
+  margin: 10px 0px;
 }
 .title div:nth-child(2) {
   font-size: 13px;
@@ -141,5 +160,32 @@ export default {
 }
 .path .intermediate_point {
   fill: rgba(0,0,0,0.54);
+}
+
+/*  Events of the day
+*/
+.events {
+  width: 100%;
+  background: #FFF;
+  box-sizing: border-box;
+}
+.events .title {
+  font-size: 14px;
+}
+.events .event {
+  font-size: 12px;
+  font-weight: bold;
+  padding: 10px;
+  cursor: pointer;
+}
+.events .event a {
+  text-decoration: none;
+  color: #000;
+}
+.events .event:hover {
+  background: #F2F2F2;
+}
+.events .event .info {
+  color: #8C8C8C;
 }
 </style>

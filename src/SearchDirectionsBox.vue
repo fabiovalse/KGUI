@@ -25,15 +25,6 @@
         <button v-if="current_input == 'to'" @click="search_to"><i class="icon-search"></i></button>
       </div>
     </div>
-    <div class="events" v-if="events != [] && to == null">
-      <div class="title">Raggiungi uno degli eventi in corso oggi:</div>
-      <div class="event" v-for="event in events">
-        <router-link :to="{name: 'goto_directions', params: {space: space._key, from: from._key, to: event.room}}">
-          <span class="info">{{event.from}}-{{event.to}}</span>
-          <span class="main">{{event.label}}</span>
-        </router-link>
-      </div>
-    </div>
   </div>
 </template>
 
@@ -47,8 +38,6 @@ export default {
   computed:
     from: () -> @$store.state.selection.directions.from
     to: () -> @$store.state.selection.directions.to
-    events: () -> @$store.state.additional.events
-    space: () -> @$store.state.selection.space
 
   methods:
     close: () -> @$store.commit 'clear'
@@ -83,7 +72,8 @@ export default {
   height: 105px;
   border-radius: var(--radius);
   box-shadow: var(--box-shadow);
-
+  padding: 12px 0px 0px 30px;
+  box-sizing: border-box;
   z-index: 10;
 }
 
@@ -126,10 +116,6 @@ input {
   margin-bottom: 15px;
 }
 
-.from_to {
-  margin: 12px 0px 0px 30px;
-}
-
 /*  Input placeholder color
 */
 ::-webkit-input-placeholder {
@@ -148,35 +134,6 @@ input {
 }
 ::-ms-input-placeholder {
    color: #D5D5D5;
-}
-
-.events {
-  width: 100%;
-  background: #FFF;
-  margin-top: 22px;
-  padding: 24px;
-  box-sizing: border-box;
-}
-.events .title {
-  font-size: 14px;
-  padding-bottom: 10px;
-}
-.events .event {
-  font-size: 12px;
-  font-weight: bold;
-  padding: 10px;
-  cursor: pointer;
-}
-.events .event a {
-  text-decoration: none;
-  color: #000;
-}
-.events .event:hover {
-  background: #F2F2F2;
-}
-.events .event .main {}
-.events .event .info {
-  color: #8C8C8C;
 }
 
 @media (max-width: 480px) {
