@@ -56,6 +56,7 @@ export default {
           #   return node
           )
       else
+        @$store.dispatch 'select', {d: {_key: '_'}, directions_input: @directions_input}
         @results = undefined
 
 }
