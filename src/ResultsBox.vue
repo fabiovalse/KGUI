@@ -1,9 +1,18 @@
-<template>
-  <div v-if="results !== undefined" class="resultsbox">
-    <div class="result" :class="{selected: i == selected}" v-for="(r,i) in results" @click="click_node(r)">
-      {{r.label}}
-    </div>
-  </div>
+<template>  
+  <table v-if="results !== undefined" class="resultsbox">
+    <tr 
+      class="result"
+      v-for="(r,i) in results"
+      @click="click_node(r)"
+      :class="{selected: i == selected}"
+    >
+      <td class="icon"><i :class="'icon-'+get_icon(r)"></i></td>
+      <td class="label">
+        <span class="main">{{r.label}}</span>
+        <span class="info">{{get_info(r)}}</span>
+      </td>
+    </tr>
+  </table>
 </template>
 
 <script lang="coffee">
@@ -41,20 +50,23 @@ export default {
       @results = undefined
       @$store.dispatch 'select', {d: d, directions_input: @directions_input}
 
+    get_icon: (d) ->
+      if d.template is 'person'
+        return 'user'
+      else
+        return 'placemark'
+
+    get_info: (d) ->
+      if d.template is 'person'
+        return "#{d.institute.label} - #{d.group[0].label}"
+      else
+        return ''
+
     search_node: (str, directions_input) ->
       if str isnt ''
         @directions_input = directions_input
 
-        db.query_node str, ((data) =>
-          @results = data
-
-          # result = JSON.parse(data.responseText)
-
-          # @results = result.data.map (n) ->
-          #   node = n[0].data
-          #   node.labels = n[0].metadata.labels
-          #   return node
-          )
+        db.query_node str, (data) => @results = data
       else
         @$store.dispatch 'select', {d: {_key: '_'}, directions_input: @directions_input}
         @results = undefined
@@ -65,25 +77,40 @@ export default {
 <style scoped>
 .resultsbox {
   background: #FFF;
+  border-collapse: collapse;
+  width: var(--left-margined-panel-width);
 }
-.result {
-  display: flex;
-  align-items: center;
-  height: 43px;
-  border-bottom: 1px solid rgb(230, 230, 230);
-  cursor: pointer;
-  margin-left: 50px;
 
-  /* long labels */
-  margin-right: 12px;
-  overflow: hidden;
-  white-space: nowrap;
+.result {
+  height: 43px;
+  width: var(--left-margined-panel-width);
+  cursor: pointer;
 }
 .result:hover {
   background: #F2F2F2;
 }
 .selected {
   background: #F2F2F2;
+}
+
+.result .icon {
+  width: 60px;
+  text-align: center;
+  font-size: 14px;
+  color: rgb(178, 178, 178);
+}
+.result .label {
+  width: calc(var(--left-panel-width) - 60px);
+  font-size: 12px;
+  border-bottom: 1px solid rgb(230, 230, 230);
+  padding-right: 12px;
+}
+.result .label .main {
+  font-weight: bold; 
+}
+.result .label .info {
+  font-weight: 400;
+  color: #8C8C8C;
 }
 
 @media (max-width: 480px) {
