@@ -2,6 +2,7 @@
   <div class="directionsinfo">
     <!-- Directions path information -->
     <div v-if="path !== undefined">
+      <statussection :data="to" :destination="true"></statussection>
       <div class="title">
         <div>{{get_time(weight*meter_factor)}}</div>
         <div>{{get_space(weight*meter_factor)}}</div>
@@ -63,6 +64,8 @@
 </template>
 
 <script lang="coffee">
+import StatusSection from './sections/StatusSection.vue'
+
 export default {
 
   data: () ->
@@ -116,6 +119,9 @@ export default {
 
     select_ending_point: (d) ->
       @$store.commit 'goto_target', d._key
+
+  components:
+    statussection: StatusSection
 
 }
 </script>

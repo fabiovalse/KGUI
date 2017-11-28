@@ -99,7 +99,6 @@ module.exports = {
     ],
     room: [
       {t: 'header', title: '{{label}}'}
-      {t: 'status'}
       {t: 'list', items: [
         {label: '**Floor**', value: '{{floor}}'}
         {label: '**Entrance**', value: '{{entrance}}'}
