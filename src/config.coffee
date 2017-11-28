@@ -95,7 +95,7 @@ module.exports = {
         {label: 'Email', value: '{{email}}', icon: 'email'}
       ]}
       {t: 'text', text: '{{about}}', collapsible: true}
-      {t: 'text', text: '{{tags}}', title: 'Tags', collapsible: true}
+      {t: 'tag', tags: '{{tags}}'}
     ],
     room: [
       {t: 'header', title: '{{label}}'}

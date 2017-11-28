@@ -17,6 +17,7 @@ import CiclopiSection from './CiclopiSection.vue'
 import BusStopSection from './BusStopSection.vue'
 import ReferenceSection from './ReferenceSection.vue'
 import CalendarSection from './CalendarSection.vue'
+import TagSection from './TagSection.vue'
 
 export default {
   render: (createElement) ->
@@ -48,6 +49,7 @@ export default {
     referencesection: ReferenceSection
     calendarsection: CalendarSection
     busstopsection: BusStopSection
+    tagsection: TagSection
 
 }
 </script>
