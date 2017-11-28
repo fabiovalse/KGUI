@@ -1,26 +1,25 @@
 <template>
   <div class="weatherpanel">
-    <div class="temperature">
-      <div class="current" title="Temperatura attuale">{{data.temp_c}}°</div>
-      <div>
-        <span class="max" title="Temperatura massima giornaliera">{{data.heat_index_c}}°</span>
-        <span class="min" title="Temperatura minima giornaliera">{{data.dewpoint_c}}°</span>
-      </div>  
+    <div class="city">PISA</div>
+    <div class="time">
+      <span>{{day_str}}</span> | <span>{{day}} {{month}}</span> | <span>{{time}}</span>
     </div>
-    <table class="info">
-      <tr title="Percentuale di umidità">
-        <td><i class="icon-humidity"></i></td>
-        <td>{{data.relative_humidity}}%</td>
-      </tr>
-      <tr title="Millimetri di pioggia">
-        <td><i class="icon-rain"></i></td>
-        <td>{{data.rain_day_in}}mm</td>
-      </tr>
-      <tr title="Velocità vento in chilometri orari">
-        <td><i class="icon-wind"></i></td>
-        <td>{{data.wind_kt}}km/h</td>
-      </tr>
-    </table>
+    <div class="temperature">
+      <div class="min" title="Temperatura minima giornaliera">
+        {{data.dewpoint_c}}°
+        <div class="label">&nbsp;min</div>
+      </div>
+      <div class="current" title="Temperatura attuale">{{data.temp_c}}°</div>
+      <div class="max" title="Temperatura massima giornaliera">
+        {{data.heat_index_c}}°
+        <div class="label">&nbsp;max</div>
+      </div>
+    </div>
+    <div class="info">
+      <div title="Percentuale di umidità">{{data.relative_humidity}}<span class="unit">%</span></div>
+      <div title="Millimetri di pioggia">{{data.rain_day_in}}<span class="unit">mm</span></div>
+      <div title="Velocità vento in chilometri orari">{{data.wind_kt}}<span class="unit">km/h</span></div>
+    </div>
   </div>
 </template>
 
@@ -31,6 +30,12 @@ export default {
 
   data: () ->
     data: {}
+
+  computed: 
+    day_str: () -> @$store.state.time.now.toLocaleString('it-IT', {weekday: 'long'}).toUpperCase()
+    day: () -> @$store.state.time.now.getDate()
+    month: () -> @$store.state.time.now.toLocaleString('it-IT', {month: 'short'}).toUpperCase()
+    time: () -> "#{@$store.state.time.now.getHours()}:#{@$store.state.time.now.getMinutes()}"
 
   mounted: () ->
     @tick()
@@ -55,39 +60,57 @@ export default {
 
 <style scoped>
 .weatherpanel {
-  display: flex;
-  justify-content: space-between;
-  width: 140px;
-  height: 55px;
+  width: 165px;
   background: #F5F5F5;
   box-shadow: var(--box-shadow);
   border-radius: 3px;
   padding: 10px;
 }
 
-.temperature .current {
-  font-size: 30px;
+.city {
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 4px;
+  text-align: center;
+  color: #505050;
+}
+.time {
+  margin-top: 5px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: rgb(169,169,169);
   text-align: center;
 }
-.temperature .max, .temperature .min {
-  font-size: 13px;
+.temperature {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 5px;
+  color: #505050;
 }
-.temperature .max {
-  font-weight: bold;
-  color: #BBB;
+
+.temperature .current {
+  font-size: 30px;
 }
-.temperature .min {
-  color: #CCC; 
+.temperature .min, .temperature .max {
+  position: relative;
+}
+.temperature .label {
+  margin-top: -5px;
+  font-size: 10px;
+  color: rgb(169,169,169);
 }
 
 .info {
-  font-size: 12px;
-  color: #BBB;
-  border-collapse: collapse;
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 400;
+  color: #505050;
 }
-.info i {
-  font-size: 15px;
-  color: #888;
-  padding-right: 3px;
+.info .unit {
+  font-size: 9px;
+  color: rgb(169,169,169);
 }
 </style>
