@@ -35,6 +35,8 @@ export default {
     target: () -> @$store.state.selection.target
     starting_point: () -> @$store.state.additional.starting_point
 
+  mounted: () -> @$el.querySelector('.search').focus()
+
   methods:
     click_close: () ->
       @$store.commit 'set_mode', undefined
