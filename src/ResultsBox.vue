@@ -51,16 +51,15 @@ export default {
       @$store.dispatch 'select', {d: d, directions_input: @directions_input}
 
     get_icon: (d) ->
-      if d.template is 'person'
-        return 'user'
-      else
-        return 'placemark'
+      switch d.template
+        when 'person' then 'user'
+        else 'placemark'
 
     get_info: (d) ->
-      if d.template is 'person'
-        return "#{d.institute.label} - #{d.group[0].label}"
-      else
-        return ''
+      switch d.template
+        when 'person' then "#{d.institute.label} - #{d.group[0].label}"
+        when 'room' then "Edificio #{d.building}, ingresso #{d.entrance}, piano #{d.floor}"
+        else ''
 
     search_node: (str, directions_input) ->
       if str isnt ''
