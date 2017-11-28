@@ -18,6 +18,7 @@ import BusStopSection from './BusStopSection.vue'
 import ReferenceSection from './ReferenceSection.vue'
 import CalendarSection from './CalendarSection.vue'
 import TagSection from './TagSection.vue'
+import StatusSection from './StatusSection.vue'
 
 export default {
   render: (createElement) ->
@@ -50,6 +51,7 @@ export default {
     calendarsection: CalendarSection
     busstopsection: BusStopSection
     tagsection: TagSection
+    statussection: StatusSection
 
 }
 </script>

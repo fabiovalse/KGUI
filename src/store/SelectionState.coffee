@@ -60,7 +60,11 @@ export default {
       state.directions = data
   actions:
     load_space: (context, id) ->
-      db.query_space id, (space) -> context.commit '_set_space', space
+      db.query_space id, (space) -> 
+        space.node_index = {}
+        space.nodes.forEach (d) ->
+          space.node_index[d._key] = d
+        context.commit '_set_space', space
     load_target: (context, id) ->
       db.query_target id, (target) -> context.commit '_set_target', target
     load_directions: (context, ids) ->

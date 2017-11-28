@@ -45,6 +45,17 @@ export default {
                   n.events.push d
       setInterval update_events, 1000 * 60
       setTimeout update_events, 1000 * 3
+      
+      # FIXME horrible hack
+      update_presences = () ->
+        db.query_presences (data) ->
+          if context.rootState.selection.space?
+            context.rootState.selection.space.nodes.forEach (n) ->
+              data.forEach (d) ->
+                if d.room == n._key
+                  n.presence = d.presence
+      setInterval update_presences, 1000 * 60
+      setTimeout update_presences, 1000 * 3
 
     request_previews: (context, id) ->
       db.query_space context, id, '_set_previews'

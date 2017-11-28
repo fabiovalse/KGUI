@@ -241,5 +241,11 @@ module.exports = {
         RETURN doc
     """
     @execute_arango query, cb, transform_cb, {}
+
+  query_presences: (cb) ->
+    transform_cb = (data) -> if Array.isArray(data[0]) then data[0] else data
+
+    query = " FOR doc in presence RETURN doc"
+    @execute_arango query, cb, transform_cb, {}
     
 }
