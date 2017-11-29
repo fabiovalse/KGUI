@@ -60,7 +60,7 @@ export default {
 
 <style scoped>
 .weatherpanel {
-  width: 165px;
+  width: 180px;
   background: #F5F5F5;
   box-shadow: var(--box-shadow);
   border-radius: 3px;
