@@ -16,9 +16,9 @@
       </div>
     </div>
     <div class="info">
-      <div title="Percentuale di umidità">{{data.relative_humidity}}<span class="unit">%</span></div>
-      <div title="Millimetri di pioggia">{{data.rain_day_in}}<span class="unit">mm</span></div>
-      <div title="Velocità vento in chilometri orari">{{data.wind_kt}}<span class="unit">km/h</span></div>
+      <div title="Percentuale di umidità">{{data.relative_humidity}}<span class="unit"> %</span></div>
+      <div title="Millimetri di pioggia">{{data.rain_day_in}}<span class="unit"> mm</span></div>
+      <div title="Velocità vento in chilometri orari">{{data.wind_kt}}<span class="unit"> km/h</span></div>
     </div>
   </div>
 </template>
@@ -96,7 +96,7 @@ export default {
   position: relative;
 }
 .temperature .label {
-  margin-top: -5px;
+  margin-top: -2px;
   font-size: 10px;
   color: rgb(169,169,169);
 }
