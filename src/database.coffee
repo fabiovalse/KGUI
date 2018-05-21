@@ -28,9 +28,8 @@ module.exports = {
           space.subspaces = JSON.parse(data.responseText).data.map (d) -> d[0].data
           @execute {query: "MATCH (:Space {id: {id}})-[r {type: 'subspace'}]-() RETURN COUNT(r)", params: {id: id}}, (data) =>
             space.vfs_enabled = JSON.parse(data.responseText).data[0][0] > 0
-            @execute {query: "MATCH path=(:Space)-[*0.. {type: 'subspace'}]->({id: {id}}) WITH nodes(path) AS path ORDER BY length(path) RETURN path[0]", params: {id: id}}, (data) =>
-              space.vfs_path = JSON.parse(data.responseText).data.map (d) -> d[0].data
-              space.vfs_path.reverse()
+            @execute {query: "MATCH path=(:Space {id: 'kge_vfs|root'})-[*0.. {type: 'subspace'}]->({id: {id}}) WITH nodes(path) AS path RETURN path", params: {id: id}}, (data) =>
+              space.vfs_path = JSON.parse(data.responseText).data[0][0].map (d) -> d.data
               @execute {query: "MATCH (n:Info)-[]-(a:Annotation)-[]-(s:Space {id: {id}}) RETURN n, a.x, a.y, a;", params: {id: id}}, (data) => # FIXME: only a should be returned
                 space.nodes = JSON.parse(data.responseText).data.map (d) ->
                   r = d[0].data
