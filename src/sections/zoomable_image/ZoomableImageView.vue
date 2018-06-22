@@ -285,7 +285,7 @@ export default {
     show_hide: () -> 
       svg = @$el.querySelector('.openseadragon-container svg')
       if svg?
-        svg.style['display'] = if @fullscreen and @annotation_visible then 'inline' else 'none'
+        svg.style['display'] = if @annotation_visible then 'inline' else 'none'
 
     fit_bounds: () ->
       min = @mercator([@space.geo_bounds[1], @space.geo_bounds[0]])
