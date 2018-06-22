@@ -262,7 +262,6 @@ export default {
       # go to fullscreen
       if not old_value and new_value
         @viewer.setMouseNavEnabled true
-        @annotation_visible = true
         @$el.querySelector('.zoom_control').classList.remove('hidden')
 
       # exit fullscreen
