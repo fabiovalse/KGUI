@@ -18,10 +18,11 @@
 export default {
 
   mounted: () ->
-    @$el.style.setProperty '--selected-color', if @annotations.selected_color? then @annotations.selected_color else '#ff9e72'
-    @$el.style.setProperty '--color', if @annotations.color? then @annotations.color else '#CCC'
-    @$el.style.setProperty '--stroke', if @annotations.stroke? then @annotations.stroke else '#303030'
-    @$el.style.setProperty '--stroke-width', if @annotations.stroke_width? then @annotations.stroke_width else '1px'
+    @$el.style.setProperty '--selected-color', if @annotations.selected_color? then @annotations.selected_color else 'red'
+    @$el.style.setProperty '--color', if @annotations.color? then @annotations.color else 'transparent'
+    @$el.style.setProperty '--stroke', if @annotations.stroke? then @annotations.stroke else '#0089ff'
+    @$el.style.setProperty '--stroke-width', if @annotations.stroke_width? then @annotations.stroke_width else '4px'
+    @$el.style.setProperty '--selected-stroke-width', if @annotations.selected_stroke_width? then @annotations.selected_stroke_width else '6px'
 
   computed:
     selected: () -> @store.state.selection.target
@@ -40,7 +41,6 @@ export default {
         selected: @selected? and @selected.id is obj.id
       }
       classes["obj_#{obj.id.replace('|','_')}"] = true
-      classes["stroked"] = obj.data.stroke
       return classes
 
     to_path_description: (paths) ->      
@@ -59,22 +59,18 @@ export default {
 <style scoped>
 rect, circle, path {
   fill: var(--color);
+  stroke: var(--stroke);
+  stroke-width: var(--stroke-width);
   vector-effect: non-scaling-stroke;
   cursor: pointer;
 }
 
 rect:hover, circle:hover, path:hover {
-  stroke: var(--selected-color);
-  stroke-width: 3px;
+  stroke-width: var(--selected-stroke-width);
 }
 
 .selected rect, .selected circle, .selected path {
-  fill: var(--selected-color);
-}
-
-.stroked {
-  stroke: var(--stroke);
-  stroke-width: var(--stroke-width);
+  stroke: var(--selected-color);
 }
 
 text {
