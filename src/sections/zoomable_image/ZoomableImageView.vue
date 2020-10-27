@@ -64,7 +64,10 @@ export default {
       elements.push createElement 'div', {
         class: 'opacity_control'
       }, [
-        createElement 'input', {
+        createElement('i', {
+          class: 'icon-show icon'
+        }),
+        createElement('input', {
           class: 'slider'
           attrs:
             type: 'range'
@@ -74,7 +77,7 @@ export default {
             value: '10'
           on:
             '~mouseover': () => @register_opacity_changes()
-        }
+        })
       ]
 
     if @fullscreen and @closeable
@@ -463,9 +466,15 @@ export default {
 
 .opacity_control {
   position: absolute;
-  top: 10px;
+  bottom: 30px;
   right: calc((100% - 129px) / 2);
   z-index: 5;
+  transform: scale(1.5);
+}
+.opacity_control .icon {
+  color: white;
+  text-shadow: 1px 0px black, 0px 1px black, -1px 0px black, 0px -1px black;
+  margin-right: 6px;
 }
 
 .close_button {
